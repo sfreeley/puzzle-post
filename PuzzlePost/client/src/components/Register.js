@@ -9,6 +9,8 @@ export default function Register() {
 
     const [displayName, setDisplayName] = useState();
     const [email, setEmail] = useState();
+    //need to add this to a field
+    const [imageLocation, setImageLocation] = useState(" ");
     const [password, setPassword] = useState();
     const [confirmPassword, setConfirmPassword] = useState();
 

@@ -26,6 +26,8 @@ namespace PuzzlePost.Models
         public string Manufacturer { get; set; }
         public string Notes { get; set; }
         public int IsAvailable { get; set; }
+        public Category Category { get; set; }
+        public UserProfile UserProfile { get; set; }
 
     }
 }
