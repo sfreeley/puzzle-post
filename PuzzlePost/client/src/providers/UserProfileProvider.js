@@ -36,6 +36,7 @@ export function UserProfileProvider(props) {
     };
 
     const register = (userProfile, password) => {
+        debugger;
         return firebase.auth().createUserWithEmailAndPassword(userProfile.email, password)
             .then((createResponse) => saveUser({ ...userProfile, firebaseUserId: createResponse.user.uid }))
             .then((savedUserProfile) => {
