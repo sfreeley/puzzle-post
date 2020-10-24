@@ -20,7 +20,7 @@ namespace PuzzlePost.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        SELECT up.Id, up.FirebaseUserId, up.Name AS UserProfileName, up.Email
+                        SELECT up.Id, up.FirebaseUserId, up.DisplayName, up.Email, up.ImageLocation
                         FROM UserProfile up
                         WHERE FirebaseUserId = @FirebaseuserId";
 
