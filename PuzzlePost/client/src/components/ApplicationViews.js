@@ -5,6 +5,7 @@ import Login from "./Login";
 import Register from "./Register";
 import PuzzleList from "./Puzzle/PuzzleList";
 import AddPuzzle from "./Puzzle/AddPuzzle";
+import UserPuzzleList from "./Puzzle/UserPuzzleList";
 
 
 export default function ApplicationViews() {
@@ -13,6 +14,9 @@ export default function ApplicationViews() {
     return (
         <main>
             <Switch>
+                <Route path="/puzzle/user" exact>
+                    {isLoggedIn ? <UserPuzzleList /> : <Redirect to="/login" />}
+                </Route>
                 <Route path="/puzzle" exact>
                     {isLoggedIn ? <PuzzleList /> : <Redirect to="/login" />}
                 </Route>
@@ -22,7 +26,6 @@ export default function ApplicationViews() {
                 <Route path="/login">
                     <Login />
                 </Route>
-
                 <Route path="/register">
                     <Register />
                 </Route>

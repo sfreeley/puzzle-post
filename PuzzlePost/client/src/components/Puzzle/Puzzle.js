@@ -10,10 +10,15 @@ const Puzzle = ({ puzzle }) => {
             <Card className="m-4">
                 <Row margin="m-4">
                     <Col sm="4">
-                        <p className="text-left px-2">Posted by: {puzzle.userProfile.displayName}</p>
+                        <p className="text-left px-2">Posted by: {puzzle.userProfile.displayName}
+                            <br></br>
+                        on {puzzle.createDateTime}</p>
                     </Col>
                     <Col sm="4">
-                        <p><strong>{puzzle.title}</strong></p>
+                        <p><strong>{puzzle.title}</strong>
+                            <br></br>
+                            {puzzle.manufacturer}
+                        </p>
                     </Col>
 
                     <Col sm="4">
