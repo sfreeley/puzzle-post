@@ -16,11 +16,13 @@ namespace PuzzlePost.Controllers
     {
         private readonly IPuzzleRepository _puzzleRepository;
         private readonly IUserProfileRepository _userProfileRepository;
+        private readonly IHistoryRepository _historyRepository;
 
-        public PuzzleController(IPuzzleRepository puzzleRepository, IUserProfileRepository userProfileRepository)
+        public PuzzleController(IPuzzleRepository puzzleRepository, IUserProfileRepository userProfileRepository, IHistoryRepository historyRepository)
         {
             _puzzleRepository = puzzleRepository;
             _userProfileRepository = userProfileRepository;
+            _historyRepository = historyRepository;
         }
 
         [HttpGet("active")]
@@ -30,11 +32,26 @@ namespace PuzzlePost.Controllers
             return Ok(_puzzleRepository.GetAllSharedPuzzles());
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetbyId(int id)
+        [HttpGet("history/{id}")]
+        public IActionResult GetbyIdWithHistory(int id)
         {
+            Puzzle puzzle = _puzzleRepository.GetPuzzleById(id);
+            if (puzzle == null)
+            {
+                return null;
+            }
+            return Ok(puzzle);
+        }
 
-            return Ok(_puzzleRepository.GetPuzzleById(id));
+        [HttpGet("{id}")]
+        public IActionResult GetbyIdWithoutHistory(int id)
+        {
+            Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
+            if (puzzle == null)
+            {
+                return null;
+            }
+            return Ok(puzzle);
         }
 
         [HttpGet("category")]
@@ -68,6 +85,17 @@ namespace PuzzlePost.Controllers
 
             return CreatedAtAction("Get", new { id = puzzle.Id }, puzzle);
 
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Puzzle puzzle)
+        {
+            if (id != puzzle.Id)
+            {
+                return BadRequest();
+            }
+            _puzzleRepository.UpdatePuzzle(puzzle);
+            return NoContent();
         }
 
         //Firebase

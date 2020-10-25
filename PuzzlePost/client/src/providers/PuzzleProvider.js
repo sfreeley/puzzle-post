@@ -9,6 +9,8 @@ export function PuzzleProvider(props) {
     const [categories, setCategories] = useState([]);
     const [userPuzzles, setUserPuzzles] = useState([]);
     const [inactiveUserPuzzles, setInactiveUserPuzzles] = useState([]);
+    const [puzzle, setPuzzle] = useState({ userProfile: {}, category: {}, histories: [] });
+    const [aPuzzle, setAPuzzle] = useState({ category: {} });
 
     const getAllActivePuzzles = () => {
         return getToken().then((token) => {
@@ -31,12 +33,7 @@ export function PuzzleProvider(props) {
             },
             body: JSON.stringify(puzzle)
         })
-            // .then(resp => {
-            //     if (resp.ok) {
-            //         return resp.json();
-            //     }
-            //     throw new Error("Unauthorized");
-            // })
+
         )
     };
 
@@ -61,7 +58,7 @@ export function PuzzleProvider(props) {
             .then((res) => res.json()).then(setUserPuzzles)
         );
 
-    }
+    };
 
     const getAllInactivePuzzlesByUser = (id) => {
         getToken().then((token) => fetch(`/api/puzzle/user/inactive/${id}`, {
@@ -73,13 +70,52 @@ export function PuzzleProvider(props) {
             .then((res) => res.json()).then(setInactiveUserPuzzles)
         );
 
-    }
+    };
+
+    //getting puzzle with history
+    const getPuzzleById = (id) => {
+        getToken().then((token) => fetch(`/api/puzzle/history/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((res) => res.json()).then(setPuzzle)
+        )
+
+    };
+
+    //getting without history
+    const getPuzzleWithoutHistoryById = (id) => {
+        getToken().then((token) => fetch(`/api/puzzle/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((res) => res.json()).then(setAPuzzle)
+        )
+
+    };
+
+    const editPuzzle = (puzzle) => {
+        getToken().then((token) => fetch(`/api/puzzle/${puzzle.id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(puzzle)
+        })
+        )
+    };
+
 
 
 
     return (
 
-        <PuzzleContext.Provider value={{ userPuzzles, inactiveUserPuzzles, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
+        <PuzzleContext.Provider value={{ aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
             {props.children}
         </PuzzleContext.Provider>
     );
