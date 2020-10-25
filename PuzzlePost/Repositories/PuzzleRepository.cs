@@ -151,7 +151,7 @@ namespace PuzzlePost.Repositories
 
                       h.Id AS HistoryId, h.UserProfileId AS HistoricalOwnerId, h.StartDateOwnership, h.EndDateOwnership,
     
-                      up.DisplayName, up.ImageLocation
+                      up.Id AS UserId, up.DisplayName, up.ImageLocation
 
                       FROM Puzzle p
                       LEFT JOIN Category c 
@@ -216,7 +216,7 @@ namespace PuzzlePost.Repositories
                                 EndDateOwnership = DbUtils.GetNullableDateTime(reader, "EndDateOwnership"),
                                 UserProfile = new UserProfile
                                 {
-                                    Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                                    Id = reader.GetInt32(reader.GetOrdinal("UserId")),
                                     DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                                 }
                             });
@@ -307,15 +307,15 @@ namespace PuzzlePost.Repositories
 
                       h.Id AS HistoryId, h.UserProfileId AS HistoricalOwnerId, h.StartDateOwnership, h.EndDateOwnership,
     
-                      up.DisplayName, up.ImageLocation
+                      up.Id as UserId, up.DisplayName, up.ImageLocation
 
                       FROM Puzzle p
                       LEFT JOIN Category c 
                       ON p.CategoryId = c.Id
                       LEFT JOIN History h
                       ON h.PuzzleId = p.Id
-                      JOIN UserProfile up
-                      ON h.UserProfileId = p.CurrentOwnerId
+                      LEFT JOIN UserProfile up
+                      ON h.UserProfileId = up.Id
                       WHERE p.Id = @id AND p.IsAvailable = 1
                       ORDER BY CreateDateTime DESC
                        ";
@@ -367,7 +367,7 @@ namespace PuzzlePost.Repositories
                                 EndDateOwnership = DbUtils.GetNullableDateTime(reader, "EndDateOwnership"),
                                 UserProfile = new UserProfile
                                 {
-                                    Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                                    Id = reader.GetInt32(reader.GetOrdinal("UserId")),
                                     DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                                 }
                             });

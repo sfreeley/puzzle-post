@@ -12,13 +12,15 @@ const Puzzle = ({ puzzle }) => {
                 <Row margin="m-4">
                     <Col sm="4">
                         <p className="text-left px-2">Posted by: {puzzle.userProfile.displayName}
-                            <br></br>
+                            <br />
                         on {currentDateTime(puzzle.createDateTime)}</p>
                     </Col>
                     <Col sm="4">
                         <p><strong>{puzzle.title}</strong>
-                            <br></br>
+                            <br />
                             {puzzle.manufacturer}
+                            <br />
+                            {puzzle.pieces}
                         </p>
                     </Col>
 
@@ -44,7 +46,7 @@ const Puzzle = ({ puzzle }) => {
                                 <Button>Reactivate</Button> : null}
                         </Col>
 
-                        {window.location.href == "http://localhost:3000/puzzle/user" || window.location.href == `http://localhost:3000/puzzle/${puzzle.id}` ?
+                        {window.location.href == "http://localhost:3000/puzzle/user" ?
                             //     <thead>
                             //     <tr>
                             //         <th scope="col">Previous Owners</th>

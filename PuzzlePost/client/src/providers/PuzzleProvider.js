@@ -9,6 +9,7 @@ export function PuzzleProvider(props) {
     const [categories, setCategories] = useState([]);
     const [userPuzzles, setUserPuzzles] = useState([]);
     const [inactiveUserPuzzles, setInactiveUserPuzzles] = useState([]);
+    const [puzzle, setPuzzle] = useState({ userProfile: {}, category: {}, histories: [] });
 
     const getAllActivePuzzles = () => {
         return getToken().then((token) => {
@@ -31,12 +32,7 @@ export function PuzzleProvider(props) {
             },
             body: JSON.stringify(puzzle)
         })
-            // .then(resp => {
-            //     if (resp.ok) {
-            //         return resp.json();
-            //     }
-            //     throw new Error("Unauthorized");
-            // })
+
         )
     };
 
@@ -61,7 +57,7 @@ export function PuzzleProvider(props) {
             .then((res) => res.json()).then(setUserPuzzles)
         );
 
-    }
+    };
 
     const getAllInactivePuzzlesByUser = (id) => {
         getToken().then((token) => fetch(`/api/puzzle/user/inactive/${id}`, {
@@ -73,13 +69,26 @@ export function PuzzleProvider(props) {
             .then((res) => res.json()).then(setInactiveUserPuzzles)
         );
 
-    }
+    };
+
+    const getPuzzleById = (id) => {
+        getToken().then((token) => fetch(`/api/puzzle/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((res) => res.json()).then(setPuzzle)
+        )
+
+    };
+
 
 
 
     return (
 
-        <PuzzleContext.Provider value={{ userPuzzles, inactiveUserPuzzles, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
+        <PuzzleContext.Provider value={{ puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
             {props.children}
         </PuzzleContext.Provider>
     );
