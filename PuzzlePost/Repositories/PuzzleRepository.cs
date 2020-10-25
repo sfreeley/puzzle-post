@@ -2,6 +2,7 @@
 using PuzzlePost.Models;
 using PuzzlePost.Utils;
 using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -292,6 +293,66 @@ namespace PuzzlePost.Repositories
             }
         }
 
+        //getting puzzle without history
+        public Puzzle GetPuzzleWithoutHistoryById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                      SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+
+                      c.Id AS CategoryId, c.Name
+    
+                      FROM Puzzle p
+                      LEFT JOIN Category c 
+                      ON p.CategoryId = c.Id
+                      WHERE p.Id = @id 
+                      ORDER BY CreateDateTime DESC
+                       ";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                   
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Puzzle puzzle = new Puzzle
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
+                            CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                            CurrentOwnerId = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                            ImageLocation = DbUtils.GetNullableString(reader, "ImageLocation"),
+                            Pieces = reader.GetInt32(reader.GetOrdinal("Pieces")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
+                            Notes = DbUtils.GetNullableString(reader, "Notes"),
+                            IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                            Category = new Category
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            }
+                        };
+                        reader.Close();
+                        return puzzle;
+
+                    }
+                    else 
+                    {
+                        reader.Close();
+                        return null;
+                    }
+                 
+                }
+            }
+        }
+
         public Puzzle GetPuzzleById(int id)
         {
             using (var conn = Connection)
@@ -316,7 +377,7 @@ namespace PuzzlePost.Repositories
                       ON h.PuzzleId = p.Id
                       LEFT JOIN UserProfile up
                       ON h.UserProfileId = up.Id
-                      WHERE p.Id = @id AND p.IsAvailable = 1
+                      WHERE p.Id = @id
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -354,7 +415,7 @@ namespace PuzzlePost.Repositories
                                 Histories = new List<History>()
                             };
                         }
-                          
+
 
                         if (DbUtils.IsNotDbNull(reader, "HistoryId"))
                         {
@@ -371,11 +432,9 @@ namespace PuzzlePost.Repositories
                                     DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                                 }
                             });
-                           
+
                         }
-                      
-
-
+    
                     }
                     reader.Close();
                     return puzzle;
@@ -383,8 +442,41 @@ namespace PuzzlePost.Repositories
 
 
                 }
-
                   
+            }
+        }
+
+
+        //owner of puzzle updating
+        public void UpdatePuzzle(Puzzle puzzle)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Puzzle
+                            SET  
+                                CategoryId = @categoryId,
+                                ImageLocation = @imageLocation,
+                                Pieces = @pieces,
+                                Title = @title,
+                                Manufacturer = @manufacturer,
+                                Notes = @notes
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@categoryId", puzzle.CategoryId);
+                    cmd.Parameters.AddWithValue("@imageLocation", puzzle.ImageLocation);
+                    cmd.Parameters.AddWithValue("@pieces", puzzle.Pieces);
+                    cmd.Parameters.AddWithValue("@title", puzzle.Title);
+                    cmd.Parameters.AddWithValue("@manufacturer", puzzle.Manufacturer);
+                    cmd.Parameters.AddWithValue("@notes", puzzle.Notes);
+                    cmd.Parameters.AddWithValue("@id", puzzle.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
             }
         }
     }

@@ -32,7 +32,7 @@ const PuzzleDetails = () => {
                                 <br />
                                 {puzzle.pieces}
                             </p>
-                            <p>Notes:</p>
+                            <p>Notes:{puzzle.notes}</p>
                         </Col>
 
                         <Col sm="4">
@@ -43,7 +43,7 @@ const PuzzleDetails = () => {
                     <CardBody>
                     </CardBody>
                     {puzzle.histories.map((history) => {
-                        return (<p>{history.userProfile.displayName}: {history.startDateOwnership} to {history.endDateOwnership}</p>)
+                        return (<p key={history.id}>{history.userProfile.displayName}: {currentDateTime(history.startDateOwnership)} to {history.endDateOwnership != null ? currentDateTime(history.endDateOwnership) : "present"}</p>)
                     })}
                 </Card>
             }

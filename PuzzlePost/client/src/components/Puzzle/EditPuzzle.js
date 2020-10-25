@@ -1,102 +1,86 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { HistoryContext } from "../../providers/HistoryProvider";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
-const AddPuzzle = () => {
-    const userId = parseInt(sessionStorage.UserProfileId);
+const EditPuzzle = () => {
+    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById } = useContext(PuzzleContext);
+    const { id } = useParams();
     const history = useHistory();
-    const { categories, addPuzzle, categoriesForPuzzle, getPuzzleById, puzzle } = useContext(PuzzleContext);
-    const { addHistory } = useContext(HistoryContext);
+    const [editingPuzzle, setEditingPuzzle] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    // const [imageLocation, setImageLocation]
-    // const [categorySelection, setCategorySelection] = useState(1)
+    const [textarea, setTextArea] = useState(editingPuzzle.notes);
+
 
     useEffect(() => {
+
         categoriesForPuzzle();
+        getPuzzleWithoutHistoryById(parseInt(id));
 
     }, [])
-    //new puzzle that will be added into state
-    const [newPuzzle, setNewPuzzle] = useState({
-        id: "",
-        categoryId: 1,
-        //handling currentOwnerId in backend
-        // currentOwnerId: userId,
-        imageLocation: "",
-        pieces: null,
-        title: "",
-        manufacturer: "",
-        notes: ""
-    })
 
-    const [newHistory, setNewHistory] = useState({
-        puzzleId: null
+    useEffect(() => {
+        setEditingPuzzle(aPuzzle)
+    }, [aPuzzle])
 
-    })
-
-
-
-    //handling input field for posting new puzzle
+    //handling input field for editing of puzzle
     const handleFieldChange = (e) => {
-        const stateToChange = { ...newPuzzle };
+        const stateToChange = { ...editingPuzzle };
         stateToChange[e.target.id] = e.target.value;
-        setNewPuzzle(stateToChange);
+        setEditingPuzzle(stateToChange);
 
     };
 
     //handling dropdown puzzle category state
     const handleCategoryChange = (e) => {
-        const stateToChange = { ...newPuzzle };
+        const stateToChange = { ...editingPuzzle };
         stateToChange[e.target.id] = e.target.value;
-        setNewPuzzle(stateToChange);
+        setEditingPuzzle(stateToChange);
 
     };
 
-    // useEffect(() => {
-    //     getPuzzleById(newPuzzle.id)
-    // }, [newPuzzle])
-
-    const addNewPuzzle = (e) => {
-        debugger
+    //edit puzzle
+    const editAPuzzle = (e) => {
         e.preventDefault();
-        newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
-        newPuzzle.pieces = parseInt(newPuzzle.pieces);
         setIsLoading(true);
-        addPuzzle(newPuzzle)
+        const editedPuzzle = {
+            id: parseInt(id),
+            categoryId: parseInt(editingPuzzle.categoryId),
+            title: editingPuzzle.title,
+            manufacturer: editingPuzzle.manufacturer,
+            imageLocation: editingPuzzle.imageLocation,
+            pieces: parseInt(editingPuzzle.pieces),
+            notes: textarea
+        }
 
-        //don't have puzzle.id yet thoughhhhhh
-        newHistory.puzzleId = parseInt(newPuzzle.id)
-        //can you even do this?
-        addHistory(newHistory);
+        editPuzzle(editedPuzzle);
         setIsLoading(false);
-        //navigate the user back to shared puzzle list
-        history.push("/puzzle");
-
+        history.push("/puzzle/user");
     }
 
     return (
+
         <>
-            <Form className="postForm">
+            <Form className="editForm">
                 <FormGroup>
                     <Label className="puzzleTitleLabel">Title</Label>
                     <Input
-                        className="newPuzzle"
+                        className="editingPuzzle"
                         onChange={handleFieldChange}
                         type="text"
                         id="title"
-                        value={newPuzzle.title}
+                        value={editingPuzzle.title}
                         placeholder="Enter Title"
                     />
                 </FormGroup>
                 <FormGroup>
                     <Label className="ManufacturerLabel">Manufacturer</Label>
                     <Input
-                        className="newPuzzle"
+                        className="editingPuzzle"
                         onChange={handleFieldChange}
                         type="text"
                         id="manufacturer"
-                        value={newPuzzle.manufacturer}
+                        value={editingPuzzle.manufacturer}
                         placeholder="Enter Manufacturer"
                     />
 
@@ -104,11 +88,11 @@ const AddPuzzle = () => {
                 <FormGroup>
                     <Label className="ImageLocationLabel">Image Url</Label>
                     <Input
-                        className="newPuzzle"
+                        className="editingPuzzle"
                         onChange={handleFieldChange}
                         type="text"
                         id="imageLocation"
-                        value={newPuzzle.imageLocation}
+                        value={editingPuzzle.imageLocation}
                         placeholder="Image Url"
                     />
                 </FormGroup>
@@ -116,13 +100,13 @@ const AddPuzzle = () => {
                 <FormGroup>
                     <Label className="CategoryLabel">
                         Puzzle Categories
-          </Label>
+                </Label>
 
                     <Input
                         type="select"
-                        className="newPuzzle"
+                        className="editingPuzzle"
                         onChange={handleCategoryChange}
-                        value={parseInt(newPuzzle.categoryId)}
+                        value={parseInt(editingPuzzle.categoryId)}
                         id="categoryId"
                         name="categoryId"
 
@@ -141,38 +125,38 @@ const AddPuzzle = () => {
                 <FormGroup>
                     <Label className="PiecesLabel">Pieces</Label>
                     <Input
-                        className="newPuzzle"
+                        className="editingPuzzle"
                         onChange={handleFieldChange}
                         type="number"
                         id="pieces"
-                        value={newPuzzle.pieces}
+                        value={editingPuzzle.pieces}
                         placeholder="Pieces"
                     />
                 </FormGroup>
                 <FormGroup>
-                    <Label className="NotesLabel">Notes</Label>
+                    <Label className="NotesLabel" htmlFor="notes">Notes</Label>
                     <Input
-                        className="newPuzzle"
-                        onChange={handleFieldChange}
+                        className="editingPuzzle"
+                        onChange={e => setTextArea(e.target.value)}
                         type="textarea"
                         id="notes"
-                        value={newPuzzle.notes}
+                        defaultValue={editingPuzzle.notes}
                         placeholder="Notes"
                     />
                 </FormGroup>
             </Form>
 
             <Button
-                className="postButton"
-                onClick={addNewPuzzle}
+                className="editButton"
+                onClick={editAPuzzle}
                 variant="custom"
                 type="button"
             >
-                Save Puzzle
-            </Button>
+                Save Your Edit
+        </Button>
         </>
 
     )
 
 }
-export default AddPuzzle;
+export default EditPuzzle;

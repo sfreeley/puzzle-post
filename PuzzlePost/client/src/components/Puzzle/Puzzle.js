@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 const Puzzle = ({ puzzle }) => {
+    const { activeUser } = useContext(UserProfileContext);
 
     return (
         <>
@@ -16,12 +17,15 @@ const Puzzle = ({ puzzle }) => {
                         on {currentDateTime(puzzle.createDateTime)}</p>
                     </Col>
                     <Col sm="4">
-                        <p><strong>{puzzle.title}</strong>
+                        <div><strong>{puzzle.title}</strong>
                             <br />
                             {puzzle.manufacturer}
                             <br />
                             {puzzle.pieces}
-                        </p>
+                            <br />
+                            {puzzle.notes != null ? <div>Notes: {puzzle.notes}</div> : null}
+
+                        </div>
                     </Col>
 
                     <Col sm="4">
@@ -32,10 +36,10 @@ const Puzzle = ({ puzzle }) => {
                 <CardBody>
                     <Row>
                         <Col sm="4">
-                            <NavLink to={`puzzle/details/${puzzle.id}`}><Button>Details</Button></NavLink>
+                            <NavLink to={`/puzzle/details/${puzzle.id}`}><Button>Details</Button></NavLink>
 
                             <>
-                                <NavLink to={`puzzle/edit/${puzzle.id}`}><Button>Edit</Button></NavLink>
+                                <NavLink to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></NavLink>
                                 <NavLink to={`puzzle/delete/${puzzle.id}`}><Button>Delete</Button></NavLink>
                             </>
 
@@ -47,29 +51,9 @@ const Puzzle = ({ puzzle }) => {
                         </Col>
 
                         {window.location.href == "http://localhost:3000/puzzle/user" ?
-                            //     <thead>
-                            //     <tr>
-                            //         <th scope="col">Previous Owners</th>
-                            //         <th scope="col">UserName</th>
-                            //         <th scope="col">From</th>
-                            //         <th scope="col">To</th>
-                            //     </tr>
-                            // </thead>
-
                             puzzle.histories && puzzle.histories.map((history) => {
 
-                                return <table key={history.id}>
-
-                                    <tbody>
-                                        <tr>
-                                            <td>{history.userProfile.displayName}</td>
-                                            <td>{history.startDateOwnership}</td>
-                                            <td>{history.endDateOwnership}</td>
-
-                                        </tr>
-                                    </tbody>
-                                </table>
-
+                                return <p>{history.userProfile.displayName}: {history.startDateOwnership} to {history.endDateOwnership}</p>
 
                             }) : null
                         }
