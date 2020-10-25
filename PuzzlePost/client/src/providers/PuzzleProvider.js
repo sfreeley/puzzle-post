@@ -8,6 +8,7 @@ export function PuzzleProvider(props) {
     const [activePuzzles, setActivePuzzles] = useState([]);
     const [categories, setCategories] = useState([]);
     const [userPuzzles, setUserPuzzles] = useState([]);
+    const [inactiveUserPuzzles, setInactiveUserPuzzles] = useState([]);
 
     const getAllActivePuzzles = () => {
         return getToken().then((token) => {
@@ -62,11 +63,23 @@ export function PuzzleProvider(props) {
 
     }
 
+    const getAllInactivePuzzlesByUser = (id) => {
+        getToken().then((token) => fetch(`/api/puzzle/user/inactive/${id}`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((res) => res.json()).then(setInactiveUserPuzzles)
+        );
+
+    }
+
 
 
     return (
 
-        <PuzzleContext.Provider value={{ userPuzzles, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
+        <PuzzleContext.Provider value={{ userPuzzles, inactiveUserPuzzles, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
             {props.children}
         </PuzzleContext.Provider>
     );

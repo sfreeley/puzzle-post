@@ -35,6 +35,7 @@ namespace PuzzlePost.Repositories
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
                       WHERE p.IsAvailable = 1
+                      ORDER BY CreateDateTime DESC
                        ";
 
                     var puzzles = new List<Puzzle>();
@@ -147,15 +148,113 @@ namespace PuzzlePost.Repositories
                       p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
 
                       c.Id AS CategoryId, c.Name,
+
+                      h.Id AS HistoryId, h.UserProfileId AS HistoricalOwnerId, h.StartDateOwnership, h.EndDateOwnership,
     
                       up.DisplayName, up.ImageLocation
 
                       FROM Puzzle p
                       LEFT JOIN Category c 
                       ON p.CategoryId = c.Id
+                      LEFT JOIN History h
+                      ON h.PuzzleId = p.Id
+                      JOIN UserProfile up
+                      ON h.UserProfileId = up.Id
+                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 1
+                      ORDER BY CreateDateTime DESC
+                       ";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var puzzles = new List<Puzzle>();
+
+                    var reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        var puzzleId = DbUtils.GetInt(reader, "PuzzleId");
+
+                        var existingPuzzle = puzzles.FirstOrDefault(puzzle => puzzle.Id == puzzleId);
+
+                        if (existingPuzzle == null)
+                        {
+                            existingPuzzle = new Puzzle()
+                            {
+                                Id = puzzleId,
+                                CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                                CurrentOwnerId = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                                ImageLocation = DbUtils.GetNullableString(reader, "ImageLocation"),
+                                Pieces = reader.GetInt32(reader.GetOrdinal("Pieces")),
+                                CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                                Title = reader.GetString(reader.GetOrdinal("Title")),
+                                Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
+                                Notes = DbUtils.GetNullableString(reader, "Notes"),
+                                IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                                Category = new Category
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                                    Name = reader.GetString(reader.GetOrdinal("Name"))
+                                },
+                                UserProfile = new UserProfile
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                                    DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                                },
+                                Histories = new List<History>()
+                            };
+
+                            puzzles.Add(existingPuzzle);
+                        }
+                       
+                        if (DbUtils.IsNotDbNull(reader, "HistoryId"))
+                        {
+                            existingPuzzle.Histories.Add(new History()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("HistoryId")),
+                                PuzzleId = puzzleId,
+                                UserProfileId = reader.GetInt32(reader.GetOrdinal("HistoricalOwnerId")),
+                                StartDateOwnership = reader.GetDateTime(reader.GetOrdinal("StartDateOwnership")),
+                                EndDateOwnership = DbUtils.GetNullableDateTime(reader, "EndDateOwnership"),
+                                UserProfile = new UserProfile
+                                {
+                                    Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                                    DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                                }
+                            });
+                        }
+                    }
+                    
+                    reader.Close();
+                    return puzzles;
+                }
+            }
+        }
+
+        public List<Puzzle> GetAllUserPuzzlesInProgressById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                      SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+
+                      c.Id AS CategoryId, c.Name,
+
+                      h.Id AS HistoryId, h.UserProfileId AS HistoricalOwner, h.StartDateOwnership, h.EndDateOwnership,
+    
+                      up.DisplayName, up.ImageLocation
+
+                      FROM Puzzle p
+                      LEFT JOIN Category c 
+                      ON p.CategoryId = c.Id
+                      LEFT JOIN History h
+                      ON h.PuzzleId = p.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 1
+                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 0
+                      ORDER BY CreateDateTime DESC
                        ";
 
                     cmd.Parameters.AddWithValue("@id", id);
@@ -196,6 +295,46 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+
+        //public Puzzle GetPuzzleById(int id)
+        //{
+        //    using (var conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (var cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //              SELECT c.Id, c.PostId, c.UserProfileId, c.[Subject], c.Content, c.CreateDateTime
+        //                 FROM Comment c
+        //                WHERE c.Id = @id 
+        //               ";
+        //            cmd.Parameters.AddWithValue("@id", id);
+
+        //            var reader = cmd.ExecuteReader();
+
+        //            if (reader.Read())
+        //            {
+        //                Comment comment = new Comment
+        //                {
+        //                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
+        //                    PostId = reader.GetInt32(reader.GetOrdinal("PostId")),
+        //                    UserProfileId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
+        //                    Subject = reader.GetString(reader.GetOrdinal("Subject")),
+        //                    Content = reader.GetString(reader.GetOrdinal("Content")),
+        //                    CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime"))
+        //                };
+
+        //                reader.Close();
+        //                return comment;
+        //            }
+        //            else
+        //            {
+        //                reader.Close();
+        //                return null;
+        //            }
+        //        }
+        //    }
+        //}
     }
 }
 

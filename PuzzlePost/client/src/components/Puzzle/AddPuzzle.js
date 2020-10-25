@@ -17,9 +17,10 @@ const AddPuzzle = () => {
     //new puzzle that will be added into state
     const [newPuzzle, setNewPuzzle] = useState({
         categoryId: 1,
+        //handling currentOwnerId in backend
         // currentOwnerId: userId,
         imageLocation: "",
-        pieces: "",
+        pieces: null,
         title: "",
         manufacturer: "",
         notes: ""
@@ -35,6 +36,7 @@ const AddPuzzle = () => {
 
     };
 
+    //handling dropdown puzzle category state
     const handleCategoryChange = (e) => {
         const stateToChange = { ...newPuzzle };
         stateToChange[e.target.id] = e.target.value;
@@ -44,7 +46,8 @@ const AddPuzzle = () => {
 
     const addNewPuzzle = (e) => {
         e.preventDefault();
-        // newPuzzle.categoryId = parseInt(categorySelection);
+        newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
+        newPuzzle.pieces = parseInt(newPuzzle.pieces);
         setIsLoading(true);
         addPuzzle(newPuzzle);
         setIsLoading(false);
@@ -100,12 +103,12 @@ const AddPuzzle = () => {
                         type="select"
                         className="newPuzzle"
                         onChange={handleCategoryChange}
-                        value={newPuzzle.categoryId}
+                        value={parseInt(newPuzzle.categoryId)}
                         id="categoryId"
                         name="categoryId"
 
                     >
-                        <option>Choose an option</option>
+                        <option value={1}>Choose an option</option>
                         {categories.map(category => {
 
                             return <option key={category.id} value={category.id}>{category.name}</option>

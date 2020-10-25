@@ -9,5 +9,7 @@ namespace PuzzlePost.Repositories
         void Add(Puzzle puzzle);
         List<Category> GetAllCategories();
         List<Puzzle> GetAllUserPuzzlesById(int id);
+        List<Puzzle> GetAllUserPuzzlesInProgressById(int id);
+        //Puzzle GetPuzzleById(int id);
     }
 }

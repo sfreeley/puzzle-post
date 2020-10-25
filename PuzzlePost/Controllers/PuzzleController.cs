@@ -44,6 +44,13 @@ namespace PuzzlePost.Controllers
             return Ok(_puzzleRepository.GetAllUserPuzzlesById(id));
         }
 
+        [HttpGet("user/inactive/{id}")]
+        public IActionResult GetInactivePuzzlesByUser(int id)
+        {
+            return Ok(_puzzleRepository.GetAllUserPuzzlesInProgressById(id));
+        }
+
+
         [HttpPost]
         public IActionResult Post(Puzzle puzzle)
         {
@@ -52,7 +59,6 @@ namespace PuzzlePost.Controllers
             _puzzleRepository.Add(puzzle);
 
             return CreatedAtAction("Get", new { id = puzzle.Id }, puzzle);
-
 
         }
 
