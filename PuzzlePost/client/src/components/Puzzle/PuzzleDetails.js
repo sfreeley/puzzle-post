@@ -4,10 +4,12 @@ import { Row, Col, CardImg, Card, CardBody, Button } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { useHistory } from "react-router-dom";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
+import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 
 const PuzzleDetails = () => {
     const { puzzle, getPuzzleById } = useContext(PuzzleContext);
+    const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
     const history = useHistory();
 
@@ -45,7 +47,16 @@ const PuzzleDetails = () => {
                     {puzzle.histories.map((history) => {
                         return (<p key={history.id}>{history.userProfile.displayName}: {currentDateTime(history.startDateOwnership)} to {history.endDateOwnership != null ? currentDateTime(history.endDateOwnership) : "present"}</p>)
                     })}
+
+
                 </Card>
+
+            }
+            {activeUser.id == puzzle.currentOwnerId ?
+                <>
+                    <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
+                    <Link to={`/puzzle/delete/${puzzle.id}`}><Button>Delete</Button></Link>
+                </> : null
             }
         </>
 
