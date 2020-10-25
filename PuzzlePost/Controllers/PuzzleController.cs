@@ -30,6 +30,13 @@ namespace PuzzlePost.Controllers
             return Ok(_puzzleRepository.GetAllSharedPuzzles());
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetbyId(int id)
+        {
+
+            return Ok(_puzzleRepository.GetPuzzleById(id));
+        }
+
         [HttpGet("category")]
         public IActionResult GetCategories()
         {
@@ -41,6 +48,7 @@ namespace PuzzlePost.Controllers
         [HttpGet("user/{id}")]
         public IActionResult GetbyUser(int id)
         {
+
             return Ok(_puzzleRepository.GetAllUserPuzzlesById(id));
         }
 

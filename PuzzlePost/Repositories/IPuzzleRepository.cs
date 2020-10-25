@@ -10,6 +10,6 @@ namespace PuzzlePost.Repositories
         List<Category> GetAllCategories();
         List<Puzzle> GetAllUserPuzzlesById(int id);
         List<Puzzle> GetAllUserPuzzlesInProgressById(int id);
-        //Puzzle GetPuzzleById(int id);
+        Puzzle GetPuzzleById(int id);
     }
 }

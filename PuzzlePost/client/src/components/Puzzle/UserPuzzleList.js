@@ -1,15 +1,17 @@
 import React, { useContext, useEffect } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
+import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { Button } from "reactstrap"
 import Puzzle from "./Puzzle";
 import { NavLink } from "react-router-dom";
 
 const UserPuzzleList = () => {
     const { inactiveUserPuzzles, userPuzzles, getAllPuzzlesByUser, getAllInactivePuzzlesByUser } = useContext(PuzzleContext);
+    const { activeUser } = useContext(UserProfileContext);
 
     useEffect(() => {
-        getAllPuzzlesByUser(2);
-        getAllInactivePuzzlesByUser(2);
+        getAllPuzzlesByUser(parseInt(activeUser.id));
+        getAllInactivePuzzlesByUser(parseInt(activeUser.id));
     }, []);
 
     return (

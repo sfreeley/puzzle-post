@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
-
+import { currentDateTime } from "../helperFunctions";
 import { NavLink } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 const Puzzle = ({ puzzle }) => {
-    const userId = sessionStorage.UserProfileId
+
     return (
         <>
             <Card className="m-4">
@@ -13,7 +13,7 @@ const Puzzle = ({ puzzle }) => {
                     <Col sm="4">
                         <p className="text-left px-2">Posted by: {puzzle.userProfile.displayName}
                             <br></br>
-                        on {puzzle.createDateTime}</p>
+                        on {currentDateTime(puzzle.createDateTime)}</p>
                     </Col>
                     <Col sm="4">
                         <p><strong>{puzzle.title}</strong>
@@ -44,7 +44,7 @@ const Puzzle = ({ puzzle }) => {
                                 <Button>Reactivate</Button> : null}
                         </Col>
 
-                        {window.location.href == "http://localhost:3000/puzzle/user" ?
+                        {window.location.href == "http://localhost:3000/puzzle/user" || window.location.href == `http://localhost:3000/puzzle/${puzzle.id}` ?
                             //     <thead>
                             //     <tr>
                             //         <th scope="col">Previous Owners</th>
