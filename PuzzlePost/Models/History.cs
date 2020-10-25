@@ -11,6 +11,7 @@ namespace PuzzlePost.Models
         public int PuzzleId { get; set; }
         public int UserProfileId { get; set; }
         public DateTime StartDateOwnership { get; set; }
-        public DateTime EndDateOwnership { get; set; }
+        public DateTime? EndDateOwnership { get; set; }
+        public UserProfile UserProfile { get; set; }
     }
 }
