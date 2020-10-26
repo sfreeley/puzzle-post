@@ -6,16 +6,16 @@ export const HistoryContext = React.createContext();
 export function HistoryProvider(props) {
     const { getToken } = useContext(UserProfileContext);
 
-    const addHistory = (history) => {
+    const addHistory = (history, id) => {
 
-        getToken().then((token) => fetch("/api/history", {
+        getToken().then((token) => fetch(`/api/history/puzzlewithhistory/${id}`, {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(history)
-        })
+        }).catch((err) => console.log(err))
 
         )
     };

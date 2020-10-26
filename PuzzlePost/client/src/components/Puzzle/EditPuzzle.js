@@ -9,7 +9,7 @@ const EditPuzzle = () => {
     const history = useHistory();
     const [editingPuzzle, setEditingPuzzle] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    const [textarea, setTextArea] = useState(editingPuzzle.notes);
+    // const [textarea, setTextArea] = useState(editingPuzzle.notes);
 
 
     useEffect(() => {
@@ -50,7 +50,7 @@ const EditPuzzle = () => {
             manufacturer: editingPuzzle.manufacturer,
             imageLocation: editingPuzzle.imageLocation,
             pieces: parseInt(editingPuzzle.pieces),
-            notes: textarea
+            notes: editingPuzzle.notes
         }
 
         editPuzzle(editedPuzzle);
@@ -137,10 +137,10 @@ const EditPuzzle = () => {
                     <Label className="NotesLabel" htmlFor="notes">Notes</Label>
                     <Input
                         className="editingPuzzle"
-                        onChange={e => setTextArea(e.target.value)}
+                        onChange={handleFieldChange}
                         type="textarea"
                         id="notes"
-                        defaultValue={editingPuzzle.notes}
+                        value={editingPuzzle.notes}
                         placeholder="Notes"
                     />
                 </FormGroup>

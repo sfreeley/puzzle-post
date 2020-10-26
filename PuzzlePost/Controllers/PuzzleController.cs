@@ -76,13 +76,18 @@ namespace PuzzlePost.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Post(Puzzle puzzle)
+        [HttpPost("puzzlewithhistory")]
+        public IActionResult PostWithHistory(Puzzle puzzle)
         {
             UserProfile userProfile = GetCurrentUserProfile();
             puzzle.CurrentOwnerId = userProfile.Id;
+            puzzle.CreateDateTime = DateTime.Now;
             _puzzleRepository.Add(puzzle);
-
+            History history = new History();
+            history.StartDateOwnership = DateTime.Now;
+            history.PuzzleId = puzzle.Id;
+            history.UserProfileId = userProfile.Id;
+            _historyRepository.Add(history);
             return CreatedAtAction("Get", new { id = puzzle.Id }, puzzle);
 
         }
@@ -95,6 +100,21 @@ namespace PuzzlePost.Controllers
                 return BadRequest();
             }
             _puzzleRepository.UpdatePuzzle(puzzle);
+            return NoContent();
+        }
+
+        [HttpPut("reactivate/{id}")]
+        public IActionResult Reactivate(int id)
+        {
+            _puzzleRepository.ReactivatePuzzle(id);
+            return NoContent();
+
+        }
+
+        [HttpPut("deactivate/{id}")]
+        public ActionResult Deactivate(int id)
+        {
+            _puzzleRepository.DeactivatePuzzle(id);
             return NoContent();
         }
 

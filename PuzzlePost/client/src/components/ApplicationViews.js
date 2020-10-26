@@ -8,6 +8,8 @@ import AddPuzzle from "./Puzzle/AddPuzzle";
 import UserPuzzleList from "./Puzzle/UserPuzzleList";
 import PuzzleDetails from "./Puzzle/PuzzleDetails";
 import EditPuzzle from "./Puzzle/EditPuzzle";
+import IncomingRequestList from "./Request/IncomingRequestList";
+import OutgoingRequestList from "./Request/OutgoingRequestList";
 
 
 export default function ApplicationViews() {
@@ -19,6 +21,12 @@ export default function ApplicationViews() {
                 {/* <Route path="/" exact>
                     {isLoggedIn ? <Hello /> : <Redirect to="/login" />}
                 </Route> */}
+                <Route path="/request/outgoing" exact>
+                    {isLoggedIn ? <OutgoingRequestList /> : <Redirect to="/login" />}
+                </Route>
+                <Route path="/request/incoming" exact>
+                    {isLoggedIn ? <IncomingRequestList /> : <Redirect to="/login" />}
+                </Route>
                 <Route path="/puzzle/edit/:id" exact>
                     {isLoggedIn ? <EditPuzzle /> : <Redirect to="/login" />}
                 </Route>

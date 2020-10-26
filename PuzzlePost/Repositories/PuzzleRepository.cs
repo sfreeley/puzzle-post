@@ -95,13 +95,13 @@ namespace PuzzlePost.Repositories
                     cmd.Parameters.AddWithValue("@CurrentOwnerId", puzzle.CurrentOwnerId);
                     cmd.Parameters.AddWithValue("@ImageLocation", puzzle.ImageLocation);
                     cmd.Parameters.AddWithValue("@Pieces", puzzle.Pieces);
-                    cmd.Parameters.AddWithValue("@CreateDateTime", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", puzzle.CreateDateTime);
                     cmd.Parameters.AddWithValue("@Title", puzzle.Title);
                     cmd.Parameters.AddWithValue("@Manufacturer", puzzle.Manufacturer);
                     cmd.Parameters.AddWithValue("@Notes", DbUtils.ValueOrDBNull(puzzle.Notes));
                     cmd.Parameters.AddWithValue("@IsAvailable", 1);
   
-                    puzzle.Id = (int)cmd.ExecuteScalar();
+                     puzzle.Id = (int)cmd.ExecuteScalar();
                 }
             }
         }
@@ -438,9 +438,6 @@ namespace PuzzlePost.Repositories
                     }
                     reader.Close();
                     return puzzle;
-
-
-
                 }
                   
             }
@@ -474,6 +471,51 @@ namespace PuzzlePost.Repositories
                     cmd.Parameters.AddWithValue("@manufacturer", puzzle.Manufacturer);
                     cmd.Parameters.AddWithValue("@notes", puzzle.Notes);
                     cmd.Parameters.AddWithValue("@id", puzzle.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        //call to reactivate a puzzle
+        public void ReactivatePuzzle(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Puzzle
+                            SET  
+                               IsAvailable = @isAvailable
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@isAvailable", 1);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeactivatePuzzle(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Puzzle
+                            SET  
+                               IsAvailable = @isAvailable
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@isAvailable", 0);
+                    cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
                 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.SignalR;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,9 +15,11 @@ namespace PuzzlePost.Models
         public int RequestingPuzzleUserId { get; set; }
         public int SenderOfPuzzleUserId { get; set; }
 
-        [Required]
         public string Content { get; set; }
         public DateTime CreateDateTime { get; set; }
+        public Status Status { get; set; }
+        public UserProfile UserProfile { get; set; }
+        public Puzzle Puzzle { get; set; }
 
     }
 }
