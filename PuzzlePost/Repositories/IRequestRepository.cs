@@ -7,5 +7,6 @@ namespace PuzzlePost.Repositories
     {
         List<Request> GetPendingRequestsForUser(int id);
         List<Request> GetOutgoingRequestsForUser(int id);
+        void Add(Request request);
     }
 }

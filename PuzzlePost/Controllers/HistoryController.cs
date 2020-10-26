@@ -30,6 +30,7 @@ namespace PuzzlePost.Controllers
         {
             UserProfile userProfile = GetCurrentUserProfile();
             history.UserProfileId = userProfile.Id;
+          
            
             _historyRepository.Add(history);
 

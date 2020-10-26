@@ -157,5 +157,28 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+        public void Add(Request request)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Request (PuzzleId, RequestingPuzzleUserId, SenderOfPuzzleUserId, Content, CreateDateTime, StatusId)
+                        OUTPUT INSERTED.ID
+                        VALUES (
+                            @PuzzleId, @RequestingPuzzleUserId, @SenderOfPuzzleUserId, @Content, @CreateDateTime, @StatusId)";
+                    cmd.Parameters.AddWithValue("@PuzzleId", request.PuzzleId);
+                    cmd.Parameters.AddWithValue("@RequestingPuzzleUserId", request.RequestingPuzzleUserId);
+                    cmd.Parameters.AddWithValue("@SenderOfPuzzleUserId", request.SenderOfPuzzleUserId);
+                    cmd.Parameters.AddWithValue("@Content", request.Content);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", DateTime.Now);
+                    cmd.Parameters.AddWithValue("@StatusId", request.StatusId);
+
+                    request.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
     }
 }

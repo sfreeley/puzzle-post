@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PuzzlePost.Models;
 using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
@@ -37,6 +38,14 @@ namespace PuzzlePost.Controllers
         {
 
             return Ok(_requestRepository.GetOutgoingRequestsForUser(id));
+        }
+
+        [HttpPost]
+        public IActionResult Post(Request request)
+        {
+
+            _requestRepository.Add(request);
+            return CreatedAtAction("Get", new { id = request.Id }, request);
         }
     }
 }

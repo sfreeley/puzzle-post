@@ -30,9 +30,23 @@ export function RequestProvider(props) {
         })
     };
 
+    const addRequest = (request) => {
+
+        getToken().then((token) => fetch("/api/request", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request)
+        }).catch((err) => console.log(err))
+
+        )
+    };
+
     return (
 
-        <RequestContext.Provider value={{ getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
+        <RequestContext.Provider value={{ addRequest, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
             {props.children}
         </RequestContext.Provider>
     );

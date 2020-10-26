@@ -5,21 +5,17 @@ import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { useHistory } from "react-router-dom";
 
 const AddPuzzle = () => {
-    const userId = parseInt(sessionStorage.UserProfileId);
     const history = useHistory();
-    const { categories, addPuzzle, categoriesForPuzzle, getPuzzleById, puzzle } = useContext(PuzzleContext);
-    const { addHistory } = useContext(HistoryContext);
+    const { categories, addPuzzle, categoriesForPuzzle } = useContext(PuzzleContext);
     const [isLoading, setIsLoading] = useState(false);
-    // const [imageLocation, setImageLocation]
-    // const [categorySelection, setCategorySelection] = useState(1)
 
     useEffect(() => {
         categoriesForPuzzle();
 
     }, [])
+
     //new puzzle that will be added into state
     const [newPuzzle, setNewPuzzle] = useState({
-        id: "",
         categoryId: 1,
         //handling currentOwnerId in backend
         // currentOwnerId: userId,
@@ -30,19 +26,12 @@ const AddPuzzle = () => {
         notes: ""
     })
 
-    const [newHistory, setNewHistory] = useState({
-        puzzleId: null
-
-    })
-
-
 
     //handling input field for posting new puzzle
     const handleFieldChange = (e) => {
         const stateToChange = { ...newPuzzle };
         stateToChange[e.target.id] = e.target.value;
         setNewPuzzle(stateToChange);
-
     };
 
     //handling dropdown puzzle category state
@@ -53,24 +42,14 @@ const AddPuzzle = () => {
 
     };
 
-    // useEffect(() => {
-    //     getPuzzleById(newPuzzle.id)
-    // }, [newPuzzle])
-
     const addNewPuzzle = (e) => {
-        debugger
+        debugger;
         e.preventDefault();
         newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
         newPuzzle.pieces = parseInt(newPuzzle.pieces);
         setIsLoading(true);
-        addPuzzle(newPuzzle)
-
-        //don't have puzzle.id yet thoughhhhhh
-        newHistory.puzzleId = parseInt(newPuzzle.id)
-        //can you even do this?
-        addHistory(newHistory);
+        addPuzzle(newPuzzle);
         setIsLoading(false);
-        //navigate the user back to shared puzzle list
         history.push("/puzzle");
 
     }

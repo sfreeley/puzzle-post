@@ -24,10 +24,10 @@ namespace PuzzlePost.Repositories
                         OUTPUT INSERTED.ID
                         VALUES (
                             @PuzzleId, @UserProfileId, @StartDateOwnership, @EndDateOwnership)";
-                    cmd.Parameters.AddWithValue("@CategoryId", history.PuzzleId);
-                    cmd.Parameters.AddWithValue("@CurrentOwnerId", history.UserProfileId);
-                    cmd.Parameters.AddWithValue("@ImageLocation", DateTime.Now);
-                    cmd.Parameters.AddWithValue("@Pieces", DbUtils.ValueOrDBNull(history.EndDateOwnership));
+                    cmd.Parameters.AddWithValue("@PuzzleId", history.PuzzleId);
+                    cmd.Parameters.AddWithValue("@UserProfileId", history.UserProfileId);
+                    cmd.Parameters.AddWithValue("@StartDateOwnership", history.StartDateOwnership);
+                    cmd.Parameters.AddWithValue("@EndDateOwnership", DbUtils.ValueOrDBNull(history.EndDateOwnership));
 
                     history.Id = (int)cmd.ExecuteScalar();
                 }
