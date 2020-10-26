@@ -15,5 +15,6 @@ namespace PuzzlePost.Repositories
         void UpdatePuzzle(Puzzle puzzle);
         Puzzle GetPuzzleWithoutHistoryById(int id);
         void ReactivatePuzzle(int id);
+        void DeactivatePuzzle(int id);
     }
 }

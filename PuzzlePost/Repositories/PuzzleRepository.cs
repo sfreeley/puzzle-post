@@ -438,9 +438,6 @@ namespace PuzzlePost.Repositories
                     }
                     reader.Close();
                     return puzzle;
-
-
-
                 }
                   
             }
@@ -496,6 +493,28 @@ namespace PuzzlePost.Repositories
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@isAvailable", 1);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeactivatePuzzle(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Puzzle
+                            SET  
+                               IsAvailable = @isAvailable
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@isAvailable", 0);
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
