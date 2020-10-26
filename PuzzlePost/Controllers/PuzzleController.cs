@@ -114,7 +114,10 @@ namespace PuzzlePost.Controllers
         [HttpPut("deactivate/{id}")]
         public ActionResult Deactivate(int id)
         {
+            
             _puzzleRepository.DeactivatePuzzle(id);
+            
+  
             return NoContent();
         }
 

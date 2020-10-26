@@ -31,9 +31,13 @@ const Request = ({ request }) => {
                 <CardBody>
                     <Row>
                         <Col sm="4">
-                            <Button>Confirm</Button>
+                            {window.location.href == "http://localhost:3000/request/incoming" ?
+                                <>
+                                    <Button>Confirm</Button>
 
-                            <Button>Deny</Button>
+                                    <Button>Deny</Button>
+                                </> :
+                                null}
                         </Col>
                     </Row>
                 </CardBody>

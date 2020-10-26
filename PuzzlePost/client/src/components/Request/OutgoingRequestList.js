@@ -17,7 +17,7 @@ const OutgoingRequestList = () => {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <h5>Pending Puzzle Requests</h5>
+                <h5>Outgoing Puzzle Requests</h5>
                 <div className="cards-column">
                     {outgoingRequests.map((request) => {
                         return <Request key={request.id} request={request} />

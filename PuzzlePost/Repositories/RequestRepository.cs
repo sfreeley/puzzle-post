@@ -173,8 +173,8 @@ namespace PuzzlePost.Repositories
                     cmd.Parameters.AddWithValue("@RequestingPuzzleUserId", request.RequestingPuzzleUserId);
                     cmd.Parameters.AddWithValue("@SenderOfPuzzleUserId", request.SenderOfPuzzleUserId);
                     cmd.Parameters.AddWithValue("@Content", request.Content);
-                    cmd.Parameters.AddWithValue("@CreateDateTime", DateTime.Now);
-                    cmd.Parameters.AddWithValue("@StatusId", request.StatusId);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", request.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@StatusId", 1);
 
                     request.Id = (int)cmd.ExecuteScalar();
                 }
