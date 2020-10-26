@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { UserProfileProvider } from "./providers/UserProfileProvider";
 import { PuzzleProvider } from "./providers/PuzzleProvider";
 import { HistoryProvider } from "./providers/HistoryProvider";
+import { RequestProvider } from "./providers/RequestProvider";
 import Header from "./components/Header";
 import ApplicationViews from "./components/ApplicationViews";
 
@@ -13,8 +14,10 @@ function App() {
       <UserProfileProvider>
         <PuzzleProvider>
           <HistoryProvider>
-            <Header />
-            <ApplicationViews />
+            <RequestProvider>
+              <Header />
+              <ApplicationViews />
+            </RequestProvider>
           </HistoryProvider>
         </PuzzleProvider>
       </UserProfileProvider>

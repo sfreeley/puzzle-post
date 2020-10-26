@@ -39,11 +39,16 @@ const Header = () => {
                                     <NavLink tag={RRNavLink} to="/puzzle/user">Your Puzzle List</NavLink>
                                 </NavItem>
                             }
+                            {isLoggedIn &&
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/request/incoming">Incoming Requests</NavLink>
+                                </NavItem>
+                            }
                             {/* {isLoggedIn &&
-                  <NavItem>
-                    <NavLink tag={RRNavLink} to="/post/User">Incoming Requests</NavLink>
-                  </NavItem>
-                } */}
+                                <NavItem>
+                                    <NavLink tag={RRNavLink} to="/request/outgoing">Outgoing Requests</NavLink>
+                                </NavItem>
+                            } */}
 
                         </Nav>
 

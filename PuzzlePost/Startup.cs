@@ -31,6 +31,7 @@ namespace PuzzlePost
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
             services.AddTransient<IPuzzleRepository, PuzzleRepository>();
             services.AddTransient<IHistoryRepository, HistoryRepository>();
+            services.AddTransient<IRequestRepository, RequestRepository>();
 
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";
