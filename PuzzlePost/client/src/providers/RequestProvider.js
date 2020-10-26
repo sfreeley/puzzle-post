@@ -6,6 +6,7 @@ export const RequestContext = React.createContext();
 export function RequestProvider(props) {
     const { getToken } = useContext(UserProfileContext);
     const [pendingRequests, setPendingRequests] = useState([]);
+    const [outgoingRequests, setOutgoingRequests] = useState([]);
 
     const getAllPendingRequests = (id) => {
         return getToken().then((token) => {
@@ -18,9 +19,20 @@ export function RequestProvider(props) {
         })
     };
 
+    const getAllOutgoingRequests = (id) => {
+        return getToken().then((token) => {
+            fetch(`/api/request/outgoing/${id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(resp => resp.json()).then(resp => setOutgoingRequests(resp))
+        })
+    };
+
     return (
 
-        <RequestContext.Provider value={{ getAllPendingRequests, pendingRequests, }}>
+        <RequestContext.Provider value={{ getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
             {props.children}
         </RequestContext.Provider>
     );

@@ -16,16 +16,16 @@ const Request = ({ request }) => {
                         <p className="text-left px-2">Requested by: {request.userProfile.displayName}
                             <br />
                         on {currentDateTime(request.createDateTime)}</p>
+                        <p>Status: {request.status.name}</p>
                     </Col>
                     <Col sm="4">
                         <div>
-
+                            {request.puzzle.title} : {request.puzzle.manufacturer}
+                            <hr />
                             {request.content != null ? <div>{request.content}</div> : null}
 
                         </div>
                     </Col>
-
-
                 </Row>
                 {/* <CardImg src={request.imageLocation} alt={request.title} /> */}
                 <CardBody>

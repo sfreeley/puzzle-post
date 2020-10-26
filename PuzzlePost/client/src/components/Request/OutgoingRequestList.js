@@ -5,13 +5,13 @@ import Request from "./Request";
 import { Button } from "reactstrap";
 import { NavLink } from "react-router-dom";
 
-const IncomingRequestList = () => {
-    const { getAllPendingRequests, pendingRequests } = useContext(RequestContext);
+const OutgoingRequestList = () => {
+    const { getAllOutgoingRequests, outgoingRequests } = useContext(RequestContext);
     const { activeUser } = useContext(UserProfileContext);
 
 
     useEffect(() => {
-        getAllPendingRequests(parseInt(activeUser.id));
+        getAllOutgoingRequests(parseInt(activeUser.id));
     }, []);
 
     return (
@@ -19,7 +19,7 @@ const IncomingRequestList = () => {
             <div className="row justify-content-center">
                 <h5>Pending Puzzle Requests</h5>
                 <div className="cards-column">
-                    {pendingRequests.map((request) => {
+                    {outgoingRequests.map((request) => {
                         return <Request key={request.id} request={request} />
                     })}
                 </div>
@@ -27,4 +27,4 @@ const IncomingRequestList = () => {
         </div>
     )
 }
-export default IncomingRequestList;
+export default OutgoingRequestList;

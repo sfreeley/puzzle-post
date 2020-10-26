@@ -44,11 +44,11 @@ const Header = () => {
                                     <NavLink tag={RRNavLink} to="/request/incoming">Incoming Requests</NavLink>
                                 </NavItem>
                             }
-                            {/* {isLoggedIn &&
+                            {isLoggedIn &&
                                 <NavItem>
                                     <NavLink tag={RRNavLink} to="/request/outgoing">Outgoing Requests</NavLink>
                                 </NavItem>
-                            } */}
+                            }
 
                         </Nav>
 

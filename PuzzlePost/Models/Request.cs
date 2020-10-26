@@ -19,6 +19,7 @@ namespace PuzzlePost.Models
         public DateTime CreateDateTime { get; set; }
         public Status Status { get; set; }
         public UserProfile UserProfile { get; set; }
+        public Puzzle Puzzle { get; set; }
 
     }
 }

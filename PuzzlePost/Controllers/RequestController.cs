@@ -31,5 +31,12 @@ namespace PuzzlePost.Controllers
 
             return Ok(_requestRepository.GetPendingRequestsForUser(id));
         }
+
+        [HttpGet("outgoing/{id}")]
+        public IActionResult GetOutgoingRequests(int id)
+        {
+
+            return Ok(_requestRepository.GetOutgoingRequestsForUser(id));
+        }
     }
 }

@@ -6,5 +6,6 @@ namespace PuzzlePost.Repositories
     public interface IRequestRepository
     {
         List<Request> GetPendingRequestsForUser(int id);
+        List<Request> GetOutgoingRequestsForUser(int id);
     }
 }
