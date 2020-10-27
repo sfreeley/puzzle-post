@@ -43,7 +43,7 @@ namespace PuzzlePost.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                      SELECT PuzzleId, UserProfileId, StartDateOwnership, EndDateOwnership
+                      SELECT Id, PuzzleId, UserProfileId, StartDateOwnership, EndDateOwnership
                       FROM History
                       WHERE PuzzleId = @puzzleId AND UserProfileId = @id AND EndDateOwnership IS NULL
                        ";
@@ -58,7 +58,8 @@ namespace PuzzlePost.Repositories
                     {
                         History history = new History
                         {
-                            Id = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            PuzzleId = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
                             UserProfileId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
                             StartDateOwnership = reader.GetDateTime(reader.GetOrdinal("StartDateOwnership")),
                             EndDateOwnership = DbUtils.GetNullableDateTime(reader, "EndDateOwnership")   

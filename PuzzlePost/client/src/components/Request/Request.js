@@ -52,7 +52,7 @@ const Request = ({ request }) => {
                 <CardBody>
                     <Row>
                         <Col sm="4">
-                            {window.location.href == "http://localhost:3000/request/incoming" ?
+                            {(window.location.href == "http://localhost:3000/request/incoming" || window.location.href == "http://localhost:3001/request/incoming") ?
                                 <>
                                     <Button type="button" onClick={updateOwner}>Confirm</Button>
 
