@@ -161,6 +161,8 @@ namespace PuzzlePost.Controllers
             Request request = _requestRepository.GetRequestByPuzzleId(puzzle.Id);
             //current owner id should change from sender of puzzle to requester of puzzle
             puzzle.CurrentOwnerId = request.RequestingPuzzleUserId;
+            //need to also update create date time to current date when ownership switches
+            puzzle.CreateDateTime = DateTime.Now;
             //update puzzle and after updating this puzzle, it should have new currentOwnerId
             _puzzleRepository.UpdatePuzzleOwner(puzzle);
            

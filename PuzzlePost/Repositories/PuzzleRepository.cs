@@ -599,10 +599,12 @@ namespace PuzzlePost.Repositories
                     cmd.CommandText = @"
                             UPDATE Puzzle
                             SET  
-                                CurrentOwnerId = @currentOwnerId  
+                                CurrentOwnerId = @currentOwnerId,
+                                CreateDateTime = @createDateTime
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@currentOwnerId", puzzle.CurrentOwnerId);
+                    cmd.Parameters.AddWithValue("@createDateTime", puzzle.CreateDateTime);
                     cmd.Parameters.AddWithValue("@id", puzzle.Id);
 
                     cmd.ExecuteNonQuery();
