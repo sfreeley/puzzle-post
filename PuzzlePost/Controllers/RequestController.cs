@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,13 @@ namespace PuzzlePost.Controllers
             _historyRepository = historyRepository;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetRequestById(int id)
+        {
+
+            return Ok(_requestRepository.GetRequestByPuzzleId(id));
+        }
+
         [HttpGet("incoming/{id}")]
         public IActionResult GetIncomingRequests(int id)
         {
@@ -40,12 +48,34 @@ namespace PuzzlePost.Controllers
             return Ok(_requestRepository.GetOutgoingRequestsForUser(id));
         }
 
-        [HttpPost]
-        public IActionResult Post(Request request)
+        [HttpPost("requestwithdeactivation")]
+        public IActionResult PostRequestDeactivatePuzzle(Request request)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
 
+            //if (userId != request.RequestingPuzzleUserId)
+            //{
+            //    return Unauthorized();
+            //}
+            request.RequestingPuzzleUserId = userId;
+            request.CreateDateTime = DateTime.Now;
+            //adding new request for the puzzle
             _requestRepository.Add(request);
-            return CreatedAtAction("Get", new { id = request.Id }, request);
+            //new instance of puzzle
+            Puzzle puzzle = new Puzzle();
+            //need to specify id of puzzle to know which one to deactivate and take away from shared puzzle list
+            puzzle.Id = request.PuzzleId;
+            //deactivate puzzle and remove from shared puzzle list
+            _puzzleRepository.DeactivatePuzzle(puzzle.Id);
+            return Ok();
+        }
+
+        //Firebase
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

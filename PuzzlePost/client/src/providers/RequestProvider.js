@@ -30,23 +30,23 @@ export function RequestProvider(props) {
         })
     };
 
-    const addRequest = (request) => {
+    const addRequestDeactivatePuzzle = (request) => {
 
-        getToken().then((token) => fetch("/api/request", {
+        getToken().then((token) => fetch("/api/request/requestwithdeactivation", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(request)
-        }).catch((err) => console.log(err))
+        })
 
         )
     };
 
     return (
 
-        <RequestContext.Provider value={{ addRequest, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
+        <RequestContext.Provider value={{ addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
             {props.children}
         </RequestContext.Provider>
     );

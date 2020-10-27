@@ -33,5 +33,71 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+
+        //get history by puzzleId and userprofileId
+        public History GetHistoryByIds(int id, int puzzId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                      SELECT Id, PuzzleId, UserProfileId, StartDateOwnership, EndDateOwnership
+                      FROM History
+                      WHERE PuzzleId = @puzzleId AND UserProfileId = @id AND EndDateOwnership IS NULL
+                       ";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@puzzleId", puzzId);
+
+
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        History history = new History
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("Id")),
+                            PuzzleId = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
+                            UserProfileId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
+                            StartDateOwnership = reader.GetDateTime(reader.GetOrdinal("StartDateOwnership")),
+                            EndDateOwnership = DbUtils.GetNullableDateTime(reader, "EndDateOwnership")   
+                        };
+
+                        reader.Close();
+                        return history;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        return null;
+                    }
+
+                }
+            }
+        }
+
+        public void UpdateHistory(History history)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE History
+                            SET  
+                               EndDateOwnership = @endDateOwnership
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@endDateOwnership", history.EndDateOwnership);
+                    cmd.Parameters.AddWithValue("@id", history.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
     }
 }

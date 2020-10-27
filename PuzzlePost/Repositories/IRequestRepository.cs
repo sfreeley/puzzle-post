@@ -8,5 +8,7 @@ namespace PuzzlePost.Repositories
         List<Request> GetPendingRequestsForUser(int id);
         List<Request> GetOutgoingRequestsForUser(int id);
         void Add(Request request);
+        void UpdateRequestStatus(Request request);
+        Request GetRequestByPuzzleId(int id);
     }
 }
