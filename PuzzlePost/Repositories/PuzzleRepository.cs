@@ -509,7 +509,7 @@ namespace PuzzlePost.Repositories
         }
 
 
-        //owner of puzzle updating
+        //owner of the puzzle able to edit
         public void UpdatePuzzle(Puzzle puzzle)
         {
             using (var conn = Connection)
@@ -586,6 +586,30 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+
+        //updating current owner id to who the puzzle is getting passed to
+        public void UpdatePuzzleOwner(Puzzle puzzle)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Puzzle
+                            SET  
+                                CurrentOwnerId = @currentOwnerId  
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@currentOwnerId", puzzle.CurrentOwnerId);
+                    cmd.Parameters.AddWithValue("@id", puzzle.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
     }
  }
 

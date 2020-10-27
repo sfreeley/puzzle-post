@@ -27,6 +27,13 @@ namespace PuzzlePost.Controllers
             _historyRepository = historyRepository;
         }
 
+        [HttpGet("{id}")]
+        public IActionResult GetRequestById(int id)
+        {
+
+            return Ok(_requestRepository.GetRequestByPuzzleId(id));
+        }
+
         [HttpGet("incoming/{id}")]
         public IActionResult GetIncomingRequests(int id)
         {
@@ -46,11 +53,12 @@ namespace PuzzlePost.Controllers
         {
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
+
+            //if (userId != request.RequestingPuzzleUserId)
+            //{
+            //    return Unauthorized();
+            //}
             request.RequestingPuzzleUserId = userId;
-            if (userId != request.RequestingPuzzleUserId)
-            {
-                return Unauthorized();
-            }
             request.CreateDateTime = DateTime.Now;
             //adding new request for the puzzle
             _requestRepository.Add(request);

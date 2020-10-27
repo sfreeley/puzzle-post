@@ -123,6 +123,18 @@ export function PuzzleProvider(props) {
         )
     };
 
+    const updatePuzzleOwner = (puzzle) => {
+        getToken().then((token) => fetch(`/api/puzzle/updatepuzzleowner/${puzzle.id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(puzzle)
+        })
+        )
+    };
+
     const reactivatePuzzle = (id) => {
         getToken().then((token) => fetch(`/api/puzzle/reactivate/${id}`, {
             method: "PUT",
@@ -149,7 +161,7 @@ export function PuzzleProvider(props) {
 
     return (
 
-        <PuzzleContext.Provider value={{ getPuzzleWithUserProfile, puzzleWithProfile, deactivatePuzzle, reactivatePuzzle, aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
+        <PuzzleContext.Provider value={{ updatePuzzleOwner, getPuzzleWithUserProfile, puzzleWithProfile, deactivatePuzzle, reactivatePuzzle, aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
             {props.children}
         </PuzzleContext.Provider>
     );

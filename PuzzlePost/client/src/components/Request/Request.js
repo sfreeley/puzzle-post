@@ -1,11 +1,29 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { NavLink } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
+import { PuzzleContext } from "../../providers/PuzzleProvider";
 
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
+    const { updatePuzzleOwner } = useContext(PuzzleContext);
+    //setting updating puzzle object into state; need to give value to currentOwnerId to pass into update owner function (will be the requester of the puzzle who will be new owner)
+    const [confirmPuzzle, setConfirmPuzzle] = useState({
+        id: request.puzzleId,
+        categoryId: request.puzzle.categoryId,
+        currentOwnerId: request.requestingPuzzleUserId,
+        title: request.puzzle.title,
+        manufacturer: request.puzzle.manufacturer,
+        imageLocation: request.puzzle.imageLocation,
+        pieces: request.puzzle.pieces,
+        notes: request.puzzle.notes
+    })
+    console.log(confirmPuzzle);
+
+    const updateOwner = () => {
+        updatePuzzleOwner(confirmPuzzle);
+    }
 
     return (
         <>
@@ -27,13 +45,13 @@ const Request = ({ request }) => {
                         </div>
                     </Col>
                 </Row>
-                {/* <CardImg src={request.imageLocation} alt={request.title} /> */}
+                {/* <CardImg src={request.puzzle.imageLocation} alt={request.title} /> */}
                 <CardBody>
                     <Row>
                         <Col sm="4">
                             {window.location.href == "http://localhost:3000/request/incoming" ?
                                 <>
-                                    <Button>Confirm</Button>
+                                    <Button type="button" onClick={updateOwner}>Confirm</Button>
 
                                     <Button>Deny</Button>
                                 </> :

@@ -28,7 +28,7 @@ namespace PuzzlePost.Repositories
                        
                        up.Id AS UserId, up.DisplayName,
 
-                       p.Id AS RequestedPuzzleId, p.Title, p.Manufacturer, p.Pieces
+                       p.Id AS RequestedPuzzleId, p.Title, p.Manufacturer, p.Pieces, p.ImageLocation
 
                        FROM Request r
                        LEFT JOIN Status s
@@ -71,7 +71,9 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("RequestedPuzzleId")),
                                 Pieces = reader.GetInt32(reader.GetOrdinal("Pieces")),
                                 Title = reader.GetString(reader.GetOrdinal("Title")),
-                                Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer"))  
+                                Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
+                                ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation")),
+                                
                             }
                         };
 
@@ -144,12 +146,12 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("RequestedPuzzleId")),
                                 Pieces = reader.GetInt32(reader.GetOrdinal("Pieces")),
                                 Title = reader.GetString(reader.GetOrdinal("Title")),
-                                Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer"))
+                                Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
+ 
                             }
                         };
 
                         requests.Add(request);
-
 
                     }
                     reader.Close();
@@ -157,6 +159,59 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+
+        //getting single Request by request id
+        public Request GetRequestByPuzzleId(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT r.Id AS RequestId, r.PuzzleId, r.RequestingPuzzleUserId, r.SenderOfPuzzleUserId, r.Content,
+                       r.CreateDateTime, r.StatusId,
+    
+                       s.Id, s.Name
+                       
+                       FROM Request r
+                       LEFT JOIN Status s
+                       ON r.StatusId = s.Id
+                       WHERE r.PuzzleId= @id AND s.Name = 'Pending' ";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Request request = new Request
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("RequestId")),
+                            PuzzleId = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
+                            RequestingPuzzleUserId = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
+                            SenderOfPuzzleUserId = reader.GetInt32(reader.GetOrdinal("SenderOfPuzzleUserId")),
+                            Content = DbUtils.GetNullableString(reader, "Content"),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            StatusId = reader.GetInt32(reader.GetOrdinal("StatusId")),
+                            Status = new Status()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("StatusId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            }
+                        };
+                        reader.Close();
+                        return request;
+                    }
+                    else 
+                    {
+                        reader.Close();
+                        return null;
+                    }
+                    
+                }
+            }
+        }
+
         public void Add(Request request)
         {
             using (var conn = Connection)
@@ -177,6 +232,31 @@ namespace PuzzlePost.Repositories
                     cmd.Parameters.AddWithValue("@StatusId", 1);
 
                     request.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        //this will be used when current owner of puzzle confirms
+        //to share with the person requesting the puzzle
+        //the status of the request to id of 2 which is accepted (disappear from pending incoming requests)
+        public void UpdateRequestStatus(Request request)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Request
+                            SET  
+                               StatusId = @statusId
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@statusId", 2);
+                    cmd.Parameters.AddWithValue("@id", request.Id);
+
+                    cmd.ExecuteNonQuery();
                 }
             }
         }
