@@ -7,7 +7,6 @@ namespace PuzzlePost.Repositories
     {
         List<Puzzle> GetAllSharedPuzzles();
         void Add(Puzzle puzzle);
-        //int Add(Puzzle puzzle);
         List<Category> GetAllCategories();
         List<Puzzle> GetAllUserPuzzlesById(int id);
         List<Puzzle> GetAllUserPuzzlesInProgressById(int id);

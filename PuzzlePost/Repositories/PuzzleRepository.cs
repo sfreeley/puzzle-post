@@ -542,7 +542,6 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //call to reactivate a puzzle
         public void ReactivatePuzzle(int id)
         {
             using (var conn = Connection)

@@ -71,6 +71,29 @@ namespace PuzzlePost.Controllers
             return Ok();
         }
 
+        [HttpPost("rejection")]
+        public IActionResult PostRejection(Request request)
+        {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+
+            //if (userId != request.SenderOfPuzzleUserId)
+            //{
+            //    return Unauthorized();
+            //}
+            request.SenderOfPuzzleUserId = userId;
+            request.CreateDateTime = DateTime.Now;
+            //adding new request for the puzzle
+            _requestRepository.PostRejection(request);
+            //new instance of puzzle
+            Puzzle puzzle = new Puzzle();
+            //need to specify id of puzzle to know which one to reactivate and send back shared puzzle list
+            puzzle.Id = request.PuzzleId;
+            //reactivate puzzle and remove from shared puzzle list
+            _puzzleRepository.ReactivatePuzzle(puzzle.Id);
+            return Ok();
+        }
+
         //Firebase
         private UserProfile GetCurrentUserProfile()
         {

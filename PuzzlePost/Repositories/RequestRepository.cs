@@ -78,8 +78,6 @@ namespace PuzzlePost.Repositories
                         };
 
                         requests.Add(request);
-
-
                     }
                     reader.Close();
                     return requests;
@@ -230,6 +228,31 @@ namespace PuzzlePost.Repositories
                     cmd.Parameters.AddWithValue("@Content", request.Content);
                     cmd.Parameters.AddWithValue("@CreateDateTime", request.CreateDateTime);
                     cmd.Parameters.AddWithValue("@StatusId", 1);
+
+                    request.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
+        //method to post new request, but will be for rejection of request where status id will be 3 = rejected
+        public void PostRejection(Request request)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Request (PuzzleId, RequestingPuzzleUserId, SenderOfPuzzleUserId, Content, CreateDateTime, StatusId)
+                        OUTPUT INSERTED.ID
+                        VALUES (
+                            @PuzzleId, @RequestingPuzzleUserId, @SenderOfPuzzleUserId, @Content, @CreateDateTime, @StatusId)";
+                    cmd.Parameters.AddWithValue("@PuzzleId", request.PuzzleId);
+                    cmd.Parameters.AddWithValue("@RequestingPuzzleUserId", request.RequestingPuzzleUserId);
+                    cmd.Parameters.AddWithValue("@SenderOfPuzzleUserId", request.SenderOfPuzzleUserId);
+                    cmd.Parameters.AddWithValue("@Content", request.Content);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", request.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@StatusId", 3);
 
                     request.Id = (int)cmd.ExecuteScalar();
                 }

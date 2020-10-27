@@ -44,9 +44,23 @@ export function RequestProvider(props) {
         )
     };
 
+    const postRejection = (request) => {
+
+        getToken().then((token) => fetch("/api/request/rejection", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request)
+        })
+
+        )
+    };
+
     return (
 
-        <RequestContext.Provider value={{ addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
+        <RequestContext.Provider value={{ postRejection, addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
             {props.children}
         </RequestContext.Provider>
     );
