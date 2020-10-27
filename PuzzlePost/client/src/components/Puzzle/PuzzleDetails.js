@@ -8,13 +8,14 @@ import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 
 const PuzzleDetails = () => {
-    const { puzzle, getPuzzleById } = useContext(PuzzleContext);
+    const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile } = useContext(PuzzleContext);
     const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
     const history = useHistory();
 
     useEffect(() => {
-        getPuzzleById(id)
+        getPuzzleById(id);
+        getPuzzleWithUserProfile(id);
     }, [])
 
     return (
@@ -23,7 +24,7 @@ const PuzzleDetails = () => {
                 <Card className="m-4">
                     <Row margin="m-4">
                         <Col sm="4">
-                            <p className="text-left px-2">Posted by: {puzzle.userProfile.displayName}
+                            <p className="text-left px-2">Posted by: {puzzleWithProfile.userProfile.displayName}
                                 <br></br>
                         on {currentDateTime(puzzle.createDateTime)}</p>
                         </Col>

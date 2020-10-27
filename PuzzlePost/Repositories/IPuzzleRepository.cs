@@ -12,6 +12,7 @@ namespace PuzzlePost.Repositories
         List<Puzzle> GetAllUserPuzzlesById(int id);
         List<Puzzle> GetAllUserPuzzlesInProgressById(int id);
         Puzzle GetPuzzleById(int id);
+        Puzzle GetPuzzleWithUserProfileById(int id);
         void UpdatePuzzle(Puzzle puzzle);
         Puzzle GetPuzzleWithoutHistoryById(int id);
         void ReactivatePuzzle(int id);

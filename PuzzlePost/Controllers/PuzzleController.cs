@@ -54,6 +54,17 @@ namespace PuzzlePost.Controllers
             return Ok(puzzle);
         }
 
+        [HttpGet("getwithuserprofile/{id}")]
+        public IActionResult GetWithUserProfile(int id)
+        {
+            Puzzle puzzle = _puzzleRepository.GetPuzzleWithUserProfileById(id);
+            if (puzzle == null)
+            {
+                return null;
+            }
+            return Ok(puzzle);
+        }
+
         [HttpGet("category")]
         public IActionResult GetCategories()
         {

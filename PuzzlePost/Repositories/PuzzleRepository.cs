@@ -407,11 +407,6 @@ namespace PuzzlePost.Repositories
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                     Name = reader.GetString(reader.GetOrdinal("Name"))
                                 },
-                                UserProfile = new UserProfile
-                                {
-                                    Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
-                                    DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-                                },
                                 Histories = new List<History>()
                             };
                         }
@@ -440,6 +435,76 @@ namespace PuzzlePost.Repositories
                     return puzzle;
                 }
                   
+            }
+        }
+
+        public Puzzle GetPuzzleWithUserProfileById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                      SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+
+                      c.Id AS CategoryId, c.Name,
+
+                      up.Id as UserId, up.DisplayName, up.ImageLocation
+
+                      FROM Puzzle p
+                      LEFT JOIN Category c 
+                      ON p.CategoryId = c.Id
+                      LEFT JOIN UserProfile up
+                      ON p.CurrentOwnerId = up.Id
+                      WHERE p.Id = @id
+                      ORDER BY CreateDateTime DESC
+                       ";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    var reader = cmd.ExecuteReader();
+                    Puzzle puzzle = null;
+
+                    if (reader.Read())
+                    {
+                        puzzle = new Puzzle
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
+                            CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                            CurrentOwnerId = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                            ImageLocation = DbUtils.GetNullableString(reader, "ImageLocation"),
+                            Pieces = reader.GetInt32(reader.GetOrdinal("Pieces")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
+                            Notes = DbUtils.GetNullableString(reader, "Notes"),
+                            IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                            Category = new Category
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            },
+                            UserProfile = new UserProfile
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
+
+                        };
+                        reader.Close();
+                        return puzzle;
+
+                    }
+                    else
+                    {
+                        reader.Close();
+                        return null;
+                    }
+                    
+                }
+
             }
         }
 
