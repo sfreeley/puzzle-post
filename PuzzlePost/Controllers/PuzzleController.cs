@@ -147,26 +147,37 @@ namespace PuzzlePost.Controllers
             //    return Unauthorized();
             //}
 
+            //HISTORY UPDATE
             //get a history object via both userId (currently owner) and puzzle id where end date time is null
             History history = _historyRepository.GetHistoryByIds(userId, puzzle.Id);
             //give end date the current time
             history.EndDateOwnership = DateTime.Now;
             //then call method to update the history object to have end date of current time
             _historyRepository.UpdateHistory(history);
+
+            //REQUEST UPDATE AND PUZZLE UPDATE
+            //need to also change status of the request from pending to approved; get the request
+            //by puzzleId where status is pending (there will only be 1..)
+            Request request = _requestRepository.GetRequestByPuzzleId(puzzle.Id);
+            //current owner id should change from sender of puzzle to requester of puzzle
+            puzzle.CurrentOwnerId = request.RequestingPuzzleUserId;
             //update puzzle and after updating this puzzle, it should have new currentOwnerId
             _puzzleRepository.UpdatePuzzleOwner(puzzle);
+           
+            //update status to status id of 2 = approved
+            _requestRepository.UpdateRequestStatus(request);
+            
+            
+            //HISTORY POST
             //instanstiate a new history object
             History newHistory = new History();  
             newHistory.PuzzleId = puzzle.Id;
+            //new current owner now
             newHistory.UserProfileId = puzzle.CurrentOwnerId;
             newHistory.StartDateOwnership = DateTime.Now;
             //add new history object that now contains the information for the new owner
             _historyRepository.Add(newHistory);
-            //need to also change status of the request from pending to approved; get the request
-            //by puzzleId where status is pending (there will only be 1..)
-            Request request = _requestRepository.GetRequestByPuzzleId(puzzle.Id);
-            //update status to status id of 2 = approved
-            _requestRepository.UpdateRequestStatus(request);
+          
             return NoContent();
         }
 

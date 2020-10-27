@@ -4,15 +4,16 @@ import { currentDateTime } from "../helperFunctions";
 import { NavLink } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
+import { RequestContext } from "../../providers/RequestProvider";
 
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
+    const { getAllPendingRequests } = useContext(RequestContext);
     //setting updating puzzle object into state; need to give value to currentOwnerId to pass into update owner function (will be the requester of the puzzle who will be new owner)
     const [confirmPuzzle, setConfirmPuzzle] = useState({
         id: request.puzzleId,
         categoryId: request.puzzle.categoryId,
-        currentOwnerId: request.requestingPuzzleUserId,
         title: request.puzzle.title,
         manufacturer: request.puzzle.manufacturer,
         imageLocation: request.puzzle.imageLocation,
@@ -23,6 +24,8 @@ const Request = ({ request }) => {
 
     const updateOwner = () => {
         updatePuzzleOwner(confirmPuzzle);
+        getAllPendingRequests(parseInt(activeUser.id));
+
     }
 
     return (
