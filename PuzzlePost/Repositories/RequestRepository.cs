@@ -158,7 +158,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //getting single Request by request id
+        //getting single Request by puzzle id
         public Request GetRequestByPuzzleId(int id)
         {
             using (var conn = Connection)
@@ -277,6 +277,28 @@ namespace PuzzlePost.Repositories
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@statusId", 2);
+                    cmd.Parameters.AddWithValue("@id", request.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void UpdateToReject(Request request)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Request
+                            SET  
+                               StatusId = @statusId
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@statusId", 3);
                     cmd.Parameters.AddWithValue("@id", request.Id);
 
                     cmd.ExecuteNonQuery();

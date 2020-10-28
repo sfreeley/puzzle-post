@@ -18,11 +18,6 @@ const Request = ({ request }) => {
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
-    useEffect(() => {
-        getAllPendingRequests(parseInt(activeUser.id));
-        getAllOutgoingRequests(parseInt(activeUser.id));
-    }, [])
-
     //setting updating puzzle object into state; need to give value to currentOwnerId to pass into update owner function (will be the requester of the puzzle who will be new owner)
     const [confirmPuzzle, setConfirmPuzzle] = useState({
         id: request.puzzleId,
@@ -55,11 +50,13 @@ const Request = ({ request }) => {
 
     const rejectRequest = () => {
         postRejection(rejection);
+        getAllPendingRequests(parseInt(activeUser.id));
 
     }
 
     const deleteOutgoingRequest = () => {
         deleteRequest(request.id);
+        getAllOutgoingRequests(parseInt(activeUser.id));
     }
 
     return (
@@ -86,7 +83,7 @@ const Request = ({ request }) => {
                 <CardBody>
                     <Row>
                         <Col sm="4">
-                            {(window.location.href == "http://localhost:3000/request/incoming" || window.location.href == "http://localhost:3001/request/incoming") ?
+                            {request.senderOfPuzzleUserId == activeUser.id ?
                                 <>
                                     <Button type="button" onClick={updateOwner}>Confirm</Button>
 
@@ -94,7 +91,7 @@ const Request = ({ request }) => {
                                 </> :
                                 null}
 
-                            {window.location.href == "http://localhost:3000/request/outgoing" || window.location.href == "http://localhost:3001/request/outgoing" ?
+                            {request.requestingPuzzleUserId == activeUser.id ?
                                 <>
                                     <Button type="button" onClick={deleteOutgoingRequest}> Delete </Button>
                                 </> : null}

@@ -10,6 +10,7 @@ namespace PuzzlePost.Repositories
         void Add(Request request);
         void PostRejection(Request request);
         void UpdateRequestStatus(Request request);
+        void UpdateToReject(Request request);
         Request GetRequestByPuzzleId(int id);
         void DeleteRequest(int id);
     }

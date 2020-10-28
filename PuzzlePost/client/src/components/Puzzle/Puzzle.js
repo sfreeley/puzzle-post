@@ -55,7 +55,7 @@ const Puzzle = ({ puzzle }) => {
                             <br />
                             {puzzle.manufacturer}
                             <br />
-                            {puzzle.pieces}
+                            {puzzle.pieces} pieces
                             <br />
                             {(window.location.href == `http://localhost:3000/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.href == `http://localhost:3001/puzzle/details/${puzzle.id}` && puzzle.notes != null) ?
                                 <div>Notes : {puzzle.notes}</div> : null

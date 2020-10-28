@@ -19,7 +19,7 @@ set identity_insert [Status] off
 set identity_insert [Category] on
 insert into [Category] ([Id], [Name]) 
 values (1, 'Panoramic'), (2, 'Landmarks'), (3, '3D'), (4, 'Children''s puzzles'), (5, 'Animals'),
-	   (6, 'Art'), (7, 'Holiday'), (8, 'Fantasy'), (9, 'Miscellaneous'), (10, 'Other')
+	   (6, 'Art'), (7, 'Holiday'), (8, 'Fantasy'), (9, 'Miscellaneous')
 set identity_insert [Category] off
 
 --Puzzle

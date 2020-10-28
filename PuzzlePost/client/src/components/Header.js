@@ -46,7 +46,7 @@ const Header = () => {
                             }
                             {isLoggedIn &&
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/request/outgoing">Outgoing Requests</NavLink>
+                                    <NavLink tag={RRNavLink} to="/request/outgoing">Your Puzzle Request History</NavLink>
                                 </NavItem>
                             }
 

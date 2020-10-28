@@ -33,7 +33,7 @@ const PuzzleDetails = () => {
                                 <br></br>
                                 {puzzle.manufacturer}
                                 <br />
-                                {puzzle.pieces}
+                                {puzzle.pieces} pieces
                             </p>
                             <p>Notes:{puzzle.notes}</p>
                         </Col>

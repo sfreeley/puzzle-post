@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
-import { Button } from "reactstrap"
+import { Button, Card } from "reactstrap"
 import Puzzle from "./Puzzle";
 import { NavLink } from "react-router-dom";
 
