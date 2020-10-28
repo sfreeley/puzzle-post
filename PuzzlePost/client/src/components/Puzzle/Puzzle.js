@@ -9,20 +9,29 @@ import { Link, useHistory } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { RequestContext } from "../../providers/RequestProvider";
+import DeletePuzzle from "./DeletePuzzle";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { reactivatePuzzle, deletePuzzle } = useContext(PuzzleContext);
+    const { reactivatePuzzle, deletePuzzle, getAllActivePuzzles, getAllPuzzlesByUser } = useContext(PuzzleContext);
     const { addRequestDeactivatePuzzle } = useContext(RequestContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const toggleDelete = () => setDeleteModal(!deleteModal);
+
+    const deleteAPuzzle = (e) => {
+        e.preventDefault();
+        deletePuzzle(puzzle.id);
+        toggleDelete();
+        history.push("/puzzle/user");
+    }
 
     const reactivateAPuzzle = (e) => {
         e.preventDefault();
-        reactivatePuzzle(puzzle.id);
-        history.push("/puzzle");
+        reactivatePuzzle(puzzle.id).then(() => history.push("/puzzle"));
     }
 
     const [newRequest, setNewRequest] = useState({
@@ -44,14 +53,9 @@ const Puzzle = ({ puzzle }) => {
         history.push("/request/outgoing");
     }
 
-    const deleteAPuzzle = (e) => {
-        e.preventDefault();
-        deletePuzzle(puzzle.id);
-
-    }
-
     return (
         <>
+            <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} deleteAPuzzle={deleteAPuzzle} />
             <Card className="m-4">
                 <Row margin="m-4">
                     <Col sm="4">
@@ -87,7 +91,7 @@ const Puzzle = ({ puzzle }) => {
                             {parseInt(activeUser.id) == puzzle.currentOwnerId ?
                                 <>
                                     <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
-                                    <Button onClick={deleteAPuzzle}>Delete</Button>
+                                    <Button onClick={toggleDelete}>Delete</Button>
                                 </> : null
                             }
 
@@ -134,9 +138,6 @@ const Puzzle = ({ puzzle }) => {
                     </ModalFooter>
                 </Modal>
             </div>
-
-
-
 
         </>
     )
