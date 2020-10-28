@@ -1,20 +1,17 @@
 import React, { useContext, useState } from "react";
 import {
-    Card, CardImg, CardBody, Row, Button, Col,
-    Modal, ModalHeader, ModalBody, ModalFooter,
-    Form, FormGroup, Label, Input
+    Card, CardImg, CardBody, Row, Button, Col
 } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { Link, useHistory } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { RequestContext } from "../../providers/RequestProvider";
 import DeletePuzzle from "./DeletePuzzle";
+import RequestPuzzle from "./RequestPuzzle";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { reactivatePuzzle, deletePuzzle, getAllActivePuzzles, getAllPuzzlesByUser } = useContext(PuzzleContext);
-    const { addRequestDeactivatePuzzle } = useContext(RequestContext);
+    const { reactivatePuzzle, deletePuzzle } = useContext(PuzzleContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
@@ -34,27 +31,9 @@ const Puzzle = ({ puzzle }) => {
         reactivatePuzzle(puzzle.id).then(() => history.push("/puzzle"));
     }
 
-    const [newRequest, setNewRequest] = useState({
-        puzzleId: puzzle.id,
-        senderOfPuzzleUserId: puzzle.currentOwnerId,
-        content: ""
-    })
-
-    const handleFieldChange = (e) => {
-        const stateToChange = { ...newRequest };
-        stateToChange[e.target.id] = e.target.value;
-        setNewRequest(stateToChange);
-    };
-
-    const sendRequestDeactivatePuzzle = (e) => {
-        e.preventDefault();
-        addRequestDeactivatePuzzle(newRequest);
-        toggle();
-        history.push("/request/outgoing");
-    }
-
     return (
         <>
+            <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
             <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} deleteAPuzzle={deleteAPuzzle} />
             <Card className="m-4">
                 <Row margin="m-4">
@@ -114,31 +93,6 @@ const Puzzle = ({ puzzle }) => {
                     </Row>
                 </CardBody>
             </Card>
-            <div>
-                <Modal isOpen={modal} toggle={toggle} className="postRequest">
-                    <ModalHeader toggle={toggle}>Enter a Message (if you wish)</ModalHeader>
-                    <ModalBody>
-                        <Form className="postRequestForm">
-                            <FormGroup>
-                                <Label className="requestContentLabel">Message:</Label>
-                                <Input
-                                    className="editingPuzzle"
-                                    onChange={handleFieldChange}
-                                    type="textarea"
-                                    id="content"
-                                    value={newRequest.content}
-                                    placeholder="Enter Your Message Here"
-                                />
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={sendRequestDeactivatePuzzle}>Send Request</Button>{' '}
-                        <Button color="secondary" onClick={toggle}>Cancel</Button>
-                    </ModalFooter>
-                </Modal>
-            </div>
-
         </>
     )
 
