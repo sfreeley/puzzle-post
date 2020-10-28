@@ -158,10 +158,21 @@ export function PuzzleProvider(props) {
         )
     };
 
+    const deletePuzzle = (id) => {
+        getToken().then((token) => fetch(`/api/puzzle/delete/${id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            }
+        })
+        )
+    };
+
 
     return (
 
-        <PuzzleContext.Provider value={{ updatePuzzleOwner, getPuzzleWithUserProfile, puzzleWithProfile, deactivatePuzzle, reactivatePuzzle, aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
+        <PuzzleContext.Provider value={{ deletePuzzle, updatePuzzleOwner, getPuzzleWithUserProfile, puzzleWithProfile, deactivatePuzzle, reactivatePuzzle, aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
             {props.children}
         </PuzzleContext.Provider>
     );

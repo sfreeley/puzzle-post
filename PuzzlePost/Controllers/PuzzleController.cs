@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PuzzlePost.Models;
@@ -10,6 +11,7 @@ using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PuzzleController : ControllerBase
@@ -180,6 +182,13 @@ namespace PuzzlePost.Controllers
             //add new history object that now contains the information for the new owner
             _historyRepository.Add(newHistory);
           
+            return NoContent();
+        }
+
+        [HttpPut("delete/{id}")]
+        public IActionResult SoftDelete(int id)
+        {
+            _puzzleRepository.DeletePuzzle(id);
             return NoContent();
         }
 

@@ -5,14 +5,14 @@ import {
     Form, FormGroup, Label, Input
 } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
-import { NavLink, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { RequestContext } from "../../providers/RequestProvider";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { reactivatePuzzle } = useContext(PuzzleContext);
+    const { reactivatePuzzle, deletePuzzle } = useContext(PuzzleContext);
     const { addRequestDeactivatePuzzle } = useContext(RequestContext);
 
     const history = useHistory();
@@ -40,7 +40,14 @@ const Puzzle = ({ puzzle }) => {
     const sendRequestDeactivatePuzzle = (e) => {
         e.preventDefault();
         addRequestDeactivatePuzzle(newRequest);
+        toggle();
         history.push("/request/outgoing");
+    }
+
+    const deleteAPuzzle = (e) => {
+        e.preventDefault();
+        deletePuzzle(puzzle.id);
+
     }
 
     return (
@@ -60,9 +67,9 @@ const Puzzle = ({ puzzle }) => {
                             {puzzle.pieces} pieces
                             <br />
                             {/* need to fix this */}
-                            {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
-                                <div>Notes : {puzzle.notes}</div> : null
-                            }
+                            {/* {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ? */}
+                            <div>Notes : {puzzle.notes}</div> : null
+                            {/* } */}
 
                         </div>
                     </Col>
@@ -75,12 +82,12 @@ const Puzzle = ({ puzzle }) => {
                 <CardBody>
                     <Row>
                         <Col sm="4">
-                            <NavLink to={`/puzzle/details/${puzzle.id}`}><Button>Details</Button></NavLink>
+                            <Link to={`/puzzle/details/${puzzle.id}`}><Button>Details</Button></Link>
 
                             {parseInt(activeUser.id) == puzzle.currentOwnerId ?
                                 <>
-                                    <NavLink to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></NavLink>
-                                    <NavLink to={`puzzle/delete/${puzzle.id}`}><Button>Delete</Button></NavLink>
+                                    <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
+                                    <Button onClick={deleteAPuzzle}>Delete</Button>
                                 </> : null
                             }
 
@@ -103,9 +110,7 @@ const Puzzle = ({ puzzle }) => {
                     </Row>
                 </CardBody>
             </Card>
-
             <div>
-
                 <Modal isOpen={modal} toggle={toggle} className="postRequest">
                     <ModalHeader toggle={toggle}>Enter a Message (if you wish)</ModalHeader>
                     <ModalBody>
@@ -129,6 +134,9 @@ const Puzzle = ({ puzzle }) => {
                     </ModalFooter>
                 </Modal>
             </div>
+
+
+
 
         </>
     )

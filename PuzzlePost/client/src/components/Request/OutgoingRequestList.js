@@ -3,7 +3,7 @@ import { RequestContext } from "../../providers/RequestProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import Request from "./Request";
 import { Button } from "reactstrap";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const OutgoingRequestList = () => {
     const { getAllOutgoingRequests, outgoingRequests } = useContext(RequestContext);

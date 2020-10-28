@@ -5,7 +5,6 @@ import {
     Form, FormGroup, Label, Input
 } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
-import { NavLink } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { RequestContext } from "../../providers/RequestProvider";
@@ -39,6 +38,7 @@ const Request = ({ request }) => {
     const updateOwner = (e) => {
         e.prevenDefault();
         updatePuzzleOwner(confirmPuzzle);
+        // getAllPendingRequests(parseInt(activeUser.id));
     }
 
     const handleFieldChange = (e) => {
@@ -50,6 +50,7 @@ const Request = ({ request }) => {
 
     const rejectRequest = () => {
         postRejection(rejection);
+        toggle();
         // getAllPendingRequests(parseInt(activeUser.id));
 
     }

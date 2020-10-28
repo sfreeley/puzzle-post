@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Row, Col, CardImg, Card, CardBody, Button } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { useHistory } from "react-router-dom";
@@ -58,7 +58,7 @@ const PuzzleDetails = () => {
                     <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
                     <Link to={`/puzzle/delete/${puzzle.id}`}><Button>Delete</Button></Link>
 
-                </> : <Link to={`/puzzle/delete/${puzzle.id}`}><Button>Request</Button></Link>
+                </> : <Button>Request</Button>
             }
         </>
 

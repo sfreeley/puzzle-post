@@ -29,10 +29,11 @@ const Header = () => {
                                     <NavLink tag={RRNavLink} to="/">Home</NavLink>
                                 </NavItem>
                             }
-                            {isLoggedIn ?
+                            {isLoggedIn &&
+
                                 <NavItem>
                                     <NavLink tag={RRNavLink} to="/puzzle">Shared Puzzle List</NavLink>
-                                </NavItem> : null
+                                </NavItem>
                             }
                             {isLoggedIn &&
                                 <NavItem>
