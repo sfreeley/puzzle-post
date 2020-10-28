@@ -11,20 +11,13 @@ import RequestPuzzle from "./RequestPuzzle";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { reactivatePuzzle, deletePuzzle } = useContext(PuzzleContext);
+    const { reactivatePuzzle } = useContext(PuzzleContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
     const [deleteModal, setDeleteModal] = useState(false);
     const toggleDelete = () => setDeleteModal(!deleteModal);
-
-    const deleteAPuzzle = (e) => {
-        e.preventDefault();
-        deletePuzzle(puzzle.id);
-        toggleDelete();
-        history.push("/puzzle/user");
-    }
 
     const reactivateAPuzzle = (e) => {
         e.preventDefault();
@@ -34,7 +27,7 @@ const Puzzle = ({ puzzle }) => {
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
-            <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} deleteAPuzzle={deleteAPuzzle} />
+            <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} puzzle={puzzle} />
             <Card className="m-4">
                 <Row margin="m-4">
                     <Col sm="4">
