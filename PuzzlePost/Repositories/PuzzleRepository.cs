@@ -536,7 +536,7 @@ namespace PuzzlePost.Repositories
                     cmd.Parameters.AddWithValue("@pieces", puzzle.Pieces);
                     cmd.Parameters.AddWithValue("@title", puzzle.Title);
                     cmd.Parameters.AddWithValue("@manufacturer", puzzle.Manufacturer);
-                    cmd.Parameters.AddWithValue("@notes", puzzle.Notes);
+                    cmd.Parameters.AddWithValue("@Notes", DbUtils.ValueOrDBNull(puzzle.Notes));
                     cmd.Parameters.AddWithValue("@id", puzzle.Id);
 
                     cmd.ExecuteNonQuery();
