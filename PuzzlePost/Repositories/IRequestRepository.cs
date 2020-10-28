@@ -11,5 +11,6 @@ namespace PuzzlePost.Repositories
         void PostRejection(Request request);
         void UpdateRequestStatus(Request request);
         Request GetRequestByPuzzleId(int id);
+        void DeleteRequest(int id);
     }
 }

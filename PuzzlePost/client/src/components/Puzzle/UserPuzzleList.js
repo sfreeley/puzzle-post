@@ -19,16 +19,24 @@ const UserPuzzleList = () => {
             <div className="row justify-content-center">
                 <NavLink to={"/puzzle/add"}><Button>New Puzzle</Button></NavLink>
                 <div className="cards-column">
-                    <h5>Unavailable or In Progress Puzzles</h5>
-                    {inactiveUserPuzzles.map((puzzle) => (
-                        <Puzzle key={puzzle.id} puzzle={puzzle} />
-                    ))}
+                    {userPuzzles.length === 0 ? <h4>You're not working on any puzzles</h4> :
+                        <>
+                            <h5>Your In Progress Puzzles</h5>
+                            {inactiveUserPuzzles.map((puzzle) => (
+                                <Puzzle key={puzzle.id} puzzle={puzzle} />
+                            ))}
+                        </>
+                    }
                 </div>
                 <div className="cards-column">
-                    <h5>Shared Active Puzzles</h5>
-                    {userPuzzles.map((puzzle) => (
-                        <Puzzle key={puzzle.id} puzzle={puzzle} />
-                    ))}
+                    {userPuzzles.length === 0 ? <h4>No puzzles currently being shared</h4> :
+                        <>
+                            <h5>Shared Active Puzzles</h5>
+                            {userPuzzles.map((puzzle) => (
+                                <Puzzle key={puzzle.id} puzzle={puzzle} />
+                            ))}
+                        </>
+                    }
                 </div>
             </div>
         </div>

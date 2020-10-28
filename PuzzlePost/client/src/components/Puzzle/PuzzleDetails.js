@@ -57,7 +57,8 @@ const PuzzleDetails = () => {
                 <>
                     <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
                     <Link to={`/puzzle/delete/${puzzle.id}`}><Button>Delete</Button></Link>
-                </> : null
+
+                </> : <Link to={`/puzzle/delete/${puzzle.id}`}><Button>Request</Button></Link>
             }
         </>
 

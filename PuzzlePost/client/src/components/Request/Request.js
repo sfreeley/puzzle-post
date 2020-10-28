@@ -13,14 +13,15 @@ import { RequestContext } from "../../providers/RequestProvider";
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { getAllPendingRequests, postRejection } = useContext(RequestContext);
+    const { getAllPendingRequests, getAllOutgoingRequests, postRejection, deleteRequest } = useContext(RequestContext);
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
     useEffect(() => {
         getAllPendingRequests(parseInt(activeUser.id));
-    })
+        getAllOutgoingRequests(parseInt(activeUser.id));
+    }, [])
 
     //setting updating puzzle object into state; need to give value to currentOwnerId to pass into update owner function (will be the requester of the puzzle who will be new owner)
     const [confirmPuzzle, setConfirmPuzzle] = useState({
@@ -42,7 +43,7 @@ const Request = ({ request }) => {
 
     const updateOwner = () => {
         updatePuzzleOwner(confirmPuzzle);
-        getAllPendingRequests(parseInt(activeUser.id));
+
     }
 
     const handleFieldChange = (e) => {
@@ -54,7 +55,11 @@ const Request = ({ request }) => {
 
     const rejectRequest = () => {
         postRejection(rejection);
-        getAllPendingRequests(parseInt(activeUser.id));
+
+    }
+
+    const deleteOutgoingRequest = () => {
+        deleteRequest(request.id);
     }
 
     return (
@@ -88,6 +93,11 @@ const Request = ({ request }) => {
                                     <Button type="button" onClick={toggle}>Deny</Button>
                                 </> :
                                 null}
+
+                            {window.location.href == "http://localhost:3000/request/outgoing" || window.location.href == "http://localhost:3001/request/outgoing" ?
+                                <>
+                                    <Button type="button" onClick={deleteOutgoingRequest}> Delete </Button>
+                                </> : null}
                         </Col>
                     </Row>
                 </CardBody>

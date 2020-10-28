@@ -230,6 +230,8 @@ namespace PuzzlePost.Repositories
             }
         }
 
+        //getting the puzzles that the user will see in their puzzle list that are not currently 
+        //being requested (not pending)
         public List<Puzzle> GetAllUserPuzzlesInProgressById(int id)
         {
             using (var conn = Connection)
@@ -238,19 +240,22 @@ namespace PuzzlePost.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                      SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
+                     SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
                       p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
 
                       c.Id AS CategoryId, c.Name,
     
-                      up.DisplayName, up.ImageLocation
+                      up.DisplayName, up.ImageLocation,
+
+                      r.StatusId
 
                       FROM Puzzle p
                       LEFT JOIN Category c 
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 0
+                      LEFT JOIN Request r ON r.PuzzleId = p.Id
+                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 0  AND r.StatusId != 1 
                       ORDER BY CreateDateTime DESC
                        ";
 

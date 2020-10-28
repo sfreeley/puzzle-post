@@ -8,7 +8,6 @@ const PuzzleList = () => {
     const { getAllActivePuzzles, activePuzzles } = useContext(PuzzleContext);
 
     useEffect(() => {
-
         getAllActivePuzzles();
     }, []);
 
