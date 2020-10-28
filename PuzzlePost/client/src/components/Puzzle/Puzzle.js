@@ -43,9 +43,9 @@ const Puzzle = ({ puzzle }) => {
                             {puzzle.pieces} pieces
                             <br />
                             {/* need to fix this */}
-                            {/* {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ? */}
-                            <div>Notes : {puzzle.notes}</div> : null
-                            {/* } */}
+                            {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
+                                <div>Notes : {puzzle.notes}</div> : null
+                            }
 
                         </div>
                     </Col>

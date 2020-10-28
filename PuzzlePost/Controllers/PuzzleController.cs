@@ -188,7 +188,12 @@ namespace PuzzlePost.Controllers
         [HttpPut("delete/{id}")]
         public IActionResult SoftDelete(int id)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
             _puzzleRepository.DeletePuzzle(id);
+            History history = _historyRepository.GetHistoryByIds(userId, id);
+            history.EndDateOwnership = DateTime.Now;
+            _historyRepository.UpdateHistory(history);
             return NoContent();
         }
 

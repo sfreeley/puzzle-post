@@ -1,18 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-    Card, CardImg, CardBody, Row, Button, Col,
-    Modal, ModalHeader, ModalBody, ModalFooter,
-    Form, FormGroup, Label, Input
-} from "reactstrap";
+import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { RequestContext } from "../../providers/RequestProvider";
+import PuzzleRejection from "../Puzzle/PuzzleRejection";
 
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { getAllPendingRequests, getAllOutgoingRequests, postRejection, deleteRequest } = useContext(RequestContext);
+    const { deleteRequest } = useContext(RequestContext);
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -27,33 +24,15 @@ const Request = ({ request }) => {
         pieces: request.puzzle.pieces,
         notes: request.puzzle.notes
     })
-    console.log(confirmPuzzle);
 
-    const [rejection, setRejection] = useState({
-        puzzleId: request.puzzleId,
-        requestingPuzzleUserId: request.requestingPuzzleUserId,
-        content: ""
-    })
 
     const updateOwner = (e) => {
-        e.prevenDefault();
+        e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
+        //REFRESH!
         // getAllPendingRequests(parseInt(activeUser.id));
     }
 
-    const handleFieldChange = (e) => {
-        const stateToChange = { ...rejection };
-        stateToChange[e.target.id] = e.target.value;
-        setRejection(stateToChange);
-
-    };
-
-    const rejectRequest = () => {
-        postRejection(rejection);
-        toggle();
-        // getAllPendingRequests(parseInt(activeUser.id));
-
-    }
 
     const deleteOutgoingRequest = (e) => {
         e.prevenDefault();
@@ -63,6 +42,7 @@ const Request = ({ request }) => {
 
     return (
         <>
+            <PuzzleRejection toggle={toggle} modal={modal} request={request} />
             <Card className="m-4">
                 <Row margin="m-4">
                     <Col sm="4">
@@ -102,31 +82,6 @@ const Request = ({ request }) => {
                 </CardBody>
             </Card>
 
-            <div>
-
-                <Modal isOpen={modal} toggle={toggle} className="rejection">
-                    <ModalHeader toggle={toggle}>Enter a Reason (if you wish)</ModalHeader>
-                    <ModalBody>
-                        <Form className="rejectionForm">
-                            <FormGroup>
-                                <Label className="rejectionContentLabel">Message:</Label>
-                                <Input
-                                    className="rejectionContent"
-                                    onChange={handleFieldChange}
-                                    type="textarea"
-                                    id="content"
-                                    value={rejection.content}
-                                    placeholder="Enter Your Rejection Message Here"
-                                />
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={rejectRequest}>Send Rejection</Button>{' '}
-                        <Button color="secondary" onClick={toggle}>Just Kidding</Button>
-                    </ModalFooter>
-                </Modal>
-            </div>
 
 
         </>

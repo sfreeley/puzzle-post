@@ -9,7 +9,6 @@ const IncomingRequestList = () => {
     const { getAllPendingRequests, pendingRequests } = useContext(RequestContext);
     const { activeUser } = useContext(UserProfileContext);
 
-
     useEffect(() => {
         getAllPendingRequests(parseInt(activeUser.id));
     }, []);
