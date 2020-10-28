@@ -36,9 +36,9 @@ const Request = ({ request }) => {
         content: ""
     })
 
-    const updateOwner = () => {
+    const updateOwner = (e) => {
+        e.prevenDefault();
         updatePuzzleOwner(confirmPuzzle);
-
     }
 
     const handleFieldChange = (e) => {
@@ -50,13 +50,14 @@ const Request = ({ request }) => {
 
     const rejectRequest = () => {
         postRejection(rejection);
-        getAllPendingRequests(parseInt(activeUser.id));
+        // getAllPendingRequests(parseInt(activeUser.id));
 
     }
 
-    const deleteOutgoingRequest = () => {
+    const deleteOutgoingRequest = (e) => {
+        e.prevenDefault();
         deleteRequest(request.id);
-        getAllOutgoingRequests(parseInt(activeUser.id));
+        // getAllOutgoingRequests(parseInt(activeUser.id));
     }
 
     return (
@@ -83,7 +84,7 @@ const Request = ({ request }) => {
                 <CardBody>
                     <Row>
                         <Col sm="4">
-                            {request.senderOfPuzzleUserId == activeUser.id ?
+                            {request.senderOfPuzzleUserId === parseInt(activeUser.id) ?
                                 <>
                                     <Button type="button" onClick={updateOwner}>Confirm</Button>
 
@@ -91,7 +92,7 @@ const Request = ({ request }) => {
                                 </> :
                                 null}
 
-                            {request.requestingPuzzleUserId == activeUser.id ?
+                            {request.requestingPuzzleUserId === parseInt(activeUser.id) ?
                                 <>
                                     <Button type="button" onClick={deleteOutgoingRequest}> Delete </Button>
                                 </> : null}

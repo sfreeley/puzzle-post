@@ -19,7 +19,8 @@ const Puzzle = ({ puzzle }) => {
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
-    const reactivateAPuzzle = () => {
+    const reactivateAPuzzle = (e) => {
+        e.preventDefault();
         reactivatePuzzle(puzzle.id);
         history.push("/puzzle");
     }
@@ -36,7 +37,8 @@ const Puzzle = ({ puzzle }) => {
         setNewRequest(stateToChange);
     };
 
-    const sendRequestDeactivatePuzzle = () => {
+    const sendRequestDeactivatePuzzle = (e) => {
+        e.preventDefault();
         addRequestDeactivatePuzzle(newRequest);
         history.push("/request/outgoing");
     }
@@ -57,7 +59,8 @@ const Puzzle = ({ puzzle }) => {
                             <br />
                             {puzzle.pieces} pieces
                             <br />
-                            {(window.location.href == `http://localhost:3000/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.href == `http://localhost:3001/puzzle/details/${puzzle.id}` && puzzle.notes != null) ?
+                            {/* need to fix this */}
+                            {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
                                 <div>Notes : {puzzle.notes}</div> : null
                             }
 
@@ -89,13 +92,13 @@ const Puzzle = ({ puzzle }) => {
                                 <Button type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
                         </Col>
 
-                        {window.location.href == "http://localhost:3000/puzzle/user" ?
+                        {/* {window.location.pathname == "/puzzle/user" ?
                             puzzle.histories && puzzle.histories.map((history) => {
 
                                 return (<p key={history.id}>{history.userProfile.displayName}: {currentDateTime(history.startDateOwnership)} to {history.endDateOwnership != null ? currentDateTime(history.endDateOwnership) : "present"}</p>)
 
                             }) : null
-                        }
+                        } */}
 
                     </Row>
                 </CardBody>
