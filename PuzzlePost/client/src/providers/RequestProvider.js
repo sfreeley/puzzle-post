@@ -31,8 +31,7 @@ export function RequestProvider(props) {
     };
 
     const addRequestDeactivatePuzzle = (request) => {
-
-        getToken().then((token) => fetch("/api/request/requestwithdeactivation", {
+        return getToken().then((token) => fetch("/api/request/requestwithdeactivation", {
             method: "POST",
             headers: {
                 Authorization: `Bearer ${token}`,
@@ -44,9 +43,33 @@ export function RequestProvider(props) {
         )
     };
 
+    const postRejection = (request) => {
+        return getToken().then((token) => fetch("/api/request/rejection", {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(request)
+        })
+
+        )
+    };
+
+    const deleteRequest = (id) => {
+        return getToken().then((token) => {
+            fetch(`/api/request/${id}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        })
+    }
+
     return (
 
-        <RequestContext.Provider value={{ addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
+        <RequestContext.Provider value={{ deleteRequest, postRejection, addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
             {props.children}
         </RequestContext.Provider>
     );

@@ -1,5 +1,9 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
+import {
+    Card, CardImg, CardBody, Row, Button, Col,
+    Modal, ModalHeader, ModalBody, ModalFooter,
+    Form, FormGroup, Label, Input
+} from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { NavLink } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
@@ -9,7 +13,11 @@ import { RequestContext } from "../../providers/RequestProvider";
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { getAllPendingRequests } = useContext(RequestContext);
+    const { getAllPendingRequests, getAllOutgoingRequests, postRejection, deleteRequest } = useContext(RequestContext);
+
+    const [modal, setModal] = useState(false);
+    const toggle = () => setModal(!modal);
+
     //setting updating puzzle object into state; need to give value to currentOwnerId to pass into update owner function (will be the requester of the puzzle who will be new owner)
     const [confirmPuzzle, setConfirmPuzzle] = useState({
         id: request.puzzleId,
@@ -22,10 +30,34 @@ const Request = ({ request }) => {
     })
     console.log(confirmPuzzle);
 
-    const updateOwner = () => {
-        updatePuzzleOwner(confirmPuzzle);
-        getAllPendingRequests(parseInt(activeUser.id));
+    const [rejection, setRejection] = useState({
+        puzzleId: request.puzzleId,
+        requestingPuzzleUserId: request.requestingPuzzleUserId,
+        content: ""
+    })
 
+    const updateOwner = (e) => {
+        e.prevenDefault();
+        updatePuzzleOwner(confirmPuzzle);
+    }
+
+    const handleFieldChange = (e) => {
+        const stateToChange = { ...rejection };
+        stateToChange[e.target.id] = e.target.value;
+        setRejection(stateToChange);
+
+    };
+
+    const rejectRequest = () => {
+        postRejection(rejection);
+        // getAllPendingRequests(parseInt(activeUser.id));
+
+    }
+
+    const deleteOutgoingRequest = (e) => {
+        e.prevenDefault();
+        deleteRequest(request.id);
+        // getAllOutgoingRequests(parseInt(activeUser.id));
     }
 
     return (
@@ -52,17 +84,49 @@ const Request = ({ request }) => {
                 <CardBody>
                     <Row>
                         <Col sm="4">
-                            {(window.location.href == "http://localhost:3000/request/incoming" || window.location.href == "http://localhost:3001/request/incoming") ?
+                            {request.senderOfPuzzleUserId === parseInt(activeUser.id) ?
                                 <>
                                     <Button type="button" onClick={updateOwner}>Confirm</Button>
 
-                                    <Button>Deny</Button>
+                                    <Button type="button" onClick={toggle}>Deny</Button>
                                 </> :
                                 null}
+
+                            {request.requestingPuzzleUserId === parseInt(activeUser.id) ?
+                                <>
+                                    <Button type="button" onClick={deleteOutgoingRequest}> Delete </Button>
+                                </> : null}
                         </Col>
                     </Row>
                 </CardBody>
             </Card>
+
+            <div>
+
+                <Modal isOpen={modal} toggle={toggle} className="rejection">
+                    <ModalHeader toggle={toggle}>Enter a Reason (if you wish)</ModalHeader>
+                    <ModalBody>
+                        <Form className="rejectionForm">
+                            <FormGroup>
+                                <Label className="rejectionContentLabel">Message:</Label>
+                                <Input
+                                    className="rejectionContent"
+                                    onChange={handleFieldChange}
+                                    type="textarea"
+                                    id="content"
+                                    value={rejection.content}
+                                    placeholder="Enter Your Rejection Message Here"
+                                />
+                            </FormGroup>
+                        </Form>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="primary" onClick={rejectRequest}>Send Rejection</Button>{' '}
+                        <Button color="secondary" onClick={toggle}>Just Kidding</Button>
+                    </ModalFooter>
+                </Modal>
+            </div>
+
 
         </>
     )

@@ -78,8 +78,6 @@ namespace PuzzlePost.Repositories
                         };
 
                         requests.Add(request);
-
-
                     }
                     reader.Close();
                     return requests;
@@ -160,7 +158,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //getting single Request by request id
+        //getting single Request by puzzle id
         public Request GetRequestByPuzzleId(int id)
         {
             using (var conn = Connection)
@@ -236,6 +234,31 @@ namespace PuzzlePost.Repositories
             }
         }
 
+        //method to post new request, but will be for rejection of request where status id will be 3 = rejected
+        public void PostRejection(Request request)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Request (PuzzleId, RequestingPuzzleUserId, SenderOfPuzzleUserId, Content, CreateDateTime, StatusId)
+                        OUTPUT INSERTED.ID
+                        VALUES (
+                            @PuzzleId, @RequestingPuzzleUserId, @SenderOfPuzzleUserId, @Content, @CreateDateTime, @StatusId)";
+                    cmd.Parameters.AddWithValue("@PuzzleId", request.PuzzleId);
+                    cmd.Parameters.AddWithValue("@RequestingPuzzleUserId", request.RequestingPuzzleUserId);
+                    cmd.Parameters.AddWithValue("@SenderOfPuzzleUserId", request.SenderOfPuzzleUserId);
+                    cmd.Parameters.AddWithValue("@Content", request.Content);
+                    cmd.Parameters.AddWithValue("@CreateDateTime", request.CreateDateTime);
+                    cmd.Parameters.AddWithValue("@StatusId", 3);
+
+                    request.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+
         //this will be used when current owner of puzzle confirms
         //to share with the person requesting the puzzle
         //the status of the request to id of 2 which is accepted (disappear from pending incoming requests)
@@ -260,5 +283,47 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+
+        public void UpdateToReject(Request request)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Request
+                            SET  
+                               StatusId = @statusId
+                            WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@statusId", 3);
+                    cmd.Parameters.AddWithValue("@id", request.Id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeleteRequest(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                 DELETE FROM Request
+                                 WHERE Id = @id";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+        }
+
     }
 }

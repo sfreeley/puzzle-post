@@ -19,9 +19,11 @@ const IncomingRequestList = () => {
             <div className="row justify-content-center">
                 <h5>Pending Puzzle Requests</h5>
                 <div className="cards-column">
-                    {pendingRequests.map((request) => {
-                        return <Request key={request.id} request={request} />
-                    })}
+                    {pendingRequests.length === 0 ? <p>You don't have any new pending puzzle requests</p> :
+                        pendingRequests && pendingRequests.map((request) => {
+                            return <Request key={request.id} request={request} />
+                        })
+                    }
                 </div>
             </div>
         </div>

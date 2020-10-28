@@ -13,17 +13,17 @@ import { RequestContext } from "../../providers/RequestProvider";
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { reactivatePuzzle } = useContext(PuzzleContext);
+    const { addRequestDeactivatePuzzle } = useContext(RequestContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
-    const reactivateAPuzzle = () => {
+    const reactivateAPuzzle = (e) => {
+        e.preventDefault();
         reactivatePuzzle(puzzle.id);
         history.push("/puzzle");
     }
-
-    const { addRequestDeactivatePuzzle } = useContext(RequestContext);
 
     const [newRequest, setNewRequest] = useState({
         puzzleId: puzzle.id,
@@ -35,10 +35,10 @@ const Puzzle = ({ puzzle }) => {
         const stateToChange = { ...newRequest };
         stateToChange[e.target.id] = e.target.value;
         setNewRequest(stateToChange);
-
     };
 
-    const sendRequestDeactivatePuzzle = () => {
+    const sendRequestDeactivatePuzzle = (e) => {
+        e.preventDefault();
         addRequestDeactivatePuzzle(newRequest);
         history.push("/request/outgoing");
     }
@@ -48,7 +48,7 @@ const Puzzle = ({ puzzle }) => {
             <Card className="m-4">
                 <Row margin="m-4">
                     <Col sm="4">
-                        <p className="text-left px-2">Posted by: {puzzle.userProfile.displayName}
+                        <p className="text-left px-2">Shared by: {puzzle.userProfile.displayName}
                             <br />
                         on {currentDateTime(puzzle.createDateTime)}</p>
                     </Col>
@@ -57,9 +57,12 @@ const Puzzle = ({ puzzle }) => {
                             <br />
                             {puzzle.manufacturer}
                             <br />
-                            {puzzle.pieces}
+                            {puzzle.pieces} pieces
                             <br />
-                            {puzzle.notes != null ? <div>Notes: {puzzle.notes}</div> : null}
+                            {/* need to fix this */}
+                            {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
+                                <div>Notes : {puzzle.notes}</div> : null
+                            }
 
                         </div>
                     </Col>
@@ -74,10 +77,12 @@ const Puzzle = ({ puzzle }) => {
                         <Col sm="4">
                             <NavLink to={`/puzzle/details/${puzzle.id}`}><Button>Details</Button></NavLink>
 
-                            <>
-                                <NavLink to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></NavLink>
-                                <NavLink to={`puzzle/delete/${puzzle.id}`}><Button>Delete</Button></NavLink>
-                            </>
+                            {parseInt(activeUser.id) == puzzle.currentOwnerId ?
+                                <>
+                                    <NavLink to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></NavLink>
+                                    <NavLink to={`puzzle/delete/${puzzle.id}`}><Button>Delete</Button></NavLink>
+                                </> : null
+                            }
 
                             {/* this Request button only shows if user is not the current owner of the puzzle */}
                             {parseInt(activeUser.id) !== puzzle.currentOwnerId ?
@@ -87,13 +92,13 @@ const Puzzle = ({ puzzle }) => {
                                 <Button type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
                         </Col>
 
-                        {window.location.href == "http://localhost:3000/puzzle/user" ?
+                        {/* {window.location.pathname == "/puzzle/user" ?
                             puzzle.histories && puzzle.histories.map((history) => {
 
                                 return (<p key={history.id}>{history.userProfile.displayName}: {currentDateTime(history.startDateOwnership)} to {history.endDateOwnership != null ? currentDateTime(history.endDateOwnership) : "present"}</p>)
 
                             }) : null
-                        }
+                        } */}
 
                     </Row>
                 </CardBody>
