@@ -13,6 +13,18 @@ export function PuzzleProvider(props) {
     const [aPuzzle, setAPuzzle] = useState({ category: {} });
     const [puzzleWithProfile, setPuzzleWithProfile] = useState({ userProfile: {} });
 
+    const searchActivePuzzles = (searchInput, isSortDesc) => {
+        return getToken().then((token) => {
+            fetch(`/api/puzzle/search?q=${searchInput}&sortDesc=${isSortDesc}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then((res) => res.json()).then(resp => setActivePuzzles(resp));
+        })
+
+    }
+
     const getAllActivePuzzles = () => {
         return getToken().then((token) => {
             fetch("/api/puzzle/active", {
@@ -172,7 +184,7 @@ export function PuzzleProvider(props) {
 
     return (
 
-        <PuzzleContext.Provider value={{ deletePuzzle, updatePuzzleOwner, getPuzzleWithUserProfile, puzzleWithProfile, deactivatePuzzle, reactivatePuzzle, aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
+        <PuzzleContext.Provider value={{ searchActivePuzzles, deletePuzzle, updatePuzzleOwner, getPuzzleWithUserProfile, puzzleWithProfile, deactivatePuzzle, reactivatePuzzle, aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
             {props.children}
         </PuzzleContext.Provider>
     );

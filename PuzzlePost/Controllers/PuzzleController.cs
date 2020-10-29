@@ -197,6 +197,12 @@ namespace PuzzlePost.Controllers
             return NoContent();
         }
 
+        [HttpGet("search")]
+        public IActionResult Search(string q, bool sortDesc)
+        {
+            return Ok(_puzzleRepository.SearchActivePuzzles(q, sortDesc));
+        }
+
         //Firebase
         private UserProfile GetCurrentUserProfile()
         {
