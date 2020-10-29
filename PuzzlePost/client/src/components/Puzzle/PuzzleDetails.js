@@ -35,7 +35,7 @@ const PuzzleDetails = () => {
 
 
     const [newComment, setNewComment] = useState({
-        puzzleId: parseInt(puzzle.id),
+        puzzleId: parseInt(id),
         title: "",
         content: ""
     })
@@ -55,7 +55,7 @@ const PuzzleDetails = () => {
             addComment(newComment);
             setIsLoading(false);
             setNewComment({
-                puzzleId: "",
+                puzzleId: parseInt(id),
                 title: "",
                 content: ""
             })
@@ -67,7 +67,7 @@ const PuzzleDetails = () => {
 
     const cancelAdd = () => {
         setNewComment({
-            puzzleId: "",
+            puzzleId: parseInt(id),
             title: "",
             content: ""
         })

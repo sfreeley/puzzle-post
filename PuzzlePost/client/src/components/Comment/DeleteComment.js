@@ -6,13 +6,12 @@ import { CommentContext } from "../../providers/CommentProvider";
 
 const DeletePuzzle = ({ modal, toggle, comment }) => {
     const { deleteComment, getAllCommentsForPuzzle } = useContext(CommentContext);
-    const history = useHistory();
 
     useEffect(() => {
         getAllCommentsForPuzzle(comment.puzzleId);
     }, [])
-    const deleteAComment = () => {
 
+    const deleteAComment = () => {
         deleteComment(comment.id);
         getAllCommentsForPuzzle(comment.puzzleId)
 
