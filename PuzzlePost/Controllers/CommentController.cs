@@ -80,6 +80,15 @@ namespace PuzzlePost.Controllers
             return NoContent();
         }
 
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            _commentRepository.DeleteComment(id);
+            //return status 204
+            return NoContent();
+        }
+
         //Firebase
         private UserProfile GetCurrentUserProfile()
         {

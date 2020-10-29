@@ -5,10 +5,10 @@ namespace PuzzlePost.Repositories
 {
     public interface ICommentRepository
     {
-        //List<Comment> GetAllComments();
         List<Comment> GetAllCommentsByPuzzle(int id);
         void AddComment(Comment comment);
         Comment GetCommentById(int id);
         void UpdateComment(Comment comment);
+        void DeleteComment(int id);
     }
 }

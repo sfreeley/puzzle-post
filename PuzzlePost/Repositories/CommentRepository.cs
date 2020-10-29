@@ -72,7 +72,7 @@ namespace PuzzlePost.Repositories
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                     Name = reader.GetString(reader.GetOrdinal("Name"))
-                                }   
+                                }
                             },
                             UserProfile = new UserProfile
                             {
@@ -166,7 +166,7 @@ namespace PuzzlePost.Repositories
                                 Title= @subject, 
                                 Content = @Content
                             WHERE Id = @id";
- 
+
                     cmd.Parameters.AddWithValue("@subject", comment.Title);
                     cmd.Parameters.AddWithValue("@content", comment.Content);
                     cmd.Parameters.AddWithValue("@id", comment.Id);
@@ -176,6 +176,25 @@ namespace PuzzlePost.Repositories
             }
         }
 
+        public void DeleteComment(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                                 DELETE FROM Comment
+                                 WHERE Id = @id";
 
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+
+                }
+            }
+
+
+        }
     }
 }

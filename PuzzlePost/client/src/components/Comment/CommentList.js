@@ -1,12 +1,13 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CommentContext } from "../../providers/CommentProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import Comment from "./Comment";
 import { Col, Row, Button } from "reactstrap";
 import { Link, useParams } from "react-router-dom";
 
-const CommentList = () => {
-    const { allComments, getAllCommentsForPuzzle } = useContext(CommentContext);
+
+const CommentList = ({ }) => {
+    const { allComments, getAllCommentsForPuzzle, deleteComment, getCommentById, comment } = useContext(CommentContext);
     const { getPuzzleWithoutHistoryById, aPuzzle } = useContext(PuzzleContext);
     const { id } = useParams();
 
@@ -17,6 +18,7 @@ const CommentList = () => {
 
     return (
         <>
+
             <h5> Comments for <strong><em>{aPuzzle.title}</em></strong></h5>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
                 <Row className="justify-content-center">

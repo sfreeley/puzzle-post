@@ -66,25 +66,22 @@ export function CommentProvider(props) {
                 body: JSON.stringify(comment)
             })
         })
+    };
+
+    const deleteComment = (commentId) => {
+        return getToken().then((token) => {
+            fetch(`/api/comment/${commentId}`, {
+                method: "DELETE",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+        })
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     return (
 
-        <CommentContext.Provider value={{ getAllCommentsForPuzzle, allComments, getComments, comments, addComment, editComment, getCommentById, comment }}>
+        <CommentContext.Provider value={{ getAllCommentsForPuzzle, allComments, getComments, comments, addComment, editComment, getCommentById, comment, deleteComment }}>
             {props.children}
         </CommentContext.Provider>
     );

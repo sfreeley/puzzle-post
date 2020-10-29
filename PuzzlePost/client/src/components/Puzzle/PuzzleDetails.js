@@ -9,15 +9,18 @@ import RequestPuzzle from "./RequestPuzzle";
 import CommentList from "../Comment/CommentList";
 import AddComment from "../Comment/AddComment";
 
+
+
 const PuzzleDetails = () => {
     const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile } = useContext(PuzzleContext);
-    const { addComment, getAllCommentsForPuzzle } = useContext(CommentContext);
+    const { addComment, getAllCommentsForPuzzle, deleteComment } = useContext(CommentContext);
     const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
 
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+
     const [openForm, setOpenForm] = useState(true);
     const toggleAdd = () => setOpenForm(!openForm);
     const [isLoading, setIsLoading] = useState(false)
@@ -28,6 +31,8 @@ const PuzzleDetails = () => {
         getAllCommentsForPuzzle(id);
 
     }, [])
+
+
 
     const [newComment, setNewComment] = useState({
         puzzleId: parseInt(puzzle.id),
@@ -69,10 +74,14 @@ const PuzzleDetails = () => {
         toggleAdd();
     }
 
+
+
+
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
             <Button onClick={toggleAdd}>Add Comment</Button>{' '}
+
             <AddComment cancelAdd={cancelAdd} newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
 
             {puzzle &&
@@ -116,6 +125,7 @@ const PuzzleDetails = () => {
             }
 
             <div><CommentList /></div>
+
 
         </>
 
