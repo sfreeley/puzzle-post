@@ -2,8 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { RequestContext } from "../../providers/RequestProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import Request from "./Request";
-import { Button } from "reactstrap";
-import { Link } from "react-router-dom";
 
 const OutgoingRequestList = () => {
     const { getAllOutgoingRequests, outgoingRequests } = useContext(RequestContext);

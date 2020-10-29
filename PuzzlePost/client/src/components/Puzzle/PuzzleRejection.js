@@ -1,14 +1,20 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from "reactstrap";
 import { RequestContext } from "../../providers/RequestProvider";
+import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 
 const PuzzleRejection = ({ modal, toggle, request }) => {
-    const { postRejection } = useContext(RequestContext);
+    const { activeUser } = useContext(UserProfileContext);
+    const { postRejection, getAllPendingRequests } = useContext(RequestContext);
     const [rejection, setRejection] = useState({
         puzzleId: request.puzzleId,
         requestingPuzzleUserId: request.requestingPuzzleUserId,
         content: ""
+    })
+
+    useEffect(() => {
+        getAllPendingRequests(parseInt(activeUser.id));
     })
 
     const handleFieldChange = (e) => {
@@ -20,7 +26,7 @@ const PuzzleRejection = ({ modal, toggle, request }) => {
     const rejectRequest = () => {
         postRejection(rejection);
         toggle();
-        // getAllPendingRequests(parseInt(activeUser.id));
+        getAllPendingRequests(parseInt(activeUser.id));
     }
 
     return (

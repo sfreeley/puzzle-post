@@ -46,7 +46,6 @@ const Puzzle = ({ puzzle }) => {
                             {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
                                 <div>Notes : {puzzle.notes}</div> : null
                             }
-
                         </div>
                     </Col>
 
