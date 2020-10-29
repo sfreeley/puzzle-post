@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PuzzlePost.Models;
@@ -10,6 +11,7 @@ using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PuzzleController : ControllerBase
@@ -181,6 +183,24 @@ namespace PuzzlePost.Controllers
             _historyRepository.Add(newHistory);
           
             return NoContent();
+        }
+
+        [HttpPut("delete/{id}")]
+        public IActionResult SoftDelete(int id)
+        {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+            _puzzleRepository.DeletePuzzle(id);
+            History history = _historyRepository.GetHistoryByIds(userId, id);
+            history.EndDateOwnership = DateTime.Now;
+            _historyRepository.UpdateHistory(history);
+            return NoContent();
+        }
+
+        [HttpGet("search")]
+        public IActionResult Search(string q)
+        {
+            return Ok(_puzzleRepository.SearchActivePuzzles(q));
         }
 
         //Firebase

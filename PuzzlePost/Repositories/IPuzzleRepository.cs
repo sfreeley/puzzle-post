@@ -17,5 +17,7 @@ namespace PuzzlePost.Repositories
         Puzzle GetPuzzleWithoutHistoryById(int id);
         void ReactivatePuzzle(int id);
         void DeactivatePuzzle(int id);
+        void DeletePuzzle(int id);
+        List<Puzzle> SearchActivePuzzles(string criterion);
     }
 }

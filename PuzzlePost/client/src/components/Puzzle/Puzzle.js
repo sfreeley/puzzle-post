@@ -1,50 +1,33 @@
 import React, { useContext, useState } from "react";
 import {
-    Card, CardImg, CardBody, Row, Button, Col,
-    Modal, ModalHeader, ModalBody, ModalFooter,
-    Form, FormGroup, Label, Input
+    Card, CardImg, CardBody, Row, Button, Col
 } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
-import { NavLink, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { RequestContext } from "../../providers/RequestProvider";
+import DeletePuzzle from "./DeletePuzzle";
+import RequestPuzzle from "./RequestPuzzle";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { reactivatePuzzle } = useContext(PuzzleContext);
-    const { addRequestDeactivatePuzzle } = useContext(RequestContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+    const [deleteModal, setDeleteModal] = useState(false);
+    const toggleDelete = () => setDeleteModal(!deleteModal);
 
     const reactivateAPuzzle = (e) => {
         e.preventDefault();
-        reactivatePuzzle(puzzle.id);
-        history.push("/puzzle");
-    }
-
-    const [newRequest, setNewRequest] = useState({
-        puzzleId: puzzle.id,
-        senderOfPuzzleUserId: puzzle.currentOwnerId,
-        content: ""
-    })
-
-    const handleFieldChange = (e) => {
-        const stateToChange = { ...newRequest };
-        stateToChange[e.target.id] = e.target.value;
-        setNewRequest(stateToChange);
-    };
-
-    const sendRequestDeactivatePuzzle = (e) => {
-        e.preventDefault();
-        addRequestDeactivatePuzzle(newRequest);
-        history.push("/request/outgoing");
+        reactivatePuzzle(puzzle.id).then(() => history.push("/puzzle"));
     }
 
     return (
         <>
+            <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
+            <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} puzzle={puzzle} />
             <Card className="m-4">
                 <Row margin="m-4">
                     <Col sm="4">
@@ -63,7 +46,6 @@ const Puzzle = ({ puzzle }) => {
                             {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
                                 <div>Notes : {puzzle.notes}</div> : null
                             }
-
                         </div>
                     </Col>
 
@@ -75,12 +57,12 @@ const Puzzle = ({ puzzle }) => {
                 <CardBody>
                     <Row>
                         <Col sm="4">
-                            <NavLink to={`/puzzle/details/${puzzle.id}`}><Button>Details</Button></NavLink>
+                            <Link to={`/puzzle/details/${puzzle.id}`}><Button>Details</Button></Link>
 
                             {parseInt(activeUser.id) == puzzle.currentOwnerId ?
                                 <>
-                                    <NavLink to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></NavLink>
-                                    <NavLink to={`puzzle/delete/${puzzle.id}`}><Button>Delete</Button></NavLink>
+                                    <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
+                                    <Button onClick={toggleDelete}>Delete</Button>
                                 </> : null
                             }
 
@@ -103,33 +85,6 @@ const Puzzle = ({ puzzle }) => {
                     </Row>
                 </CardBody>
             </Card>
-
-            <div>
-
-                <Modal isOpen={modal} toggle={toggle} className="postRequest">
-                    <ModalHeader toggle={toggle}>Enter a Message (if you wish)</ModalHeader>
-                    <ModalBody>
-                        <Form className="postRequestForm">
-                            <FormGroup>
-                                <Label className="requestContentLabel">Message:</Label>
-                                <Input
-                                    className="editingPuzzle"
-                                    onChange={handleFieldChange}
-                                    type="textarea"
-                                    id="content"
-                                    value={newRequest.content}
-                                    placeholder="Enter Your Message Here"
-                                />
-                            </FormGroup>
-                        </Form>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button color="primary" onClick={sendRequestDeactivatePuzzle}>Send Request</Button>{' '}
-                        <Button color="secondary" onClick={toggle}>Cancel</Button>
-                    </ModalFooter>
-                </Modal>
-            </div>
-
         </>
     )
 

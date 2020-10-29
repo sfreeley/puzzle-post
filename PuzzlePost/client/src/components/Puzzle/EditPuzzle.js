@@ -9,14 +9,10 @@ const EditPuzzle = () => {
     const history = useHistory();
     const [editingPuzzle, setEditingPuzzle] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    // const [textarea, setTextArea] = useState(editingPuzzle.notes);
-
 
     useEffect(() => {
-
         categoriesForPuzzle();
         getPuzzleWithoutHistoryById(parseInt(id));
-
     }, [])
 
     useEffect(() => {
@@ -39,7 +35,6 @@ const EditPuzzle = () => {
 
     };
 
-    //edit puzzle
     const editAPuzzle = (e) => {
         e.preventDefault();
         setIsLoading(true);

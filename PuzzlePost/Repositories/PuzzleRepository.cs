@@ -24,7 +24,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
 
                       c.Id AS CategoryId, c.Name,
     
@@ -35,7 +35,7 @@ namespace PuzzlePost.Repositories
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      WHERE p.IsAvailable = 1
+                      WHERE p.IsAvailable = 1 AND p.IsDeleted = 0
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -57,6 +57,7 @@ namespace PuzzlePost.Repositories
                             Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
                             Notes = DbUtils.GetNullableString(reader, "Notes"),
                             IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                            IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
                             Category = new Category
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -76,6 +77,73 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+
+        public List<Puzzle> SearchActivePuzzles(string criterion)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    var sql = @"
+                      SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
+
+                      c.Id AS CategoryId, c.Name,
+    
+                      up.DisplayName, up.ImageLocation
+
+                      FROM Puzzle p
+                      LEFT JOIN Category c 
+                      ON p.CategoryId = c.Id
+                      LEFT JOIN UserProfile up
+                      ON p.CurrentOwnerId = up.Id
+                      WHERE p.IsAvailable = 1 AND p.IsDeleted = 0 
+                      AND p.Title LIKE @Criterion OR p.Pieces LIKE @Criterion OR up.DisplayName LIKE @Criterion OR p.Manufacturer LIKE @Criterion
+                      ORDER BY p.CreateDateTime DESC";
+                   
+                    cmd.CommandText = sql;
+                    DbUtils.AddParameter(cmd, "@Criterion", $"%{criterion}%");
+                    var reader = cmd.ExecuteReader();
+
+                    var puzzles = new List<Puzzle>();
+                    
+                    while (reader.Read())
+                    {
+
+                        puzzles.Add(new Puzzle()
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
+                            CategoryId = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                            CurrentOwnerId = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                            ImageLocation = DbUtils.GetNullableString(reader, "ImageLocation"),
+                            Pieces = reader.GetInt32(reader.GetOrdinal("Pieces")),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            Title = reader.GetString(reader.GetOrdinal("Title")),
+                            Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
+                            Notes = DbUtils.GetNullableString(reader, "Notes"),
+                            IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                            IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
+                            Category = new Category
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            },
+                            UserProfile = new UserProfile
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                                DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+                            }
+                        });
+                             
+                    }
+
+                    reader.Close();
+
+                    return puzzles;
+                }
+            }
+        }
         public void Add(Puzzle puzzle)
         {
             using (var conn = Connection)
@@ -86,11 +154,11 @@ namespace PuzzlePost.Repositories
                     cmd.CommandText = @"
                         INSERT INTO Puzzle (
                             CategoryId, CurrentOwnerId, ImageLocation, Pieces, CreateDateTime, Title,
-                            Manufacturer, Notes, IsAvailable )
+                            Manufacturer, Notes, IsAvailable, IsDeleted )
                         OUTPUT INSERTED.ID
                         VALUES (
                             @CategoryId, @CurrentOwnerId, @ImageLocation, @Pieces, @CreateDateTime, @Title, @Manufacturer, @Notes,
-                            @IsAvailable)";
+                            @IsAvailable, @IsDeleted)";
                     cmd.Parameters.AddWithValue("@CategoryId", puzzle.CategoryId);
                     cmd.Parameters.AddWithValue("@CurrentOwnerId", puzzle.CurrentOwnerId);
                     cmd.Parameters.AddWithValue("@ImageLocation", puzzle.ImageLocation);
@@ -100,8 +168,9 @@ namespace PuzzlePost.Repositories
                     cmd.Parameters.AddWithValue("@Manufacturer", puzzle.Manufacturer);
                     cmd.Parameters.AddWithValue("@Notes", DbUtils.ValueOrDBNull(puzzle.Notes));
                     cmd.Parameters.AddWithValue("@IsAvailable", 1);
+                    cmd.Parameters.AddWithValue("@IsDeleted", 0);
   
-                     puzzle.Id = (int)cmd.ExecuteScalar();
+                    puzzle.Id = (int)cmd.ExecuteScalar();
                 }
             }
         }
@@ -147,7 +216,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
 
                       c.Id AS CategoryId, c.Name,
 
@@ -158,7 +227,7 @@ namespace PuzzlePost.Repositories
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 1
+                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 1 AND p.IsDeleted = 0
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -187,6 +256,7 @@ namespace PuzzlePost.Repositories
                                 Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
                                 Notes = DbUtils.GetNullableString(reader, "Notes"),
                                 IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                                IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
                                 Category = new Category
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -238,7 +308,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                      SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
 
                       c.Id AS CategoryId, c.Name,
     
@@ -252,7 +322,7 @@ namespace PuzzlePost.Repositories
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
                       LEFT JOIN Request r ON r.PuzzleId = p.Id
-                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 0  AND r.StatusId != 1 
+                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 0 AND r.StatusId = 2 AND p.IsDeleted = 0
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -275,6 +345,7 @@ namespace PuzzlePost.Repositories
                             Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
                             Notes = DbUtils.GetNullableString(reader, "Notes"),
                             IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                            IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
                             Category = new Category
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -305,14 +376,14 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
 
                       c.Id AS CategoryId, c.Name
     
                       FROM Puzzle p
                       LEFT JOIN Category c 
                       ON p.CategoryId = c.Id
-                      WHERE p.Id = @id 
+                      WHERE p.Id = @id AND p.IsDeleted = 0
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -335,6 +406,7 @@ namespace PuzzlePost.Repositories
                             Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
                             Notes = DbUtils.GetNullableString(reader, "Notes"),
                             IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                            IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
                             Category = new Category
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -364,7 +436,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
 
                       c.Id AS CategoryId, c.Name,
 
@@ -379,7 +451,7 @@ namespace PuzzlePost.Repositories
                       ON h.PuzzleId = p.Id
                       LEFT JOIN UserProfile up
                       ON h.UserProfileId = up.Id
-                      WHERE p.Id = @id
+                      WHERE p.Id = @id AND p.IsDeleted = 0
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -404,6 +476,7 @@ namespace PuzzlePost.Repositories
                                 Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
                                 Notes = DbUtils.GetNullableString(reader, "Notes"),
                                 IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                                IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
                                 Category = new Category
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -449,7 +522,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
 
                       c.Id AS CategoryId, c.Name,
 
@@ -460,7 +533,7 @@ namespace PuzzlePost.Repositories
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      WHERE p.Id = @id
+                      WHERE p.Id = @id AND p.IsDeleted = 0
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -483,6 +556,7 @@ namespace PuzzlePost.Repositories
                             Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
                             Notes = DbUtils.GetNullableString(reader, "Notes"),
                             IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
+                            IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
                             Category = new Category
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -581,6 +655,29 @@ namespace PuzzlePost.Repositories
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@isAvailable", 0);
+                    cmd.Parameters.AddWithValue("@id", id);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+
+        public void DeletePuzzle(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            UPDATE Puzzle
+                            SET  
+                               IsAvailable = @isAvailable,
+                               IsDeleted = @isDeleted
+                            WHERE Id = @id";
+                    cmd.Parameters.AddWithValue("@isAvailable", 0);
+                    cmd.Parameters.AddWithValue("@isDeleted", 1);
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
