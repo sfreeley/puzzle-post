@@ -1,7 +1,7 @@
 import React from "react";
 import { Form, FormGroup, Label, Input, Button, Col } from "reactstrap";
 
-const AddComment = ({ newComment, openForm, handleFieldChange, addNewComment }) => {
+const AddComment = ({ newComment, openForm, handleFieldChange, addNewComment, cancelAdd }) => {
 
     return (
         <>
@@ -32,6 +32,9 @@ const AddComment = ({ newComment, openForm, handleFieldChange, addNewComment }) 
                     </FormGroup>
                     <Button block className="submitComment" type="button" color="secondary" onClick={addNewComment}>
                         {'Save Comment'}
+                    </Button>
+                    <Button block className="Cancel" type="button" color="secondary" onClick={cancelAdd}>
+                        {'Cancel'}
                     </Button>
                 </Form >
             </Col>

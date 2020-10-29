@@ -5,7 +5,6 @@ import Comment from "./Comment";
 import { Col, Row, Button } from "reactstrap";
 import { Link, useParams } from "react-router-dom";
 
-
 const CommentList = () => {
     const { allComments, getAllCommentsForPuzzle } = useContext(CommentContext);
     const { getPuzzleWithoutHistoryById, aPuzzle } = useContext(PuzzleContext);

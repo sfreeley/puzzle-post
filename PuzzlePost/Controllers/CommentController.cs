@@ -53,6 +53,33 @@ namespace PuzzlePost.Controllers
 
         }
 
+        //this will show individual comment by commentid
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+
+            Comment comment = _commentRepository.GetCommentById(id);
+            if (comment == null)
+            {
+                return NotFound();
+            }
+            return Ok(comment);
+
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Put(int id, Comment comment)
+        {
+            UserProfile userProfile = GetCurrentUserProfile();
+            if (userProfile.Id != comment.UserProfileId || id != comment.Id) 
+            {
+                return BadRequest();
+            }
+           
+            _commentRepository.UpdateComment(comment);
+            return NoContent();
+        }
+
         //Firebase
         private UserProfile GetCurrentUserProfile()
         {

@@ -7,6 +7,7 @@ export function CommentProvider(props) {
     const { getToken } = useContext(UserProfileContext);
     const [allComments, setAllComments] = useState([]);
     const [comments, setComments] = useState([]);
+    const [comment, setComment] = useState({})
 
     const getComments = () => {
         return getToken().then((token) => {
@@ -43,6 +44,30 @@ export function CommentProvider(props) {
         })
     };
 
+    const getCommentById = (commentId) => {
+        return getToken().then((token) => {
+            fetch(`/api/comment/${commentId}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(resp => resp.json()).then(setComment)
+        })
+    };
+
+    const editComment = (comment) => {
+        return getToken().then((token) => {
+            fetch(`/api/comment/${comment.id}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(comment)
+            })
+        })
+    }
+
 
 
 
@@ -59,7 +84,7 @@ export function CommentProvider(props) {
 
     return (
 
-        <CommentContext.Provider value={{ getAllCommentsForPuzzle, allComments, getComments, comments, addComment }}>
+        <CommentContext.Provider value={{ getAllCommentsForPuzzle, allComments, getComments, comments, addComment, editComment, getCommentById, comment }}>
             {props.children}
         </CommentContext.Provider>
     );

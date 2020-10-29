@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { Row, Col, CardImg, Card, CardBody, Button } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
-import { useHistory } from "react-router-dom";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { CommentContext } from "../../providers/CommentProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
@@ -10,12 +9,12 @@ import RequestPuzzle from "./RequestPuzzle";
 import CommentList from "../Comment/CommentList";
 import AddComment from "../Comment/AddComment";
 
-
 const PuzzleDetails = () => {
     const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile } = useContext(PuzzleContext);
     const { addComment, getAllCommentsForPuzzle } = useContext(CommentContext);
     const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
+
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -27,10 +26,11 @@ const PuzzleDetails = () => {
         getPuzzleById(id);
         getPuzzleWithUserProfile(id);
         getAllCommentsForPuzzle(id);
+
     }, [])
 
     const [newComment, setNewComment] = useState({
-        puzzleId: parseInt(id),
+        puzzleId: parseInt(puzzle.id),
         title: "",
         content: ""
     })
@@ -44,7 +44,7 @@ const PuzzleDetails = () => {
 
     const addNewComment = () => {
         if (newComment.subject === "" || newComment.content === "") {
-            alert("fill out both subject and content field");
+            alert(`${puzzleWithProfile.userProfile.displayName} you have to write something!`);
         } else {
             setIsLoading(true);
             addComment(newComment);
@@ -58,19 +58,28 @@ const PuzzleDetails = () => {
             getAllCommentsForPuzzle(id);
 
         }
+    };
+
+    const cancelAdd = () => {
+        setNewComment({
+            puzzleId: "",
+            title: "",
+            content: ""
+        })
+        toggleAdd();
     }
 
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
             <Button onClick={toggleAdd}>Add Comment</Button>{' '}
-            <AddComment newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
+            <AddComment cancelAdd={cancelAdd} newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
 
             {puzzle &&
                 <Card className="m-4">
                     <Row margin="m-4">
                         <Col sm="4">
-                            <p className="text-left px-2">Posted by: {puzzleWithProfile.userProfile.displayName}
+                            <p className="text-left px-2">Shared by: {puzzleWithProfile.userProfile.displayName}
                                 <br></br>
                         on {currentDateTime(puzzle.createDateTime)}</p>
                         </Col>

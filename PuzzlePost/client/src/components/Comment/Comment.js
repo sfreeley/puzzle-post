@@ -30,7 +30,7 @@ const Comment = ({ comment }) => {
                 {comment.userProfileId === parseInt(activeUser.id) ?
                     // fix thissssss
                     <>
-                        <Button onClick={() => history.push(`/comments/edit/${comment.id}`)}>Edit </Button>
+                        <Button onClick={() => history.push(`/comment/edit/${comment.id}`)}>Edit </Button>
                         <Button color="danger" onClick={() => history.push(`/comments/delete/${comment.id}`)}>Delete</Button>
                     </> : null
                 }
