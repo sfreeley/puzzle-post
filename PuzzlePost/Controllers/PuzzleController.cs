@@ -198,9 +198,9 @@ namespace PuzzlePost.Controllers
         }
 
         [HttpGet("search")]
-        public IActionResult Search(string q, bool sortDesc)
+        public IActionResult Search(string q)
         {
-            return Ok(_puzzleRepository.SearchActivePuzzles(q, sortDesc));
+            return Ok(_puzzleRepository.SearchActivePuzzles(q));
         }
 
         //Firebase

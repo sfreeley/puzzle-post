@@ -13,9 +13,9 @@ export function PuzzleProvider(props) {
     const [aPuzzle, setAPuzzle] = useState({ category: {} });
     const [puzzleWithProfile, setPuzzleWithProfile] = useState({ userProfile: {} });
 
-    const searchActivePuzzles = (searchInput, isSortDesc) => {
+    const searchActivePuzzles = (searchInput) => {
         return getToken().then((token) => {
-            fetch(`/api/puzzle/search?q=${searchInput}&sortDesc=${isSortDesc}`, {
+            fetch(`/api/puzzle/search?q=${searchInput}&sortDesc=true`, {
                 method: "GET",
                 headers: {
                     Authorization: `Bearer ${token}`

@@ -18,6 +18,6 @@ namespace PuzzlePost.Repositories
         void ReactivatePuzzle(int id);
         void DeactivatePuzzle(int id);
         void DeletePuzzle(int id);
-        List<Puzzle> SearchActivePuzzles(string criterion, bool sortDescending);
+        List<Puzzle> SearchActivePuzzles(string criterion);
     }
 }

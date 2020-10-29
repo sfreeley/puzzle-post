@@ -19,7 +19,7 @@ const UserPuzzleList = () => {
             <div className="row justify-content-center">
                 <Link to={"/puzzle/add"}><Button>New Puzzle</Button></Link>
                 <div className="cards-column">
-                    {userPuzzles.length === 0 ? <h4>You're not working on any puzzles</h4> :
+                    {inactiveUserPuzzles.length === 0 ? <h4>You're not working on any puzzles</h4> :
                         <>
                             <h5>Your In Progress Puzzles</h5>
                             {inactiveUserPuzzles.map((puzzle) => (

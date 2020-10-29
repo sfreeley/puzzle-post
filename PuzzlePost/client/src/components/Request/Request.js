@@ -9,10 +9,15 @@ import PuzzleRejection from "../Puzzle/PuzzleRejection";
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { deleteRequest } = useContext(RequestContext);
+    const { deleteRequest, getAllOutgoingRequests, getAllPendingRequests } = useContext(RequestContext);
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+
+    // useEffect(() => {
+    //     getAllOutgoingRequests(parseInt(activeUser.id));
+    //     getAllPendingRequests(parseInt(activeUser.id));
+    // }, [])
 
     //setting updating puzzle object into state; need to give value to currentOwnerId to pass into update owner function (will be the requester of the puzzle who will be new owner)
     const [confirmPuzzle, setConfirmPuzzle] = useState({
@@ -30,14 +35,15 @@ const Request = ({ request }) => {
         e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
         //REFRESH!
-        // getAllPendingRequests(parseInt(activeUser.id));
+        getAllPendingRequests(parseInt(activeUser.id));
     }
 
 
     const deleteOutgoingRequest = (e) => {
-        e.prevenDefault();
+        debugger
+        // e.preventDefault();
         deleteRequest(request.id);
-        // getAllOutgoingRequests(parseInt(activeUser.id));
+        getAllOutgoingRequests(parseInt(activeUser.id));
     }
 
     return (

@@ -78,7 +78,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        public List<Puzzle> SearchActivePuzzles(string criterion, bool sortDescending)
+        public List<Puzzle> SearchActivePuzzles(string criterion)
         {
             using (var conn = Connection)
             {
@@ -99,17 +99,9 @@ namespace PuzzlePost.Repositories
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
                       WHERE p.IsAvailable = 1 AND p.IsDeleted = 0 
-                      AND p.Title LIKE @Criterion OR p.Pieces LIKE @Criterion OR up.DisplayName LIKE @Criterion OR p.Manufacturer LIKE @Criterion ";
+                      AND p.Title LIKE @Criterion OR p.Pieces LIKE @Criterion OR up.DisplayName LIKE @Criterion OR p.Manufacturer LIKE @Criterion
+                      ORDER BY p.CreateDateTime DESC";
                    
-                    if (sortDescending)
-                    {
-                        sql += "ORDER BY p.CreateDateTime DESC";
-                    }
-                    else
-                    {
-                        sql += "ORDER BY p.CreateDateTime";
-                    }
-
                     cmd.CommandText = sql;
                     DbUtils.AddParameter(cmd, "@Criterion", $"%{criterion}%");
                     var reader = cmd.ExecuteReader();
@@ -144,7 +136,6 @@ namespace PuzzlePost.Repositories
                             }
                         });
                              
-
                     }
 
                     reader.Close();
@@ -331,7 +322,7 @@ namespace PuzzlePost.Repositories
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
                       LEFT JOIN Request r ON r.PuzzleId = p.Id
-                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 0 AND r.StatusId != 1 AND p.IsDeleted = 0
+                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 0 AND r.StatusId = 2 AND p.IsDeleted = 0
                       ORDER BY CreateDateTime DESC
                        ";
 

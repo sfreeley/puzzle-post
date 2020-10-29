@@ -5,18 +5,16 @@ import { PuzzleContext } from "../../providers/PuzzleProvider";
 const Search = () => {
     const { searchActivePuzzles, activePuzzles } = useContext(PuzzleContext);
     const [searchTerm, setSearchTerm] = useState("");
-    const [sortDesc, setSortDesc] = useState(true);
 
     const handleSearchField = (e) => {
         let searchInput = e.target
         let { name, value } = searchInput
         setSearchTerm(searchInput.value);
-        setSortDesc(sortDesc);
         console.log(name, value)
     }
 
     const searchPuzzles = () => {
-        searchActivePuzzles(searchTerm, sortDesc);
+        searchActivePuzzles(searchTerm);
         setSearchTerm("");
     }
 
