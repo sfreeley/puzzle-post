@@ -21,6 +21,7 @@ export default function ApplicationViews() {
                 {/* <Route path="/" exact>
                     {isLoggedIn ? <Hello /> : <Redirect to="/login" />}
                 </Route> */}
+
                 <Route path="/request/outgoing" exact>
                     {isLoggedIn ? <OutgoingRequestList /> : <Redirect to="/login" />}
                 </Route>

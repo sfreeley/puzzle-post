@@ -5,6 +5,7 @@ namespace PuzzlePost.Repositories
 {
     public interface ICommentRepository
     {
-        List<Comment> GetAllComments();
+        //List<Comment> GetAllComments();
+        List<Comment> GetAllCommentsByPuzzle(int id);
     }
 }

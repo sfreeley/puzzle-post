@@ -6,6 +6,7 @@ import { useHistory } from "react-router-dom";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import RequestPuzzle from "./RequestPuzzle";
+import CommentList from "../Comment/CommentList";
 
 
 const PuzzleDetails = () => {
@@ -56,7 +57,7 @@ const PuzzleDetails = () => {
                 </Card>
 
             }
-            {activeUser.id == puzzle.currentOwnerId ?
+            {parseInt(activeUser.id) === puzzle.currentOwnerId ?
                 <>
                     <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
                     <Link to={`/puzzle/delete/${puzzle.id}`}><Button>Delete</Button></Link>
@@ -64,6 +65,8 @@ const PuzzleDetails = () => {
                 </> : <Button onClick={toggle}>Request</Button>
 
             }
+
+            <div><CommentList /></div>
 
         </>
 
