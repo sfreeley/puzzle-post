@@ -10,7 +10,6 @@ const PuzzleList = () => {
 
     useEffect(() => {
         getAllActivePuzzles();
-
     }, []);
 
     return (

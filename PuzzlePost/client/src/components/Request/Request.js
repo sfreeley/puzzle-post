@@ -34,8 +34,7 @@ const Request = ({ request }) => {
     const updateOwner = (e) => {
         e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
-        //REFRESH!
-        getAllPendingRequests(parseInt(activeUser.id));
+        setConfirmPuzzle()
     }
 
 
@@ -43,7 +42,7 @@ const Request = ({ request }) => {
         debugger
         // e.preventDefault();
         deleteRequest(request.id);
-        getAllOutgoingRequests(parseInt(activeUser.id));
+
     }
 
     return (
