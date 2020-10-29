@@ -4,28 +4,68 @@ import { Row, Col, CardImg, Card, CardBody, Button } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { useHistory } from "react-router-dom";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
+import { CommentContext } from "../../providers/CommentProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import RequestPuzzle from "./RequestPuzzle";
 import CommentList from "../Comment/CommentList";
+import AddComment from "../Comment/AddComment";
 
 
 const PuzzleDetails = () => {
     const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile } = useContext(PuzzleContext);
+    const { addComment, getAllCommentsForPuzzle } = useContext(CommentContext);
     const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
-    const history = useHistory();
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+    const [openForm, setOpenForm] = useState(true);
+    const toggleAdd = () => setOpenForm(!openForm);
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         getPuzzleById(id);
         getPuzzleWithUserProfile(id);
+        getAllCommentsForPuzzle(id);
     }, [])
+
+    const [newComment, setNewComment] = useState({
+        puzzleId: parseInt(id),
+        title: "",
+        content: ""
+    })
+
+    const handleFieldChange = (e) => {
+        const stateToChange = { ...newComment };
+        stateToChange[e.target.id] = e.target.value;
+        setNewComment(stateToChange);
+    };
+
+
+    const addNewComment = () => {
+        if (newComment.subject === "" || newComment.content === "") {
+            alert("fill out both subject and content field");
+        } else {
+            setIsLoading(true);
+            addComment(newComment);
+            setIsLoading(false);
+            setNewComment({
+                puzzleId: "",
+                title: "",
+                content: ""
+            })
+            toggleAdd();
+            getAllCommentsForPuzzle(id);
+
+        }
+    }
 
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
+            <Button onClick={toggleAdd}>Add Comment</Button>{' '}
+            <AddComment newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
+
             {puzzle &&
                 <Card className="m-4">
                     <Row margin="m-4">

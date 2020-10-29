@@ -89,61 +89,29 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //public List<Comment> GetAllCommentsByPuzzleId(int id)
-        //{
-        //    using (var conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (var cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //                SELECT c.Id, c.PuzzleId, c.UserProfileId, c.Title, c.Content, c.CreateDateTime, 
+        public void AddComment(Comment comment)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"INSERT INTO Comment (PuzzleId, UserProfileId, Title, Content, CreateDateTime)
+                                        OUTPUT INSERTED.ID
+                                        VALUES (@puzzleId, @userProfileId, @title, @content, @createDateTime)";
 
-                        
-        //                FROM Comment c
-        //                JOIN Puzzle p 
-        //                ON c.PuzzleId = p.Id
-        //                JOIN UserProfile u
-        //                ON c.UserProfileId = u.Id
-        //                WHERE c.PuzzleId = @id
-        //                ORDER BY CreateDateTime DESC
-        //               ";
-        //            cmd.Parameters.AddWithValue("@id", id);
+                    cmd.Parameters.AddWithValue("@puzzleId", comment.PuzzleId);
+                    cmd.Parameters.AddWithValue("@userProfileId", comment.UserProfileId);
+                    cmd.Parameters.AddWithValue("@title", comment.Title);
+                    cmd.Parameters.AddWithValue("@content", comment.Content);
+                    cmd.Parameters.AddWithValue("@createDateTime", comment.CreateDateTime);
+                    int id = (int)cmd.ExecuteScalar();
 
-        //            var comments = new List<Comment>();
+                    comment.Id = id;
+                }
+            }
+        }
 
-        //            var reader = cmd.ExecuteReader();
-
-        //            while (reader.Read())
-        //            {
-        //                Comment comment = new Comment
-        //                {
-        //                    Id = reader.GetInt32(reader.GetOrdinal("Id")),
-        //                    PuzzleId = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
-        //                    UserProfileId = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
-        //                    Title = reader.GetString(reader.GetOrdinal("Subject")),
-        //                    Content = reader.GetString(reader.GetOrdinal("Content")),
-        //                    CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
-        //                    Puzzle = new Puzzle
-        //                    {
-        //                        Id = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
-        //                        Title = reader.GetString(reader.GetOrdinal("Title"))
-        //                    },
-        //                    UserProfile = new UserProfile
-        //                    {
-        //                        Id = reader.GetInt32(reader.GetOrdinal("UserProfileId")),
-        //                        DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-        //                    }
-        //                };
-
-        //                comments.Add(comment);
-        //            }
-
-        //            reader.Close();
-
-        //            return comments;
-        //        }
-        //    }
-        //}
+       
     }
 }

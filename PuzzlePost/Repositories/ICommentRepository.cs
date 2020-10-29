@@ -7,5 +7,6 @@ namespace PuzzlePost.Repositories
     {
         //List<Comment> GetAllComments();
         List<Comment> GetAllCommentsByPuzzle(int id);
+        void AddComment(Comment comment);
     }
 }

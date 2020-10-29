@@ -30,6 +30,18 @@ export function CommentProvider(props) {
         })
     };
 
+    const addComment = (newComment) => {
+        return getToken().then((token) => {
+            fetch("/api/comment/", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify(newComment)
+            })
+        })
+    };
 
 
 
@@ -47,7 +59,7 @@ export function CommentProvider(props) {
 
     return (
 
-        <CommentContext.Provider value={{ getAllCommentsForPuzzle, allComments, getComments, comments }}>
+        <CommentContext.Provider value={{ getAllCommentsForPuzzle, allComments, getComments, comments, addComment }}>
             {props.children}
         </CommentContext.Provider>
     );
