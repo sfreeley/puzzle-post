@@ -25,7 +25,6 @@ export default function ApplicationViews() {
                 <Route path="/comment/edit/:id" exact>
                     {isLoggedIn ? <EditComment /> : <Redirect to="/login" />}
                 </Route>
-
                 <Route path="/request/outgoing" exact>
                     {isLoggedIn ? <OutgoingRequestList /> : <Redirect to="/login" />}
                 </Route>

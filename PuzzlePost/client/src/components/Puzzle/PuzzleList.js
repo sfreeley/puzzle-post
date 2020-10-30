@@ -12,9 +12,13 @@ const PuzzleList = () => {
         getAllActivePuzzles();
     }, []);
 
+    const clearSearchResults = () => {
+        getAllActivePuzzles();
+    }
+
     return (
         <>
-            <Search />
+            <Search clearSearchResults={clearSearchResults} />
             <div className="container">
                 <div className="row justify-content-center">
                     <Link to={"puzzle/add"}><Button>New Puzzle</Button></Link>

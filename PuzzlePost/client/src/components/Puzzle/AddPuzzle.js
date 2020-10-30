@@ -43,7 +43,6 @@ const AddPuzzle = () => {
     };
 
     const addNewPuzzle = (e) => {
-        debugger;
         e.preventDefault();
         newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
         newPuzzle.pieces = parseInt(newPuzzle.pieces);

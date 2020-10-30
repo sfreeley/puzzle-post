@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { CommentContext } from "../../providers/CommentProvider";
 
 const DeletePuzzle = ({ modal, toggle, comment }) => {
@@ -13,8 +11,7 @@ const DeletePuzzle = ({ modal, toggle, comment }) => {
 
     const deleteAComment = () => {
         deleteComment(comment.id);
-        getAllCommentsForPuzzle(comment.puzzleId)
-
+        getAllCommentsForPuzzle(comment.puzzleId);
     }
 
     return (

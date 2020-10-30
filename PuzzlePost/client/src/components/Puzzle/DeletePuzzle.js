@@ -11,7 +11,7 @@ const DeletePuzzle = ({ toggleDelete, deleteModal, puzzle }) => {
         e.preventDefault();
         deletePuzzle(puzzle.id);
         toggleDelete();
-        history.push("/puzzle/user");
+        history.push("/puzzle");
     }
 
     return (

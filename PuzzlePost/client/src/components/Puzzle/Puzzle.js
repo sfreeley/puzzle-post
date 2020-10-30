@@ -21,7 +21,8 @@ const Puzzle = ({ puzzle }) => {
 
     const reactivateAPuzzle = (e) => {
         e.preventDefault();
-        reactivatePuzzle(puzzle.id).then(() => history.push("/puzzle"));
+        reactivatePuzzle(puzzle.id)
+        history.push("/puzzle");
     }
 
     return (

@@ -99,7 +99,7 @@ namespace PuzzlePost.Repositories
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
                       WHERE p.IsAvailable = 1 AND p.IsDeleted = 0 
-                      AND (p.Title LIKE @Criterion OR p.Pieces LIKE @Criterion OR up.DisplayName LIKE @Criterion OR p.Manufacturer LIKE @Criterion)
+                      AND (p.Title LIKE @Criterion OR p.Pieces LIKE @Criterion OR up.DisplayName LIKE @Criterion OR p.Manufacturer LIKE @Criterion OR c.Name LIKE @Criterion)
                       ORDER BY p.CreateDateTime DESC";
                    
                     cmd.CommandText = sql;

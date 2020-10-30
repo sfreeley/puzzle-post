@@ -7,13 +7,14 @@ import { Link, useParams } from "react-router-dom";
 
 
 const CommentList = ({ }) => {
-    const { allComments, getAllCommentsForPuzzle, deleteComment, getCommentById, comment } = useContext(CommentContext);
+    const { allComments, getAllCommentsForPuzzle } = useContext(CommentContext);
     const { getPuzzleWithoutHistoryById, aPuzzle } = useContext(PuzzleContext);
     const { id } = useParams();
 
     useEffect(() => {
-        getAllCommentsForPuzzle(id);
         getPuzzleWithoutHistoryById(id);
+        getAllCommentsForPuzzle(id);
+
     }, []);
 
     return (

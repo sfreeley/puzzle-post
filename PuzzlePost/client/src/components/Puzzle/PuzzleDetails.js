@@ -8,18 +8,22 @@ import { UserProfileContext } from "../../providers/UserProfileProvider";
 import RequestPuzzle from "./RequestPuzzle";
 import CommentList from "../Comment/CommentList";
 import AddComment from "../Comment/AddComment";
+import DeletePuzzle from "../Puzzle/DeletePuzzle";
 
 
 
 const PuzzleDetails = () => {
     const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile } = useContext(PuzzleContext);
-    const { addComment, getAllCommentsForPuzzle, deleteComment } = useContext(CommentContext);
+    const { addComment, getAllCommentsForPuzzle } = useContext(CommentContext);
     const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
 
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
+
+    const [deleteModal, setDeleteModal] = useState(false);
+    const toggleDelete = () => setDeleteModal(!deleteModal);
 
     const [openForm, setOpenForm] = useState(true);
     const toggleAdd = () => setOpenForm(!openForm);
@@ -74,12 +78,10 @@ const PuzzleDetails = () => {
         toggleAdd();
     }
 
-
-
-
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
+            <DeletePuzzle deleteModal={deleteModal} toggleDelete={toggleDelete} puzzle={puzzle} />
             <Button onClick={toggleAdd}>Add Comment</Button>{' '}
 
             <AddComment cancelAdd={cancelAdd} newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
@@ -118,7 +120,7 @@ const PuzzleDetails = () => {
             {parseInt(activeUser.id) === puzzle.currentOwnerId ?
                 <>
                     <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
-                    <Link to={`/puzzle/delete/${puzzle.id}`}><Button>Delete</Button></Link>
+                    <Button onClick={toggleDelete}>Delete</Button>
 
                 </> : <Button onClick={toggle}>Request</Button>
 
