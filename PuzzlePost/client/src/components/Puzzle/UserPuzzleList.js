@@ -9,9 +9,22 @@ const UserPuzzleList = () => {
     const { inactiveUserPuzzles, userPuzzles, getAllPuzzlesByUser, getAllInactivePuzzlesByUser } = useContext(PuzzleContext);
     const { activeUser } = useContext(UserProfileContext);
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     useEffect(() => {
-        getAllPuzzlesByUser(parseInt(activeUser.id));
-        getAllInactivePuzzlesByUser(parseInt(activeUser.id));
+        sleep(300).then(() => {
+
+            getAllInactivePuzzlesByUser(parseInt(activeUser.id));
+        })
+    }, []);
+
+    useEffect(() => {
+        sleep(300).then(() => {
+            getAllPuzzlesByUser(parseInt(activeUser.id));
+
+        })
     }, []);
 
     return (

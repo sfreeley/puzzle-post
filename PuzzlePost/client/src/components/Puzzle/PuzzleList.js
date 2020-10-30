@@ -8,8 +8,16 @@ import Search from "./Search";
 const PuzzleList = () => {
     const { getAllActivePuzzles, activePuzzles } = useContext(PuzzleContext);
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+
     useEffect(() => {
-        getAllActivePuzzles();
+        sleep(300).then(() => {
+            getAllActivePuzzles();
+        })
+
     }, []);
 
     const clearSearchResults = () => {

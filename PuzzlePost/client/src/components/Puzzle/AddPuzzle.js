@@ -6,13 +6,12 @@ import { useHistory } from "react-router-dom";
 
 const AddPuzzle = () => {
     const history = useHistory();
-    const { categories, addPuzzle, categoriesForPuzzle } = useContext(PuzzleContext);
+    const { categories, addPuzzle, categoriesForPuzzle, getAllActivePuzzles } = useContext(PuzzleContext);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        categoriesForPuzzle();
-
-    }, [])
+    // function sleep(ms) {
+    //     return new Promise(resolve => setTimeout(resolve, ms));
+    // }
 
     //new puzzle that will be added into state
     const [newPuzzle, setNewPuzzle] = useState({
@@ -25,6 +24,14 @@ const AddPuzzle = () => {
         manufacturer: "",
         notes: ""
     })
+
+    useEffect(() => {
+        categoriesForPuzzle();
+    }, [])
+
+    // useEffect(() => {
+    //     getAllActivePuzzles();
+    // }, [newPuzzle])
 
 
     //handling input field for posting new puzzle
@@ -43,14 +50,13 @@ const AddPuzzle = () => {
     };
 
     const addNewPuzzle = (e) => {
+        // debugger;
         e.preventDefault();
         newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
         newPuzzle.pieces = parseInt(newPuzzle.pieces);
         setIsLoading(true);
         addPuzzle(newPuzzle);
-        setIsLoading(false);
-        history.push("/puzzle");
-
+        history.push("/puzzle")
     }
 
     return (

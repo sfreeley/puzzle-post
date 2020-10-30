@@ -33,10 +33,7 @@ const PuzzleDetails = () => {
         getPuzzleById(id);
         getPuzzleWithUserProfile(id);
         getAllCommentsForPuzzle(id);
-
     }, [])
-
-
 
     const [newComment, setNewComment] = useState({
         puzzleId: parseInt(id),

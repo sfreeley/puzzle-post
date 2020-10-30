@@ -1,17 +1,21 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 
 const DeletePuzzle = ({ toggleDelete, deleteModal, puzzle }) => {
-    const { deletePuzzle } = useContext(PuzzleContext);
+    const { deletePuzzle, getAllActivePuzzles } = useContext(PuzzleContext);
     const history = useHistory();
 
+    useEffect(() => {
+        getAllActivePuzzles();
+    })
     const deleteAPuzzle = (e) => {
         e.preventDefault();
         deletePuzzle(puzzle.id);
         toggleDelete();
-        history.push("/puzzle");
+        getAllActivePuzzles();
+
     }
 
     return (
