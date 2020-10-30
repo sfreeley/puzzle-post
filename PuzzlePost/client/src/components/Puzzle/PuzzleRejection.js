@@ -29,6 +29,16 @@ const PuzzleRejection = ({ modal, toggle, request }) => {
         getAllPendingRequests(parseInt(activeUser.id));
     }
 
+    const closeResetModal = () => {
+        setRejection({
+            puzzleId: request.puzzleId,
+            requestingPuzzleUserId: request.requestingPuzzleUserId,
+            content: ""
+        })
+        toggle();
+    }
+
+
     return (
         <div>
 
@@ -51,7 +61,7 @@ const PuzzleRejection = ({ modal, toggle, request }) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={rejectRequest}>Send Rejection</Button>{' '}
-                    <Button color="secondary" onClick={toggle}>Just Kidding</Button>
+                    <Button color="secondary" onClick={closeResetModal}>Just Kidding</Button>
                 </ModalFooter>
             </Modal>
         </div>

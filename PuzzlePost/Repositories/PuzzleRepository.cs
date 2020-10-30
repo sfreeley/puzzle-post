@@ -307,22 +307,26 @@ namespace PuzzlePost.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                     SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
+                          SELECT DISTINCT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
                       p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
 
                       c.Id AS CategoryId, c.Name,
     
                       up.DisplayName, up.ImageLocation,
 
-                      r.StatusId
+                      
+
+                      h.EndDateOwnership
 
                       FROM Puzzle p
                       LEFT JOIN Category c 
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      LEFT JOIN Request r ON r.PuzzleId = p.Id
-                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 0 AND r.StatusId = 2 AND p.IsDeleted = 0
+                      LEFT JOIN History h
+                      ON h.UserProfileId = p.CurrentOwnerId
+                
+                      WHERE h.UserProfileId = @id  AND p.IsAvailable = 0 AND p.IsDeleted = 0 AND h.EndDateOwnership IS NULL 
                       ORDER BY CreateDateTime DESC
                        ";
 

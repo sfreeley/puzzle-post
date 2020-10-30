@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
@@ -6,18 +6,13 @@ import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { RequestContext } from "../../providers/RequestProvider";
 import PuzzleRejection from "../Puzzle/PuzzleRejection";
 
-const Request = ({ request }) => {
+const Request = ({ request, refreshIncomingPage, refreshOutgoingPage }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { deleteRequest, getAllOutgoingRequests, getAllPendingRequests } = useContext(RequestContext);
+    const { deleteRequest } = useContext(RequestContext);
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-
-    // useEffect(() => {
-    //     getAllOutgoingRequests(parseInt(activeUser.id));
-    //     getAllPendingRequests(parseInt(activeUser.id));
-    // }, [])
 
     //setting updating puzzle object into state; need to give value to currentOwnerId to pass into update owner function (will be the requester of the puzzle who will be new owner)
     const [confirmPuzzle, setConfirmPuzzle] = useState({
@@ -34,15 +29,13 @@ const Request = ({ request }) => {
     const updateOwner = (e) => {
         e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
-        setConfirmPuzzle()
+        refreshIncomingPage();
     }
 
 
     const deleteOutgoingRequest = (e) => {
-        debugger
-        // e.preventDefault();
         deleteRequest(request.id);
-
+        refreshOutgoingPage();
     }
 
     return (
@@ -52,7 +45,8 @@ const Request = ({ request }) => {
                 <Row margin="m-4">
                     <Col sm="4">
 
-                        <p className="text-left px-2">Requested by: {request.userProfile.displayName}
+                        <p className="text-left px-2">
+                            <p>Requested by: {request.userProfile.displayName}</p>
                             <br />
                         on {currentDateTime(request.createDateTime)}</p>
                         <p>Status: {request.status.name}</p>
@@ -61,7 +55,9 @@ const Request = ({ request }) => {
                         <div>
                             {request.puzzle.title} : {request.puzzle.manufacturer}
                             <hr />
+                            {/* {request.statusId === 3 ? <p>Return message:</p> : null} */}
                             {request.content != null ? <div>{request.content}</div> : null}
+
 
                         </div>
                     </Col>

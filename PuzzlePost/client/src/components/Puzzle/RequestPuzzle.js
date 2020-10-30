@@ -26,6 +26,15 @@ const RequestPuzzle = ({ puzzle, modal, toggle }) => {
         history.push("/request/outgoing");
     }
 
+    const closeResetModal = () => {
+        setNewRequest({
+            puzzleId: puzzle.id,
+            senderOfPuzzleUserId: puzzle.currentOwnerId,
+            content: ""
+        })
+        toggle();
+    }
+
     return (
         <div>
             <Modal isOpen={modal} toggle={toggle} className="postRequest">
@@ -47,7 +56,7 @@ const RequestPuzzle = ({ puzzle, modal, toggle }) => {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={sendRequestDeactivatePuzzle}>Send Request</Button>{' '}
-                    <Button color="secondary" onClick={toggle}>Cancel</Button>
+                    <Button color="secondary" onClick={closeResetModal}>Cancel</Button>
                 </ModalFooter>
             </Modal>
         </div>

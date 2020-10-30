@@ -12,6 +12,10 @@ const OutgoingRequestList = () => {
         getAllOutgoingRequests(parseInt(activeUser.id));
     }, []);
 
+    const refreshOutgoingPage = () => {
+        getAllOutgoingRequests(parseInt(activeUser.id));
+    }
+
     return (
         <div className="container">
             <div className="row justify-content-center">
@@ -19,7 +23,7 @@ const OutgoingRequestList = () => {
                 <div className="cards-column">
                     {outgoingRequests.length == 0 ? <p>You don't have any puzzle request history</p> :
                         outgoingRequests.map((request) => {
-                            return <Request key={request.id} request={request} />
+                            return <Request key={request.id} request={request} refreshOutgoingPage={refreshOutgoingPage} />
                         })
                     }
                 </div>
