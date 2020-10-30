@@ -9,7 +9,7 @@ import PuzzleRejection from "../Puzzle/PuzzleRejection";
 const Request = ({ request, refreshIncomingPage, refreshOutgoingPage }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { deleteRequest } = useContext(RequestContext);
+    const { deleteRequest, updateRejection } = useContext(RequestContext);
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -24,6 +24,8 @@ const Request = ({ request, refreshIncomingPage, refreshOutgoingPage }) => {
         pieces: request.puzzle.pieces,
         notes: request.puzzle.notes
     })
+
+
 
 
     const updateOwner = (e) => {

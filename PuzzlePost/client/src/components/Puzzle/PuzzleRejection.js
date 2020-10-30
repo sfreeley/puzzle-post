@@ -6,62 +6,59 @@ import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 const PuzzleRejection = ({ modal, toggle, request }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { postRejection, getAllPendingRequests } = useContext(RequestContext);
+    const { getAllPendingRequests, updateRejection } = useContext(RequestContext);
+
+
     const [rejection, setRejection] = useState({
+        id: request.id,
         puzzleId: request.puzzleId,
         requestingPuzzleUserId: request.requestingPuzzleUserId,
-        content: ""
+        content: request.content
+
     })
 
+    const rejectRequest = () => {
+        updateRejection(rejection);
+        toggle();
+        getAllPendingRequests(parseInt(activeUser.id));
+    }
     useEffect(() => {
         getAllPendingRequests(parseInt(activeUser.id));
     })
 
-    const handleFieldChange = (e) => {
-        const stateToChange = { ...rejection };
-        stateToChange[e.target.id] = e.target.value;
-        setRejection(stateToChange);
-    };
+    // const handleFieldChange = (e) => {
+    //     const stateToChange = { ...rejection };
+    //     stateToChange[e.target.id] = e.target.value;
+    //     setRejection(stateToChange);
+    // };
 
-    const rejectRequest = () => {
-        postRejection(rejection);
-        toggle();
-        getAllPendingRequests(parseInt(activeUser.id));
-    }
 
-    const closeResetModal = () => {
-        setRejection({
-            puzzleId: request.puzzleId,
-            requestingPuzzleUserId: request.requestingPuzzleUserId,
-            content: ""
-        })
-        toggle();
-    }
+
+    // const closeResetModal = () => {
+    //     setRejection({
+    //         puzzleId: request.puzzleId,
+    //         requestingPuzzleUserId: request.requestingPuzzleUserId,
+    //         content: ""
+    //     })
+    //     toggle();
+    // }
 
 
     return (
         <div>
 
             <Modal isOpen={modal} toggle={toggle} className="rejection">
-                <ModalHeader toggle={toggle}>Enter a Reason (if you wish)</ModalHeader>
+                <ModalHeader toggle={toggle}>Please confirm</ModalHeader>
                 <ModalBody>
                     <Form className="rejectionForm">
                         <FormGroup>
-                            <Label className="rejectionContentLabel">Message:</Label>
-                            <Input
-                                className="rejectionContent"
-                                onChange={handleFieldChange}
-                                type="textarea"
-                                id="content"
-                                value={rejection.content}
-                                placeholder="Enter Your Rejection Message Here"
-                            />
+                            Are you sure you want to deny this puzzle request?
                         </FormGroup>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="primary" onClick={rejectRequest}>Send Rejection</Button>{' '}
-                    <Button color="secondary" onClick={closeResetModal}>Just Kidding</Button>
+                    <Button color="secondary" onClick={toggle}>Just Kidding</Button>
                 </ModalFooter>
             </Modal>
         </div>

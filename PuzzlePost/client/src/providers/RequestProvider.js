@@ -57,9 +57,9 @@ export function RequestProvider(props) {
         )
     };
 
-    const postRejection = (request) => {
-        return getToken().then((token) => fetch("/api/request/rejection", {
-            method: "POST",
+    const updateRejection = (request) => {
+        return getToken().then((token) => fetch(`/api/request/rejection/${request.id}`, {
+            method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export function RequestProvider(props) {
 
     return (
 
-        <RequestContext.Provider value={{ getAllRejectedRequests, rejectedRequests, deleteRequest, postRejection, addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
+        <RequestContext.Provider value={{ getAllRejectedRequests, rejectedRequests, deleteRequest, updateRejection, addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
             {props.children}
         </RequestContext.Provider>
     );
