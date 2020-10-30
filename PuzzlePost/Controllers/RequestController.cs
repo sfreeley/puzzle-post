@@ -32,6 +32,13 @@ namespace PuzzlePost.Controllers
         [HttpGet("{id}")]
         public IActionResult GetRequestById(int id)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+            Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
+            if (userId != puzzle.CurrentOwnerId)
+            {
+                return Unauthorized();
+            }
 
             return Ok(_requestRepository.GetRequestByPuzzleId(id));
         }
@@ -39,6 +46,13 @@ namespace PuzzlePost.Controllers
         [HttpGet("incoming/{id}")]
         public IActionResult GetIncomingRequests(int id)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+
+            if (userId != id)
+            {
+                return Unauthorized();
+            }
 
             return Ok(_requestRepository.GetPendingRequestsForUser(id));
         }
@@ -46,9 +60,23 @@ namespace PuzzlePost.Controllers
         [HttpGet("outgoing/{id}")]
         public IActionResult GetOutgoingRequests(int id)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+
+            if (userId != id)
+            {
+                return Unauthorized();
+            }
 
             return Ok(_requestRepository.GetOutgoingRequestsForUser(id));
         }
+
+        //[HttpGet("rejection/{id}")]
+        //public IActionResult GetRejections(int id)
+        //{
+
+        //    return Ok(_requestRepository.GetRejectedResponsesForUser(id));
+        //}
 
         [HttpPost("requestwithdeactivation")]
         public IActionResult PostRequestDeactivatePuzzle(Request request)
@@ -56,10 +84,10 @@ namespace PuzzlePost.Controllers
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
 
-            //if (userId != request.RequestingPuzzleUserId)
-            //{
-            //    return Unauthorized();
-            //}
+            if (userId != request.RequestingPuzzleUserId)
+            {
+                return Unauthorized();
+            }
             request.RequestingPuzzleUserId = userId;
             request.CreateDateTime = DateTime.Now;
             //adding new request for the puzzle
@@ -79,11 +107,13 @@ namespace PuzzlePost.Controllers
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
 
-            //if (userId != request.SenderOfPuzzleUserId)
-            //{
-            //    return Unauthorized();
-            //}
+            if (userId != request.SenderOfPuzzleUserId)
+            {
+                return Unauthorized();
+            }
+
             request.SenderOfPuzzleUserId = userId;
+            //request.RequestingPuzzleUserId = userId;
             request.CreateDateTime = DateTime.Now;
             //adding new request for the puzzle
             _requestRepository.PostRejection(request);
@@ -104,6 +134,13 @@ namespace PuzzlePost.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+            Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
+            if (userId != puzzle.CurrentOwnerId)
+            {
+                return Unauthorized();
+            }
             _requestRepository.DeleteRequest(id);
             //return status 204
             return NoContent();

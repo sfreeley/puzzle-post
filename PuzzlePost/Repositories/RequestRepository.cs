@@ -61,9 +61,9 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("StatusId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            UserProfile = new UserProfile()
+                            RequestingPuzzleUser = new UserProfile()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("UserId")),
+                                Id = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                             },
                             Puzzle = new Puzzle()
@@ -84,6 +84,87 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+
+        //public List<Request> GetRejectedResponsesForUser(int id)
+        //{
+        //    using (var conn = Connection)
+        //    {
+        //        conn.Open();
+        //        using (var cmd = conn.CreateCommand())
+        //        {
+        //            cmd.CommandText = @"
+        //               SELECT r.Id AS RequestId, r.PuzzleId, r.RequestingPuzzleUserId, r.SenderOfPuzzleUserId, r.Content,
+        //               r.CreateDateTime, r.StatusId,
+    
+        //               s.Id, s.Name,
+                       
+        //               up.Id AS UserId, up.DisplayName,
+
+        //               p.Id AS RequestedPuzzleId, p.Title, p.Manufacturer, p.Pieces, p.ImageLocation,
+
+        //               h.EndDateOwnership
+
+        //               FROM Request r
+        //               LEFT JOIN Status s
+        //               ON r.StatusId = s.Id   
+        //               LEFT JOIN UserProfile up
+        //               ON r.SenderOfPuzzleUserId = up.Id
+        //               LEFT JOIN Puzzle p
+        //               ON r.PuzzleId = p.Id
+        //               LEFT JOIN History h 
+        //               ON h.UserProfileId = r.SenderOfPuzzleUserId
+        //               WHERE r.RequestingPuzzleUserId = @id AND s.Name = 'Rejected'
+        //               ORDER BY r.CreateDateTime DESC";
+
+        //            cmd.Parameters.AddWithValue("@id", id);
+        //            var reader = cmd.ExecuteReader();
+
+        //            List<Request> requests = new List<Request>();
+
+        //            while (reader.Read())
+        //            {
+        //                Request request = new Request
+        //                {
+        //                    Id = reader.GetInt32(reader.GetOrdinal("RequestId")),
+        //                    PuzzleId = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
+        //                    RequestingPuzzleUserId = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
+        //                    SenderOfPuzzleUserId = reader.GetInt32(reader.GetOrdinal("SenderOfPuzzleUserId")),
+        //                    Content = DbUtils.GetNullableString(reader, "Content"),
+        //                    CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+        //                    StatusId = reader.GetInt32(reader.GetOrdinal("StatusId")),
+        //                    Status = new Status()
+        //                    {
+        //                        Id = reader.GetInt32(reader.GetOrdinal("StatusId")),
+        //                        Name = reader.GetString(reader.GetOrdinal("Name"))
+        //                    },
+        //                    RequestingPuzzleUser = new UserProfile()
+        //                    {
+        //                        Id = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
+        //                        DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+        //                    },
+        //                    SenderOfPuzzleUser = new UserProfile()
+        //                    {
+        //                        Id = reader.GetInt32(reader.GetOrdinal("SenderOfPuzzleUserId")),
+        //                        DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
+        //                    },
+        //                    Puzzle = new Puzzle()
+        //                    {
+        //                        Id = reader.GetInt32(reader.GetOrdinal("RequestedPuzzleId")),
+        //                        Pieces = reader.GetInt32(reader.GetOrdinal("Pieces")),
+        //                        Title = reader.GetString(reader.GetOrdinal("Title")),
+        //                        Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
+        //                        ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation")),
+
+        //                    }
+        //                };
+
+        //                requests.Add(request);
+        //            }
+        //            reader.Close();
+        //            return requests;
+        //        }
+        //    }
+        //}
 
         //call for the requests being made by the user logged in to others
         public List<Request> GetOutgoingRequestsForUser(int id)
@@ -110,7 +191,7 @@ namespace PuzzlePost.Repositories
                        ON r.RequestingPuzzleUserId = up.Id
                        LEFT JOIN Puzzle p
                        ON r.PuzzleId = p.Id
-                       WHERE r.RequestingPuzzleUserId = @id
+                       WHERE r.RequestingPuzzleUserId = @id AND s.Name != 'Rejected'
                        ORDER BY r.CreateDateTime DESC";
 
                     cmd.Parameters.AddWithValue("@id", id);
@@ -134,9 +215,9 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("StatusId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            UserProfile = new UserProfile()
+                            RequestingPuzzleUser = new UserProfile()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("UserId")),
+                                Id = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                             },
                             Puzzle = new Puzzle()

@@ -46,7 +46,7 @@ const Request = ({ request, refreshIncomingPage, refreshOutgoingPage }) => {
                     <Col sm="4">
 
                         <p className="text-left px-2">
-                            <p>Requested by: {request.userProfile.displayName}</p>
+                            <p>Requested by: {request.requestingPuzzleUser.displayName}</p>
                             <br />
                         on {currentDateTime(request.createDateTime)}</p>
                         <p>Status: {request.status.name}</p>
@@ -55,10 +55,8 @@ const Request = ({ request, refreshIncomingPage, refreshOutgoingPage }) => {
                         <div>
                             {request.puzzle.title} : {request.puzzle.manufacturer}
                             <hr />
-                            {/* {request.statusId === 3 ? <p>Return message:</p> : null} */}
+
                             {request.content != null ? <div>{request.content}</div> : null}
-
-
                         </div>
                     </Col>
                 </Row>
