@@ -13,9 +13,6 @@ const IncomingRequestList = () => {
         getAllPendingRequests(parseInt(activeUser.id));
     }, []);
 
-    const refreshIncomingPage = () => {
-        getAllPendingRequests(parseInt(activeUser.id));
-    }
 
     return (
         <div className="container">
@@ -23,8 +20,8 @@ const IncomingRequestList = () => {
                 <h5>Pending Puzzle Requests</h5>
                 <div className="cards-column">
                     {pendingRequests.length === 0 ? <p>You don't have any new pending puzzle requests</p> :
-                        pendingRequests && pendingRequests.map((request) => {
-                            return <Request key={request.id} request={request} refreshIncomingPage={refreshIncomingPage} />
+                        pendingRequests.map((request) => {
+                            return <Request key={request.id} request={request} />
                         })
                     }
                 </div>
@@ -32,4 +29,4 @@ const IncomingRequestList = () => {
         </div>
     )
 }
-export default IncomingRequestList
+export default IncomingRequestList;

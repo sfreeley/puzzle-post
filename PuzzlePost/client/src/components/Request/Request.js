@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
 import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
-import { currentDateTime } from "../helperFunctions";
+import { currentDateAndTime } from "../helperFunctions";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { RequestContext } from "../../providers/RequestProvider";
 import PuzzleRejection from "../Puzzle/PuzzleRejection";
 
-const Request = ({ request, refreshIncomingPage, refreshOutgoingPage }) => {
+const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { deleteRequest, updateRejection } = useContext(RequestContext);
+    const { deleteRequest, setPendingRequests, setOutgoingRequests, outgoingRequests, pendingRequests } = useContext(RequestContext);
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -26,18 +26,16 @@ const Request = ({ request, refreshIncomingPage, refreshOutgoingPage }) => {
     })
 
 
-
-
     const updateOwner = (e) => {
         e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
-        refreshIncomingPage();
+        setPendingRequests(pendingRequests);
     }
 
-
     const deleteOutgoingRequest = (e) => {
+        e.preventDefault();
         deleteRequest(request.id);
-        refreshOutgoingPage();
+        setOutgoingRequests(outgoingRequests);
     }
 
     return (
@@ -50,7 +48,7 @@ const Request = ({ request, refreshIncomingPage, refreshOutgoingPage }) => {
                         <p className="text-left px-2">
                             <p>Requested by: {request.requestingPuzzleUser.displayName}</p>
                             <br />
-                        on {currentDateTime(request.createDateTime)}</p>
+                        on {currentDateAndTime(request.createDateTime)}</p>
                         <p>Status: {request.status.name}</p>
                     </Col>
                     <Col sm="4">

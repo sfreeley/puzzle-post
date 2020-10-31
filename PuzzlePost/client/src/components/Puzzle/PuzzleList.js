@@ -5,6 +5,7 @@ import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import Search from "./Search";
 
+
 const PuzzleList = () => {
     const { getAllActivePuzzles, activePuzzles } = useContext(PuzzleContext);
 
@@ -12,17 +13,20 @@ const PuzzleList = () => {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-
     useEffect(() => {
-        sleep(300).then(() => {
-            getAllActivePuzzles();
-        })
+
+        getAllActivePuzzles();
+
 
     }, []);
+
+
 
     const clearSearchResults = () => {
         getAllActivePuzzles();
     }
+
+
 
     return (
         <>

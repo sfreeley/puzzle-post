@@ -20,7 +20,7 @@ const Comment = ({ comment }) => {
     return (
         <>
             <Row >
-
+                <DeleteComment toggle={toggle} modal={modal} deleteComment={deleteComment} comment={comment} />
                 <Card className="m-2">
 
 
@@ -51,7 +51,7 @@ const Comment = ({ comment }) => {
 
             </Row>
 
-            <DeleteComment toggle={toggle} modal={modal} deleteComment={deleteComment} comment={comment} />
+
         </>
     );
 }

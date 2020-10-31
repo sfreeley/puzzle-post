@@ -3,7 +3,7 @@ import { Input, Button } from "reactstrap";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 
 const Search = ({ clearSearchResults }) => {
-    const { searchActivePuzzles } = useContext(PuzzleContext);
+    const { searchActivePuzzles, activePuzzles } = useContext(PuzzleContext);
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchField = (e) => {

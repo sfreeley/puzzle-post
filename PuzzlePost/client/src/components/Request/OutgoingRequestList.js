@@ -7,14 +7,9 @@ const OutgoingRequestList = () => {
     const { getAllOutgoingRequests, outgoingRequests } = useContext(RequestContext);
     const { activeUser } = useContext(UserProfileContext);
 
-
     useEffect(() => {
         getAllOutgoingRequests(parseInt(activeUser.id));
     }, []);
-
-    const refreshOutgoingPage = () => {
-        getAllOutgoingRequests(parseInt(activeUser.id));
-    }
 
     return (
         <div className="container">
@@ -23,7 +18,7 @@ const OutgoingRequestList = () => {
                 <div className="cards-column">
                     {outgoingRequests.length == 0 ? <p>You don't have any puzzle request history</p> :
                         outgoingRequests.map((request) => {
-                            return <Request key={request.id} request={request} refreshOutgoingPage={refreshOutgoingPage} />
+                            return <Request key={request.id} request={request} />
                         })
                     }
                 </div>

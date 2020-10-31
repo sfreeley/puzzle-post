@@ -18,7 +18,6 @@ const PuzzleDetails = () => {
     const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
 
-
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 

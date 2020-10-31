@@ -11,7 +11,7 @@ import RequestPuzzle from "./RequestPuzzle";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { reactivatePuzzle } = useContext(PuzzleContext);
+    const { reactivatePuzzle, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
@@ -21,7 +21,8 @@ const Puzzle = ({ puzzle }) => {
 
     const reactivateAPuzzle = (e) => {
         e.preventDefault();
-        reactivatePuzzle(puzzle.id)
+        reactivatePuzzle(puzzle.id);
+        setActivePuzzles(activePuzzles);
         history.push("/puzzle");
     }
 
@@ -29,7 +30,7 @@ const Puzzle = ({ puzzle }) => {
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
             <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} puzzle={puzzle} />
-            <Card className="m-4">
+            <Card sm="6">
                 <Row margin="m-4">
                     <Col sm="4">
                         <p className="text-left px-2">Shared by: {puzzle.userProfile.displayName}
@@ -45,7 +46,7 @@ const Puzzle = ({ puzzle }) => {
                             <br />
                             {/* need to fix this */}
                             {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
-                                <div>Notes : {puzzle.notes}</div> : null
+                                <div>Notes: {puzzle.notes}</div> : null
                             }
                         </div>
                     </Col>
@@ -54,7 +55,7 @@ const Puzzle = ({ puzzle }) => {
                         <p>Category: {puzzle.category.name}</p>
                     </Col>
                 </Row>
-                <CardImg src={puzzle.imageLocation} alt={puzzle.title} />
+                <CardImg top src={puzzle.imageLocation} alt={puzzle.title} />
                 <CardBody>
                     <Row>
                         <Col sm="4">

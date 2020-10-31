@@ -8,7 +8,7 @@ const EditComment = () => {
 
     const { id } = useParams();
     const history = useHistory();
-    const { editComment, comment, getCommentById } = useContext(CommentContext);
+    const { editComment, comment, getCommentById, setComments, comments } = useContext(CommentContext);
     const [isLoading, setIsLoading] = useState(false);
     //represents form field state
     const [updatedComment, setUpdatedComment] = useState({})
@@ -28,8 +28,7 @@ const EditComment = () => {
     //sets updatedComment state to value of comment; watching for changes to comment..anytime comment changes, it will trigger useEffect to update updatedComment state (ie the subject and content field values)
     //with what comment is 
     useEffect(() => {
-        setUpdatedComment(comment)
-
+        setUpdatedComment(comment);
     }, [comment])
 
 
@@ -38,7 +37,7 @@ const EditComment = () => {
         e.preventDefault();
         setIsLoading(true);
         editComment(updatedComment);
-        setIsLoading(false);
+        setComments(comments);
         history.push(`/puzzle/details/${comment.puzzleId}`)
     }
 

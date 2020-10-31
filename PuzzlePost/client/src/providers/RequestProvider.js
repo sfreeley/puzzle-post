@@ -83,7 +83,7 @@ export function RequestProvider(props) {
 
     return (
 
-        <RequestContext.Provider value={{ getAllRejectedRequests, rejectedRequests, deleteRequest, updateRejection, addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
+        <RequestContext.Provider value={{ getAllRejectedRequests, rejectedRequests, deleteRequest, updateRejection, addRequestDeactivatePuzzle, getAllPendingRequests, setPendingRequests, pendingRequests, getAllOutgoingRequests, setOutgoingRequests, outgoingRequests }}>
             {props.children}
         </RequestContext.Provider>
     );

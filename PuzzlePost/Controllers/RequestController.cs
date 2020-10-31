@@ -71,12 +71,6 @@ namespace PuzzlePost.Controllers
             return Ok(_requestRepository.GetOutgoingRequestsForUser(id));
         }
 
-        //[HttpGet("rejection/{id}")]
-        //public IActionResult GetRejections(int id)
-        //{
-
-        //    return Ok(_requestRepository.GetRejectedResponsesForUser(id));
-        //}
 
         [HttpPost("requestwithdeactivation")]
         public IActionResult PostRequestDeactivatePuzzle(Request request)
@@ -84,10 +78,6 @@ namespace PuzzlePost.Controllers
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
 
-            //if (userId != request.RequestingPuzzleUserId)
-            //{
-            //    return Unauthorized();
-            //}
             request.RequestingPuzzleUserId = userId;
             request.CreateDateTime = DateTime.Now;
             //adding new request for the puzzle
@@ -107,16 +97,9 @@ namespace PuzzlePost.Controllers
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
 
-            //if (userId != request.SenderOfPuzzleUserId)
-            //{
-            //    return Unauthorized();
-            //}
-
             request.SenderOfPuzzleUserId = userId;
-            //request.RequestingPuzzleUserId = userId;
+           
             request.CreateDateTime = DateTime.Now;
-            ////adding new request for the puzzle
-            //_requestRepository.PostRejection(request);
 
             //get request by puzzle id where status is pending (request.puzzleId)
             //Request aRequest = _requestRepository.GetRequestByPuzzleId(request.PuzzleId);

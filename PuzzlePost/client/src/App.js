@@ -15,12 +15,14 @@ function App() {
       <UserProfileProvider>
         <PuzzleProvider>
           <HistoryProvider>
-            <CommentProvider>
-              <RequestProvider>
+
+            <RequestProvider>
+              <CommentProvider>
                 <Header />
                 <ApplicationViews />
-              </RequestProvider>
-            </CommentProvider>
+              </CommentProvider>
+            </RequestProvider>
+
           </HistoryProvider>
         </PuzzleProvider>
       </UserProfileProvider>

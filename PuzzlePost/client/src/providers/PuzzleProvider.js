@@ -26,6 +26,7 @@ export function PuzzleProvider(props) {
     }
 
     const getAllActivePuzzles = () => {
+
         return getToken().then((token) => {
             fetch("/api/puzzle/active", {
                 method: "GET",
@@ -184,7 +185,7 @@ export function PuzzleProvider(props) {
 
     return (
 
-        <PuzzleContext.Provider value={{ searchActivePuzzles, deletePuzzle, updatePuzzleOwner, getPuzzleWithUserProfile, puzzleWithProfile, deactivatePuzzle, reactivatePuzzle, aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories }}>
+        <PuzzleContext.Provider value={{ searchActivePuzzles, deletePuzzle, updatePuzzleOwner, getPuzzleWithUserProfile, puzzleWithProfile, deactivatePuzzle, reactivatePuzzle, aPuzzle, editPuzzle, puzzle, userPuzzles, inactiveUserPuzzles, getPuzzleWithoutHistoryById, getPuzzleById, getAllInactivePuzzlesByUser, getAllPuzzlesByUser, getAllActivePuzzles, activePuzzles, addPuzzle, categoriesForPuzzle, categories, setUserPuzzles, setInactiveUserPuzzles, setActivePuzzles, }}>
             {props.children}
         </PuzzleContext.Provider>
     );

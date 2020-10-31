@@ -4,43 +4,32 @@ import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { Button } from "reactstrap"
 import Puzzle from "./Puzzle";
 import { Link } from "react-router-dom";
+import InProgressList from "./InProgressList";
 
 const UserPuzzleList = () => {
-    const { inactiveUserPuzzles, userPuzzles, getAllPuzzlesByUser, getAllInactivePuzzlesByUser } = useContext(PuzzleContext);
+    const { userPuzzles, getAllPuzzlesByUser } = useContext(PuzzleContext);
     const { activeUser } = useContext(UserProfileContext);
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
+    // useEffect(() => {
+    //     sleep(300).then(() => {
+
+    //         getAllInactivePuzzlesByUser(parseInt(activeUser.id));
+    //     })
+    // }, []);
+
     useEffect(() => {
-        sleep(300).then(() => {
-
-            getAllInactivePuzzlesByUser(parseInt(activeUser.id));
-        })
-    }, []);
-
-    useEffect(() => {
-        sleep(300).then(() => {
-            getAllPuzzlesByUser(parseInt(activeUser.id));
-
-        })
+        getAllPuzzlesByUser(parseInt(activeUser.id));
     }, []);
 
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <Link to={"/puzzle/add"}><Button>New Puzzle</Button></Link>
-                <div className="cards-column">
-                    {inactiveUserPuzzles.length === 0 ? <h4>You're not working on any puzzles</h4> :
-                        <>
-                            <h5>Your In Progress Puzzles</h5>
-                            {inactiveUserPuzzles.map((puzzle) => (
-                                <Puzzle key={puzzle.id} puzzle={puzzle} />
-                            ))}
-                        </>
-                    }
-                </div>
+                <Link to={"/puzzle/add"}>New Puzzle</Link>
+
                 <div className="cards-column">
                     {userPuzzles.length === 0 ? <h4>No puzzles currently being shared</h4> :
                         <>
@@ -51,6 +40,8 @@ const UserPuzzleList = () => {
                         </>
                     }
                 </div>
+                <InProgressList />
+
             </div>
         </div>
     );

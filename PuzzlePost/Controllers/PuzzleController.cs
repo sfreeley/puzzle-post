@@ -11,7 +11,7 @@ using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PuzzleController : ControllerBase
@@ -33,17 +33,23 @@ namespace PuzzlePost.Controllers
         [HttpGet("active")]
         public IActionResult Get()
         {
-
             return Ok(_puzzleRepository.GetAllSharedPuzzles());
         }
 
         [HttpGet("history/{id}")]
         public IActionResult GetbyIdWithHistory(int id)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
             Puzzle puzzle = _puzzleRepository.GetPuzzleById(id);
+            if (puzzle.CurrentOwnerId != userId)
+            {
+                return Unauthorized();
+            }
+
             if (puzzle == null)
             {
-                return null;
+                return NotFound();
             }
             return Ok(puzzle);
         }
@@ -144,11 +150,6 @@ namespace PuzzlePost.Controllers
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
 
-            //if (userId != puzzle.CurrentOwnerId)
-            //{
-            //    return Unauthorized();
-            //}
-
             //HISTORY UPDATE
             //get a history object via both userId (currently owner) and puzzle id where end date time is null
             History history = _historyRepository.GetHistoryByIds(userId, puzzle.Id);
@@ -170,7 +171,6 @@ namespace PuzzlePost.Controllers
            
             //update status to status id of 2 = approved
             _requestRepository.UpdateRequestStatus(request);
-            
             
             //HISTORY POST
             //instanstiate a new history object

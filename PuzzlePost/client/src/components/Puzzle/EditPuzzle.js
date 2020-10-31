@@ -4,7 +4,7 @@ import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { useHistory, useParams } from "react-router-dom";
 
 const EditPuzzle = () => {
-    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById } = useContext(PuzzleContext);
+    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
     const { id } = useParams();
     const history = useHistory();
     const [editingPuzzle, setEditingPuzzle] = useState({});
@@ -49,8 +49,8 @@ const EditPuzzle = () => {
         }
 
         editPuzzle(editedPuzzle);
-        setIsLoading(false);
-        history.push("/puzzle/user");
+        setActivePuzzles(activePuzzles);
+        history.goBack();
     }
 
     return (
@@ -106,7 +106,7 @@ const EditPuzzle = () => {
                         name="categoryId"
 
                     >
-                        <option value={1}>Choose an option</option>
+
                         {categories.map(category => {
 
                             return <option key={category.id} value={category.id}>{category.name}</option>

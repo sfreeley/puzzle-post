@@ -81,7 +81,7 @@ export function CommentProvider(props) {
 
     return (
 
-        <CommentContext.Provider value={{ getAllCommentsForPuzzle, allComments, getComments, comments, addComment, editComment, getCommentById, comment, deleteComment }}>
+        <CommentContext.Provider value={{ setComments, getAllCommentsForPuzzle, allComments, getComments, comments, addComment, editComment, getCommentById, comment, deleteComment }}>
             {props.children}
         </CommentContext.Provider>
     );
