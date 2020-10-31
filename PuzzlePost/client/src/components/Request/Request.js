@@ -1,6 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
-import { currentDateTime } from "../helperFunctions";
+import { currentDateAndTime } from "../helperFunctions";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { RequestContext } from "../../providers/RequestProvider";
@@ -9,15 +9,10 @@ import PuzzleRejection from "../Puzzle/PuzzleRejection";
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { deleteRequest, getAllOutgoingRequests, getAllPendingRequests } = useContext(RequestContext);
+    const { deleteRequest, setPendingRequests, setOutgoingRequests, outgoingRequests, pendingRequests } = useContext(RequestContext);
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-
-    // useEffect(() => {
-    //     getAllOutgoingRequests(parseInt(activeUser.id));
-    //     getAllPendingRequests(parseInt(activeUser.id));
-    // }, [])
 
     //setting updating puzzle object into state; need to give value to currentOwnerId to pass into update owner function (will be the requester of the puzzle who will be new owner)
     const [confirmPuzzle, setConfirmPuzzle] = useState({
@@ -34,16 +29,15 @@ const Request = ({ request }) => {
     const updateOwner = (e) => {
         e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
-        //REFRESH!
-        getAllPendingRequests(parseInt(activeUser.id));
+        //refresh
+        setConfirmPuzzle(confirmPuzzle);
     }
 
-
     const deleteOutgoingRequest = (e) => {
-        debugger
-        // e.preventDefault();
+        e.preventDefault();
         deleteRequest(request.id);
-        getAllOutgoingRequests(parseInt(activeUser.id));
+        //refresh
+
     }
 
     return (
@@ -53,17 +47,18 @@ const Request = ({ request }) => {
                 <Row margin="m-4">
                     <Col sm="4">
 
-                        <p className="text-left px-2">Requested by: {request.userProfile.displayName}
+                        <p className="text-left px-2">
+                            <p>Requested by: {request.requestingPuzzleUser.displayName}</p>
                             <br />
-                        on {currentDateTime(request.createDateTime)}</p>
+                        on {currentDateAndTime(request.createDateTime)}</p>
                         <p>Status: {request.status.name}</p>
                     </Col>
                     <Col sm="4">
                         <div>
                             {request.puzzle.title} : {request.puzzle.manufacturer}
                             <hr />
-                            {request.content != null ? <div>{request.content}</div> : null}
 
+                            {request.content != null ? <div>{request.content}</div> : null}
                         </div>
                     </Col>
                 </Row>

@@ -9,9 +9,11 @@ const IncomingRequestList = () => {
     const { getAllPendingRequests, pendingRequests } = useContext(RequestContext);
     const { activeUser } = useContext(UserProfileContext);
 
+
     useEffect(() => {
         getAllPendingRequests(parseInt(activeUser.id));
     }, []);
+
 
     return (
         <div className="container">
@@ -19,7 +21,7 @@ const IncomingRequestList = () => {
                 <h5>Pending Puzzle Requests</h5>
                 <div className="cards-column">
                     {pendingRequests.length === 0 ? <p>You don't have any new pending puzzle requests</p> :
-                        pendingRequests && pendingRequests.map((request) => {
+                        pendingRequests.map((request) => {
                             return <Request key={request.id} request={request} />
                         })
                     }

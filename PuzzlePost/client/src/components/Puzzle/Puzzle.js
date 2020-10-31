@@ -11,7 +11,7 @@ import RequestPuzzle from "./RequestPuzzle";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { reactivatePuzzle } = useContext(PuzzleContext);
+    const { deletePuzzle, reactivatePuzzle, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
@@ -19,16 +19,30 @@ const Puzzle = ({ puzzle }) => {
     const [deleteModal, setDeleteModal] = useState(false);
     const toggleDelete = () => setDeleteModal(!deleteModal);
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     const reactivateAPuzzle = (e) => {
         e.preventDefault();
-        reactivatePuzzle(puzzle.id).then(() => history.push("/puzzle"));
+        reactivatePuzzle(puzzle.id);
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
+
+    }
+
+    const deleteAPuzzle = (e) => {
+        e.preventDefault();
+        deletePuzzle(e.target.id);
+        toggleDelete();
     }
 
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
-            <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} puzzle={puzzle} />
-            <Card className="m-4">
+            <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} puzzle={puzzle} deleteAPuzzle={deleteAPuzzle} />
+            <Card sm="6">
                 <Row margin="m-4">
                     <Col sm="4">
                         <p className="text-left px-2">Shared by: {puzzle.userProfile.displayName}
@@ -42,9 +56,8 @@ const Puzzle = ({ puzzle }) => {
                             <br />
                             {puzzle.pieces} pieces
                             <br />
-                            {/* need to fix this */}
-                            {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
-                                <div>Notes : {puzzle.notes}</div> : null
+                            {(window.location.pathname === "/puzzle/user" && puzzle.notes !== "") ?
+                                <p>Notes: {puzzle.notes}</p> : null
                             }
                         </div>
                     </Col>
@@ -53,7 +66,7 @@ const Puzzle = ({ puzzle }) => {
                         <p>Category: {puzzle.category.name}</p>
                     </Col>
                 </Row>
-                <CardImg src={puzzle.imageLocation} alt={puzzle.title} />
+                <CardImg top src={puzzle.imageLocation} alt={puzzle.title} />
                 <CardBody>
                     <Row>
                         <Col sm="4">
@@ -71,7 +84,7 @@ const Puzzle = ({ puzzle }) => {
                                 < Button type="button" onClick={toggle}> Request </Button> : null}
                             {/* this Reactivate button only shows if in progress on the user's puzzle list (ie isAvailable === 0) */}
                             {puzzle.isAvailable === 0 ?
-                                <Button type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
+                                <Button id={puzzle.id} type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
                         </Col>
 
                         {/* {window.location.pathname == "/puzzle/user" ?

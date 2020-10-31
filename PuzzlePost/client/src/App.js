@@ -5,6 +5,7 @@ import { UserProfileProvider } from "./providers/UserProfileProvider";
 import { PuzzleProvider } from "./providers/PuzzleProvider";
 import { HistoryProvider } from "./providers/HistoryProvider";
 import { RequestProvider } from "./providers/RequestProvider";
+import { CommentProvider } from "./providers/CommentProvider";
 import Header from "./components/Header";
 import ApplicationViews from "./components/ApplicationViews";
 
@@ -14,10 +15,14 @@ function App() {
       <UserProfileProvider>
         <PuzzleProvider>
           <HistoryProvider>
+
             <RequestProvider>
-              <Header />
-              <ApplicationViews />
+              <CommentProvider>
+                <Header />
+                <ApplicationViews />
+              </CommentProvider>
             </RequestProvider>
+
           </HistoryProvider>
         </PuzzleProvider>
       </UserProfileProvider>

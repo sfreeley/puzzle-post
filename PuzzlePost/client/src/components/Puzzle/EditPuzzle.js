@@ -4,7 +4,7 @@ import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { useHistory, useParams } from "react-router-dom";
 
 const EditPuzzle = () => {
-    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById } = useContext(PuzzleContext);
+    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
     const { id } = useParams();
     const history = useHistory();
     const [editingPuzzle, setEditingPuzzle] = useState({});
@@ -19,7 +19,6 @@ const EditPuzzle = () => {
         setEditingPuzzle(aPuzzle)
     }, [aPuzzle])
 
-    //handling input field for editing of puzzle
     const handleFieldChange = (e) => {
         const stateToChange = { ...editingPuzzle };
         stateToChange[e.target.id] = e.target.value;
@@ -27,12 +26,10 @@ const EditPuzzle = () => {
 
     };
 
-    //handling dropdown puzzle category state
     const handleCategoryChange = (e) => {
         const stateToChange = { ...editingPuzzle };
         stateToChange[e.target.id] = e.target.value;
         setEditingPuzzle(stateToChange);
-
     };
 
     const editAPuzzle = (e) => {
@@ -49,8 +46,8 @@ const EditPuzzle = () => {
         }
 
         editPuzzle(editedPuzzle);
-        setIsLoading(false);
-        history.push("/puzzle/user");
+        setActivePuzzles(activePuzzles);
+        history.goBack();
     }
 
     return (
@@ -93,7 +90,7 @@ const EditPuzzle = () => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Label className="CategoryLabel">
+                    <Label className="CategoryLabel" for="categoryId">
                         Puzzle Categories
                 </Label>
 
@@ -104,12 +101,12 @@ const EditPuzzle = () => {
                         value={parseInt(editingPuzzle.categoryId)}
                         id="categoryId"
                         name="categoryId"
-
                     >
-                        <option value={1}>Choose an option</option>
+                        <option value={1}>Please Choose an Option</option>
                         {categories.map(category => {
+                            return category.id === 1 ? null :
 
-                            return <option key={category.id} value={category.id}>{category.name}</option>
+                                <option key={category.id} value={category.id}>{category.name}</option>
                         }
 
                         )}

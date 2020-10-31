@@ -7,7 +7,6 @@ const OutgoingRequestList = () => {
     const { getAllOutgoingRequests, outgoingRequests } = useContext(RequestContext);
     const { activeUser } = useContext(UserProfileContext);
 
-
     useEffect(() => {
         getAllOutgoingRequests(parseInt(activeUser.id));
     }, []);

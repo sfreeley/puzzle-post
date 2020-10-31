@@ -18,7 +18,8 @@ namespace PuzzlePost.Models
         public string Content { get; set; }
         public DateTime CreateDateTime { get; set; }
         public Status Status { get; set; }
-        public UserProfile UserProfile { get; set; }
+        public UserProfile RequestingPuzzleUser { get; set; }
+        public UserProfile SenderOfPuzzleUser { get; set; }
         public Puzzle Puzzle { get; set; }
 
     }

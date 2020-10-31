@@ -7,6 +7,7 @@ export function RequestProvider(props) {
     const { getToken } = useContext(UserProfileContext);
     const [pendingRequests, setPendingRequests] = useState([]);
     const [outgoingRequests, setOutgoingRequests] = useState([]);
+    const [rejectedRequests, setRejectedRequests] = useState([]);
 
     const getAllPendingRequests = (id) => {
         return getToken().then((token) => {
@@ -18,6 +19,19 @@ export function RequestProvider(props) {
             }).then(resp => resp.json()).then(resp => setPendingRequests(resp))
         })
     };
+
+    const getAllRejectedRequests = (id) => {
+        debugger;
+        return getToken().then((token) => {
+            fetch(`/api/request/rejection/${id}`, {
+                method: "GET",
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }).then(resp => resp.json()).then(resp => setRejectedRequests(resp))
+        })
+    };
+
 
     const getAllOutgoingRequests = (id) => {
         return getToken().then((token) => {
@@ -43,9 +57,9 @@ export function RequestProvider(props) {
         )
     };
 
-    const postRejection = (request) => {
-        return getToken().then((token) => fetch("/api/request/rejection", {
-            method: "POST",
+    const updateRejection = (request) => {
+        return getToken().then((token) => fetch(`/api/request/rejection/${request.id}`, {
+            method: "PUT",
             headers: {
                 Authorization: `Bearer ${token}`,
                 "Content-Type": "application/json",
@@ -69,7 +83,7 @@ export function RequestProvider(props) {
 
     return (
 
-        <RequestContext.Provider value={{ deleteRequest, postRejection, addRequestDeactivatePuzzle, getAllPendingRequests, pendingRequests, getAllOutgoingRequests, outgoingRequests }}>
+        <RequestContext.Provider value={{ getAllRejectedRequests, rejectedRequests, deleteRequest, updateRejection, addRequestDeactivatePuzzle, getAllPendingRequests, setPendingRequests, pendingRequests, getAllOutgoingRequests, setOutgoingRequests, outgoingRequests }}>
             {props.children}
         </RequestContext.Provider>
     );

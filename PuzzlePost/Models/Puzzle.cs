@@ -30,6 +30,7 @@ namespace PuzzlePost.Models
         public Category Category { get; set; }
         public UserProfile UserProfile { get; set; }
         public List<History> Histories { get; set; }
+        public Request Request { get; set; }
 
     }
 }

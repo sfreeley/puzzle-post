@@ -61,9 +61,9 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("StatusId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            UserProfile = new UserProfile()
+                            RequestingPuzzleUser = new UserProfile()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("UserId")),
+                                Id = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                             },
                             Puzzle = new Puzzle()
@@ -85,6 +85,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
+       
         //call for the requests being made by the user logged in to others
         public List<Request> GetOutgoingRequestsForUser(int id)
         {
@@ -134,9 +135,9 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("StatusId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            UserProfile = new UserProfile()
+                            RequestingPuzzleUser = new UserProfile()
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("UserId")),
+                                Id = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                             },
                             Puzzle = new Puzzle()
@@ -234,31 +235,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //method to post new request, but will be for rejection of request where status id will be 3 = rejected
-        public void PostRejection(Request request)
-        {
-            using (var conn = Connection)
-            {
-                conn.Open();
-                using (var cmd = conn.CreateCommand())
-                {
-                    cmd.CommandText = @"
-                        INSERT INTO Request (PuzzleId, RequestingPuzzleUserId, SenderOfPuzzleUserId, Content, CreateDateTime, StatusId)
-                        OUTPUT INSERTED.ID
-                        VALUES (
-                            @PuzzleId, @RequestingPuzzleUserId, @SenderOfPuzzleUserId, @Content, @CreateDateTime, @StatusId)";
-                    cmd.Parameters.AddWithValue("@PuzzleId", request.PuzzleId);
-                    cmd.Parameters.AddWithValue("@RequestingPuzzleUserId", request.RequestingPuzzleUserId);
-                    cmd.Parameters.AddWithValue("@SenderOfPuzzleUserId", request.SenderOfPuzzleUserId);
-                    cmd.Parameters.AddWithValue("@Content", request.Content);
-                    cmd.Parameters.AddWithValue("@CreateDateTime", request.CreateDateTime);
-                    cmd.Parameters.AddWithValue("@StatusId", 3);
-
-                    request.Id = (int)cmd.ExecuteScalar();
-                }
-            }
-        }
-
+      
         //this will be used when current owner of puzzle confirms
         //to share with the person requesting the puzzle
         //the status of the request to id of 2 which is accepted (disappear from pending incoming requests)

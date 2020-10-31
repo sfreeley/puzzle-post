@@ -6,25 +6,21 @@ import { useHistory } from "react-router-dom";
 
 const AddPuzzle = () => {
     const history = useHistory();
-    const { categories, addPuzzle, categoriesForPuzzle } = useContext(PuzzleContext);
+    const { categories, addPuzzle, categoriesForPuzzle, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
     const [isLoading, setIsLoading] = useState(false);
 
-    useEffect(() => {
-        categoriesForPuzzle();
-
-    }, [])
-
-    //new puzzle that will be added into state
     const [newPuzzle, setNewPuzzle] = useState({
         categoryId: 1,
-        //handling currentOwnerId in backend
-        // currentOwnerId: userId,
         imageLocation: "",
         pieces: null,
         title: "",
         manufacturer: "",
         notes: ""
     })
+
+    useEffect(() => {
+        categoriesForPuzzle();
+    }, [])
 
 
     //handling input field for posting new puzzle
@@ -43,15 +39,14 @@ const AddPuzzle = () => {
     };
 
     const addNewPuzzle = (e) => {
-        debugger;
+        // debugger;
         e.preventDefault();
         newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
         newPuzzle.pieces = parseInt(newPuzzle.pieces);
         setIsLoading(true);
         addPuzzle(newPuzzle);
-        setIsLoading(false);
-        history.push("/puzzle");
-
+        setActivePuzzles(activePuzzles)
+        history.push("/puzzle")
     }
 
     return (
@@ -93,9 +88,9 @@ const AddPuzzle = () => {
                 </FormGroup>
 
                 <FormGroup>
-                    <Label className="CategoryLabel">
+                    <Label className="CategoryLabel" for="categoryId">
                         Puzzle Categories
-          </Label>
+                    </Label>
 
                     <Input
                         type="select"
@@ -104,12 +99,12 @@ const AddPuzzle = () => {
                         value={parseInt(newPuzzle.categoryId)}
                         id="categoryId"
                         name="categoryId"
-
                     >
-                        <option value={1}>Choose an option</option>
+                        <option value={1}>Please Choose an Option</option>
                         {categories.map(category => {
+                            return category.id === 1 ? null :
 
-                            return <option key={category.id} value={category.id}>{category.name}</option>
+                                <option key={category.id} value={category.id}>{category.name}</option>
                         }
 
                         )}

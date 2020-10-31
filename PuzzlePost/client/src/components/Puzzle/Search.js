@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import { Input, Button } from "reactstrap";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 
-const Search = () => {
+const Search = ({ clearSearchResults }) => {
     const { searchActivePuzzles, activePuzzles } = useContext(PuzzleContext);
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -25,6 +25,10 @@ const Search = () => {
             <Button className="submitSearch" type="button" color="success" onClick={searchPuzzles}>
                 {'Search'}
             </Button>
+            <Button className="clearSearch" type="button" color="warning" onClick={clearSearchResults}>
+                {'Clear Results'}
+            </Button>
+
 
         </>
     )

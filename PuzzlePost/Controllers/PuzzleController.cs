@@ -11,7 +11,7 @@ using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PuzzleController : ControllerBase
@@ -33,17 +33,29 @@ namespace PuzzlePost.Controllers
         [HttpGet("active")]
         public IActionResult Get()
         {
-
             return Ok(_puzzleRepository.GetAllSharedPuzzles());
+        }
+
+        [HttpGet("search")]
+        public IActionResult Search(string q)
+        {
+            return Ok(_puzzleRepository.SearchActivePuzzles(q));
         }
 
         [HttpGet("history/{id}")]
         public IActionResult GetbyIdWithHistory(int id)
-        {
+        { 
+        //    UserProfile userProfile = GetCurrentUserProfile();
+        //    var userId = userProfile.Id;
             Puzzle puzzle = _puzzleRepository.GetPuzzleById(id);
+            //if (puzzle.CurrentOwnerId != userId)
+            //{
+            //    return Unauthorized();
+            //}
+
             if (puzzle == null)
             {
-                return null;
+                return NotFound();
             }
             return Ok(puzzle);
         }
@@ -122,7 +134,16 @@ namespace PuzzlePost.Controllers
         [HttpPut("reactivate/{id}")]
         public IActionResult Reactivate(int id)
         {
+            
             _puzzleRepository.ReactivatePuzzle(id);
+            //getting request by puzzle id with pending status
+            Request request = _requestRepository.GetRequestByPuzzleId(id);
+
+            //if there is already a pending request for this puzzle, reject it if reactivated and push it back to shared puzzle page
+            if (request != null)
+            {
+                _requestRepository.UpdateToReject(request);
+            }
             return NoContent();
 
         }
@@ -143,11 +164,6 @@ namespace PuzzlePost.Controllers
         {
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
-
-            //if (userId != puzzle.CurrentOwnerId)
-            //{
-            //    return Unauthorized();
-            //}
 
             //HISTORY UPDATE
             //get a history object via both userId (currently owner) and puzzle id where end date time is null
@@ -170,7 +186,6 @@ namespace PuzzlePost.Controllers
            
             //update status to status id of 2 = approved
             _requestRepository.UpdateRequestStatus(request);
-            
             
             //HISTORY POST
             //instanstiate a new history object
@@ -197,12 +212,7 @@ namespace PuzzlePost.Controllers
             return NoContent();
         }
 
-        [HttpGet("search")]
-        public IActionResult Search(string q)
-        {
-            return Ok(_puzzleRepository.SearchActivePuzzles(q));
-        }
-
+      
         //Firebase
         private UserProfile GetCurrentUserProfile()
         {

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from "reactstrap";
 import { RequestContext } from "../../providers/RequestProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
@@ -6,51 +7,37 @@ import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 const PuzzleRejection = ({ modal, toggle, request }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { postRejection, getAllPendingRequests } = useContext(RequestContext);
+    const { setPendingRequests, pendingRequests, updateRejection } = useContext(RequestContext);
+    const history = useHistory();
+
     const [rejection, setRejection] = useState({
+        id: request.id,
         puzzleId: request.puzzleId,
         requestingPuzzleUserId: request.requestingPuzzleUserId,
-        content: ""
+        content: request.content
     })
 
-    useEffect(() => {
-        getAllPendingRequests(parseInt(activeUser.id));
-    })
-
-    const handleFieldChange = (e) => {
-        const stateToChange = { ...rejection };
-        stateToChange[e.target.id] = e.target.value;
-        setRejection(stateToChange);
-    };
-
-    const rejectRequest = () => {
-        postRejection(rejection);
+    const rejectRequest = (e) => {
+        updateRejection(rejection);
         toggle();
-        getAllPendingRequests(parseInt(activeUser.id));
+        history.push("/puzzle");
     }
+
 
     return (
         <div>
 
             <Modal isOpen={modal} toggle={toggle} className="rejection">
-                <ModalHeader toggle={toggle}>Enter a Reason (if you wish)</ModalHeader>
+                <ModalHeader toggle={toggle}>Please confirm</ModalHeader>
                 <ModalBody>
                     <Form className="rejectionForm">
                         <FormGroup>
-                            <Label className="rejectionContentLabel">Message:</Label>
-                            <Input
-                                className="rejectionContent"
-                                onChange={handleFieldChange}
-                                type="textarea"
-                                id="content"
-                                value={rejection.content}
-                                placeholder="Enter Your Rejection Message Here"
-                            />
+                            Are you sure you want to deny this puzzle request?
                         </FormGroup>
                     </Form>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={rejectRequest}>Send Rejection</Button>{' '}
+                    <Button color="primary" onClick={rejectRequest}>Reject</Button>{' '}
                     <Button color="secondary" onClick={toggle}>Just Kidding</Button>
                 </ModalFooter>
             </Modal>
