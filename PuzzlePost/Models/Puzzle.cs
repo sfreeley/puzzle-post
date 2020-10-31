@@ -28,7 +28,7 @@ namespace PuzzlePost.Models
         public int IsAvailable { get; set; }
         public int IsDeleted { get; set; }
         public Category Category { get; set; }
-        public UserProfile CurrentOwner { get; set; }
+        public UserProfile UserProfile { get; set; }
         public List<History> Histories { get; set; }
 
     }

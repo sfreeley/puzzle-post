@@ -64,7 +64,7 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            CurrentOwner = new UserProfile
+                            UserProfile = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
@@ -131,7 +131,7 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            CurrentOwner = new UserProfile
+                            UserProfile = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
@@ -268,7 +268,7 @@ namespace PuzzlePost.Repositories
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                     Name = reader.GetString(reader.GetOrdinal("Name"))
                                 },
-                                CurrentOwner = new UserProfile
+                                UserProfile = new UserProfile
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                     DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
@@ -359,7 +359,7 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            CurrentOwner = new UserProfile
+                            UserProfile = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerDd")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
@@ -571,7 +571,7 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            CurrentOwner = new UserProfile
+                            UserProfile = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
