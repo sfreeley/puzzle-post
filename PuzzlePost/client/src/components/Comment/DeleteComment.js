@@ -9,8 +9,8 @@ const DeleteComment = ({ modal, toggle, comment }) => {
         getAllCommentsForPuzzle(comment.puzzleId);
     }, [])
 
-    const deleteAComment = () => {
-        deleteComment(comment.id);
+    const deleteAComment = (e) => {
+        deleteComment(e.target.id);
         getAllCommentsForPuzzle(comment.puzzleId);
     }
 
@@ -23,7 +23,7 @@ const DeleteComment = ({ modal, toggle, comment }) => {
                         Are you sure you want to delete this comment?
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={deleteAComment}>Delete</Button>{' '}
+                        <Button id={comment.id} color="primary" onClick={deleteAComment}>Delete</Button>{' '}
                         <Button color="secondary" onClick={toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>

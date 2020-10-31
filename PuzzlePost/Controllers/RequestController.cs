@@ -97,6 +97,7 @@ namespace PuzzlePost.Controllers
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
 
+            
             request.SenderOfPuzzleUserId = userId;
            
             request.CreateDateTime = DateTime.Now;

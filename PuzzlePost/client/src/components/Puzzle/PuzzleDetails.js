@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { Row, Col, CardImg, Card, CardBody, Button } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
@@ -11,10 +11,11 @@ import AddComment from "../Comment/AddComment";
 import DeletePuzzle from "../Puzzle/DeletePuzzle";
 
 const PuzzleDetails = () => {
-    const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile } = useContext(PuzzleContext);
+    const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile, deletePuzzle } = useContext(PuzzleContext);
     const { addComment, getAllCommentsForPuzzle } = useContext(CommentContext);
     const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
+    const history = useHistory();
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -72,10 +73,18 @@ const PuzzleDetails = () => {
         toggleAdd();
     }
 
+    const deleteAPuzzle = (e) => {
+        e.preventDefault();
+        deletePuzzle(e.target.id);
+        toggleDelete();
+        history.push("/puzzle");
+    }
+
+
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
-            <DeletePuzzle deleteModal={deleteModal} toggleDelete={toggleDelete} puzzle={puzzle} />
+            <DeletePuzzle deleteModal={deleteModal} toggleDelete={toggleDelete} puzzle={puzzle} deleteAPuzzle={deleteAPuzzle} />
             {puzzle.isAvailable === 0 ? null :
                 <Button onClick={toggleAdd}>Add Comment</Button>
             }
@@ -118,7 +127,7 @@ const PuzzleDetails = () => {
             {parseInt(activeUser.id) === puzzle.currentOwnerId ?
                 <>
                     <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
-                    <Button onClick={toggleDelete}>Delete</Button>
+                    <Button id={puzzle.id} onClick={toggleDelete}>Delete</Button>
 
                 </> : <Button onClick={toggle}>Request</Button>
 

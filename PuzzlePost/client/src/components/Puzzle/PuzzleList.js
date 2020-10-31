@@ -14,10 +14,7 @@ const PuzzleList = () => {
     }
 
     useEffect(() => {
-
         getAllActivePuzzles();
-
-
     }, []);
 
 
@@ -25,8 +22,6 @@ const PuzzleList = () => {
     const clearSearchResults = () => {
         getAllActivePuzzles();
     }
-
-
 
     return (
         <>

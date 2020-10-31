@@ -134,7 +134,16 @@ namespace PuzzlePost.Controllers
         [HttpPut("reactivate/{id}")]
         public IActionResult Reactivate(int id)
         {
+            
             _puzzleRepository.ReactivatePuzzle(id);
+            //getting request by puzzle id with pending status
+            Request request = _requestRepository.GetRequestByPuzzleId(id);
+
+            //if there is already a pending request for this puzzle, reject it if reactivated and push it back to shared puzzle page
+            if (request != null)
+            {
+                _requestRepository.UpdateToReject(request);
+            }
             return NoContent();
 
         }

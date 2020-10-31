@@ -29,13 +29,15 @@ const Request = ({ request }) => {
     const updateOwner = (e) => {
         e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
-        setPendingRequests(pendingRequests);
+        //refresh
+        setConfirmPuzzle(confirmPuzzle);
     }
 
     const deleteOutgoingRequest = (e) => {
         e.preventDefault();
         deleteRequest(request.id);
-        setOutgoingRequests(outgoingRequests);
+        //refresh
+
     }
 
     return (

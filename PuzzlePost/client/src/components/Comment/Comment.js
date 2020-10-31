@@ -15,8 +15,6 @@ const Comment = ({ comment }) => {
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
-
-
     return (
         <>
             <Row >
@@ -44,14 +42,8 @@ const Comment = ({ comment }) => {
                         </> : null
                     }
 
-
-
-
                 </Card >
-
             </Row>
-
-
         </>
     );
 }

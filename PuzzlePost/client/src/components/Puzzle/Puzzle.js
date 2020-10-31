@@ -19,35 +19,23 @@ const Puzzle = ({ puzzle }) => {
     const [deleteModal, setDeleteModal] = useState(false);
     const toggleDelete = () => setDeleteModal(!deleteModal);
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     const reactivateAPuzzle = (e) => {
         e.preventDefault();
         reactivatePuzzle(puzzle.id);
-        setActivePuzzles(activePuzzles);
-        history.push("/puzzle");
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
+
     }
 
     const deleteAPuzzle = (e) => {
         e.preventDefault();
         deletePuzzle(e.target.id);
         toggleDelete();
-        setActivePuzzles(activePuzzles);
-
-        // if (window.location.pathname == "/puzzle") {
-        //     setActivePuzzles(activePuzzles);
-        //     toggleDelete();
-
-        // }
-        // else if (window.location.pathname == "/puzzle/user") {
-        //     setInactiveUserPuzzles(inactiveUserPuzzles);
-        //     setUserPuzzles(userPuzzles);
-        //     toggleDelete();
-
-        // }
-        // else {
-        //     setActivePuzzles(activePuzzles)
-        //     history.push("/puzzle");
-        // }
-
     }
 
     return (
@@ -68,7 +56,6 @@ const Puzzle = ({ puzzle }) => {
                             <br />
                             {puzzle.pieces} pieces
                             <br />
-                            {/* need to fix this */}
                             {(window.location.pathname === "/puzzle/user" && puzzle.notes !== "") ?
                                 <p>Notes: {puzzle.notes}</p> : null
                             }

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from "reactstrap";
 import { RequestContext } from "../../providers/RequestProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
@@ -7,6 +8,7 @@ import { UserProfileContext } from "../../providers/UserProfileProvider";
 const PuzzleRejection = ({ modal, toggle, request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { setPendingRequests, pendingRequests, updateRejection } = useContext(RequestContext);
+    const history = useHistory();
 
     const [rejection, setRejection] = useState({
         id: request.id,
@@ -15,11 +17,12 @@ const PuzzleRejection = ({ modal, toggle, request }) => {
         content: request.content
     })
 
-    const rejectRequest = () => {
+    const rejectRequest = (e) => {
         updateRejection(rejection);
         toggle();
-        setPendingRequests(pendingRequests);
+        history.push("/puzzle");
     }
+
 
     return (
         <div>
