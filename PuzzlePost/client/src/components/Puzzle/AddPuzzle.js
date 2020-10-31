@@ -100,9 +100,11 @@ const AddPuzzle = () => {
                         id="categoryId"
                         name="categoryId"
                     >
+                        <option value={1}>Please Choose an Option</option>
                         {categories.map(category => {
+                            return category.id === 1 ? null :
 
-                            return <option key={category.id} value={category.id}>{category.name}</option>
+                                <option key={category.id} value={category.id}>{category.name}</option>
                         }
 
                         )}

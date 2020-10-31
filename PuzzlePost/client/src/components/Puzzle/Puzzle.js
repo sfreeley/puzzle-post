@@ -11,7 +11,7 @@ import RequestPuzzle from "./RequestPuzzle";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { reactivatePuzzle, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
+    const { deletePuzzle, reactivatePuzzle, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
@@ -26,10 +26,34 @@ const Puzzle = ({ puzzle }) => {
         history.push("/puzzle");
     }
 
+    const deleteAPuzzle = (e) => {
+        e.preventDefault();
+        deletePuzzle(e.target.id);
+        toggleDelete();
+        setActivePuzzles(activePuzzles);
+
+        // if (window.location.pathname == "/puzzle") {
+        //     setActivePuzzles(activePuzzles);
+        //     toggleDelete();
+
+        // }
+        // else if (window.location.pathname == "/puzzle/user") {
+        //     setInactiveUserPuzzles(inactiveUserPuzzles);
+        //     setUserPuzzles(userPuzzles);
+        //     toggleDelete();
+
+        // }
+        // else {
+        //     setActivePuzzles(activePuzzles)
+        //     history.push("/puzzle");
+        // }
+
+    }
+
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
-            <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} puzzle={puzzle} />
+            <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} puzzle={puzzle} deleteAPuzzle={deleteAPuzzle} />
             <Card sm="6">
                 <Row margin="m-4">
                     <Col sm="4">
@@ -45,8 +69,8 @@ const Puzzle = ({ puzzle }) => {
                             {puzzle.pieces} pieces
                             <br />
                             {/* need to fix this */}
-                            {(window.location.pathname == `/puzzle/details/${puzzle.id}` && puzzle.notes != null) || (window.location.pathname == `/puzzle/user` && puzzle.notes != null) ?
-                                <div>Notes: {puzzle.notes}</div> : null
+                            {(window.location.pathname === "/puzzle/user" && puzzle.notes !== "") ?
+                                <p>Notes: {puzzle.notes}</p> : null
                             }
                         </div>
                     </Col>
@@ -73,7 +97,7 @@ const Puzzle = ({ puzzle }) => {
                                 < Button type="button" onClick={toggle}> Request </Button> : null}
                             {/* this Reactivate button only shows if in progress on the user's puzzle list (ie isAvailable === 0) */}
                             {puzzle.isAvailable === 0 ?
-                                <Button type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
+                                <Button id={puzzle.id} type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
                         </Col>
 
                         {/* {window.location.pathname == "/puzzle/user" ?

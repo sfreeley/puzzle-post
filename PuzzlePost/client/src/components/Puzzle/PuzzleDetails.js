@@ -10,8 +10,6 @@ import CommentList from "../Comment/CommentList";
 import AddComment from "../Comment/AddComment";
 import DeletePuzzle from "../Puzzle/DeletePuzzle";
 
-
-
 const PuzzleDetails = () => {
     const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile } = useContext(PuzzleContext);
     const { addComment, getAllCommentsForPuzzle } = useContext(CommentContext);
@@ -78,7 +76,9 @@ const PuzzleDetails = () => {
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
             <DeletePuzzle deleteModal={deleteModal} toggleDelete={toggleDelete} puzzle={puzzle} />
-            <Button onClick={toggleAdd}>Add Comment</Button>{' '}
+            {puzzle.isAvailable === 0 ? null :
+                <Button onClick={toggleAdd}>Add Comment</Button>
+            }
 
             <AddComment cancelAdd={cancelAdd} newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
 
@@ -97,7 +97,9 @@ const PuzzleDetails = () => {
                                 <br />
                                 {puzzle.pieces} pieces
                             </p>
-                            <p>Notes:{puzzle.notes}</p>
+                            {puzzle.notes !== "" ?
+                                <p>Notes:{puzzle.notes}</p> : null
+                            }
                         </Col>
 
                         <Col sm="4">
@@ -122,7 +124,9 @@ const PuzzleDetails = () => {
 
             }
 
-            <div><CommentList /></div>
+            {puzzle.isAvailable === 0 ? null :
+                <div><CommentList /></div>
+            }
 
 
         </>

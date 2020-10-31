@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { currentDateTime } from "../helperFunctions";
+import { currentDateAndTime } from "../helperFunctions";
 import { Row, Col, Card, CardTitle, CardBody, Button } from "reactstrap";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { CommentContext } from "../../providers/CommentProvider";
@@ -25,7 +25,7 @@ const Comment = ({ comment }) => {
 
 
                     <p className="text-left px-2">
-                        {currentDateTime(comment.createDateTime)}
+                        {currentDateAndTime(comment.createDateTime)}
                         <br></br>
                 Written by: <strong>{comment.userProfile.displayName}</strong>
                     </p>
