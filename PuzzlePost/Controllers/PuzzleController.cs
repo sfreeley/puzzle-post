@@ -11,7 +11,7 @@ using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class PuzzleController : ControllerBase
@@ -36,16 +36,22 @@ namespace PuzzlePost.Controllers
             return Ok(_puzzleRepository.GetAllSharedPuzzles());
         }
 
+        [HttpGet("search")]
+        public IActionResult Search(string q)
+        {
+            return Ok(_puzzleRepository.SearchActivePuzzles(q));
+        }
+
         [HttpGet("history/{id}")]
         public IActionResult GetbyIdWithHistory(int id)
-        {
-            UserProfile userProfile = GetCurrentUserProfile();
-            var userId = userProfile.Id;
+        { 
+        //    UserProfile userProfile = GetCurrentUserProfile();
+        //    var userId = userProfile.Id;
             Puzzle puzzle = _puzzleRepository.GetPuzzleById(id);
-            if (puzzle.CurrentOwnerId != userId)
-            {
-                return Unauthorized();
-            }
+            //if (puzzle.CurrentOwnerId != userId)
+            //{
+            //    return Unauthorized();
+            //}
 
             if (puzzle == null)
             {
@@ -197,12 +203,7 @@ namespace PuzzlePost.Controllers
             return NoContent();
         }
 
-        [HttpGet("search")]
-        public IActionResult Search(string q)
-        {
-            return Ok(_puzzleRepository.SearchActivePuzzles(q));
-        }
-
+      
         //Firebase
         private UserProfile GetCurrentUserProfile()
         {

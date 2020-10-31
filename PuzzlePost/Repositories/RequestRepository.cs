@@ -85,87 +85,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //public List<Request> GetRejectedResponsesForUser(int id)
-        //{
-        //    using (var conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (var cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //               SELECT r.Id AS RequestId, r.PuzzleId, r.RequestingPuzzleUserId, r.SenderOfPuzzleUserId, r.Content,
-        //               r.CreateDateTime, r.StatusId,
-    
-        //               s.Id, s.Name,
-                       
-        //               up.Id AS UserId, up.DisplayName,
-
-        //               p.Id AS RequestedPuzzleId, p.Title, p.Manufacturer, p.Pieces, p.ImageLocation,
-
-        //               h.EndDateOwnership
-
-        //               FROM Request r
-        //               LEFT JOIN Status s
-        //               ON r.StatusId = s.Id   
-        //               LEFT JOIN UserProfile up
-        //               ON r.SenderOfPuzzleUserId = up.Id
-        //               LEFT JOIN Puzzle p
-        //               ON r.PuzzleId = p.Id
-        //               LEFT JOIN History h 
-        //               ON h.UserProfileId = r.SenderOfPuzzleUserId
-        //               WHERE r.RequestingPuzzleUserId = @id AND s.Name = 'Rejected'
-        //               ORDER BY r.CreateDateTime DESC";
-
-        //            cmd.Parameters.AddWithValue("@id", id);
-        //            var reader = cmd.ExecuteReader();
-
-        //            List<Request> requests = new List<Request>();
-
-        //            while (reader.Read())
-        //            {
-        //                Request request = new Request
-        //                {
-        //                    Id = reader.GetInt32(reader.GetOrdinal("RequestId")),
-        //                    PuzzleId = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
-        //                    RequestingPuzzleUserId = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
-        //                    SenderOfPuzzleUserId = reader.GetInt32(reader.GetOrdinal("SenderOfPuzzleUserId")),
-        //                    Content = DbUtils.GetNullableString(reader, "Content"),
-        //                    CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
-        //                    StatusId = reader.GetInt32(reader.GetOrdinal("StatusId")),
-        //                    Status = new Status()
-        //                    {
-        //                        Id = reader.GetInt32(reader.GetOrdinal("StatusId")),
-        //                        Name = reader.GetString(reader.GetOrdinal("Name"))
-        //                    },
-        //                    RequestingPuzzleUser = new UserProfile()
-        //                    {
-        //                        Id = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
-        //                        DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-        //                    },
-        //                    SenderOfPuzzleUser = new UserProfile()
-        //                    {
-        //                        Id = reader.GetInt32(reader.GetOrdinal("SenderOfPuzzleUserId")),
-        //                        DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-        //                    },
-        //                    Puzzle = new Puzzle()
-        //                    {
-        //                        Id = reader.GetInt32(reader.GetOrdinal("RequestedPuzzleId")),
-        //                        Pieces = reader.GetInt32(reader.GetOrdinal("Pieces")),
-        //                        Title = reader.GetString(reader.GetOrdinal("Title")),
-        //                        Manufacturer = reader.GetString(reader.GetOrdinal("Manufacturer")),
-        //                        ImageLocation = reader.GetString(reader.GetOrdinal("ImageLocation")),
-
-        //                    }
-        //                };
-
-        //                requests.Add(request);
-        //            }
-        //            reader.Close();
-        //            return requests;
-        //        }
-        //    }
-        //}
-
+       
         //call for the requests being made by the user logged in to others
         public List<Request> GetOutgoingRequestsForUser(int id)
         {
@@ -315,31 +235,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //method to post new request, but will be for rejection of request where status id will be 3 = rejected
-        //public void PostRejection(Request request)
-        //{
-        //    using (var conn = Connection)
-        //    {
-        //        conn.Open();
-        //        using (var cmd = conn.CreateCommand())
-        //        {
-        //            cmd.CommandText = @"
-        //                INSERT INTO Request (PuzzleId, RequestingPuzzleUserId, SenderOfPuzzleUserId, Content, CreateDateTime, StatusId)
-        //                OUTPUT INSERTED.ID
-        //                VALUES (
-        //                    @PuzzleId, @RequestingPuzzleUserId, @SenderOfPuzzleUserId, @Content, @CreateDateTime, @StatusId)";
-        //            cmd.Parameters.AddWithValue("@PuzzleId", request.PuzzleId);
-        //            cmd.Parameters.AddWithValue("@RequestingPuzzleUserId", request.RequestingPuzzleUserId);
-        //            cmd.Parameters.AddWithValue("@SenderOfPuzzleUserId", request.SenderOfPuzzleUserId);
-        //            cmd.Parameters.AddWithValue("@Content", request.Content);
-        //            cmd.Parameters.AddWithValue("@CreateDateTime", request.CreateDateTime);
-        //            cmd.Parameters.AddWithValue("@StatusId", 3);
-
-        //            request.Id = (int)cmd.ExecuteScalar();
-        //        }
-        //    }
-        //}
-
+      
         //this will be used when current owner of puzzle confirms
         //to share with the person requesting the puzzle
         //the status of the request to id of 2 which is accepted (disappear from pending incoming requests)

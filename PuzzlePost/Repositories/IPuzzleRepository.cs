@@ -8,8 +8,8 @@ namespace PuzzlePost.Repositories
         List<Puzzle> GetAllSharedPuzzles();
         void Add(Puzzle puzzle);
         List<Category> GetAllCategories();
-        List<Puzzle> GetAllUserPuzzlesById(int id);
         List<Puzzle> GetAllUserPuzzlesInProgressById(int id);
+        List<Puzzle> GetAllUserPuzzlesById(int id);
         Puzzle GetPuzzleById(int id);
         Puzzle GetPuzzleWithUserProfileById(int id);
         void UpdatePuzzle(Puzzle puzzle);

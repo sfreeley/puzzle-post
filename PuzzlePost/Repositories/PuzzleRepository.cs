@@ -15,6 +15,7 @@ namespace PuzzlePost.Repositories
     {
         public PuzzleRepository(IConfiguration config) : base(config) { }
 
+        //all active puzzles
         public List<Puzzle> GetAllSharedPuzzles()
         {
             using (var conn = Connection)
@@ -63,7 +64,7 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            UserProfile = new UserProfile
+                            CurrentOwner = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
@@ -78,6 +79,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
+        //search
         public List<Puzzle> SearchActivePuzzles(string criterion)
         {
             using (var conn = Connection)
@@ -129,7 +131,7 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            UserProfile = new UserProfile
+                            CurrentOwner = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
@@ -144,6 +146,8 @@ namespace PuzzlePost.Repositories
                 }
             }
         }
+
+        //POST
         public void Add(Puzzle puzzle)
         {
             using (var conn = Connection)
@@ -175,6 +179,8 @@ namespace PuzzlePost.Repositories
             }
         }
 
+
+        //getting all categories for dropdown
         public List<Category> GetAllCategories()
         {
             using (var conn = Connection)
@@ -206,7 +212,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //without history
+        //without history (by current owner id)
         public List<Puzzle> GetAllUserPuzzlesById(int id)
         {
             using (var conn = Connection)
@@ -262,7 +268,7 @@ namespace PuzzlePost.Repositories
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                     Name = reader.GetString(reader.GetOrdinal("Name"))
                                 },
-                                UserProfile = new UserProfile
+                                CurrentOwner = new UserProfile
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                     DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
@@ -353,9 +359,9 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            UserProfile = new UserProfile
+                            CurrentOwner = new UserProfile
                             {
-                                Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
+                                Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerDd")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                             }
                         };
@@ -368,7 +374,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //getting puzzle without history
+        //getting puzzle without history (by puzzle id)
         public Puzzle GetPuzzleWithoutHistoryById(int id)
         {
             using (var conn = Connection)
@@ -429,6 +435,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
+        //get puzzle with history by puzzle id
         public Puzzle GetPuzzleById(int id)
         {
             using (var conn = Connection)
@@ -564,7 +571,7 @@ namespace PuzzlePost.Repositories
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
                                 Name = reader.GetString(reader.GetOrdinal("Name"))
                             },
-                            UserProfile = new UserProfile
+                            CurrentOwner = new UserProfile
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
