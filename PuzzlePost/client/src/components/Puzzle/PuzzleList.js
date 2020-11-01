@@ -34,11 +34,11 @@ const PuzzleList = () => {
             </div>
 
             <CardDeck>
-                <Row>
-                    {activePuzzles.map((puzzle) => {
-                        return <Puzzle key={puzzle.id} puzzle={puzzle} />
-                    })}
-                </Row>
+
+                {activePuzzles.map((puzzle) => {
+                    return <Puzzle key={puzzle.id} puzzle={puzzle} />
+                })}
+
             </CardDeck>
 
             {/* </Container> */}

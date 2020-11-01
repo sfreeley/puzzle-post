@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import {
-    Card, CardImg, CardBody, Row, Button, Col, CardTitle, CardHeader, ListGroupItem, ListGroup
+    Card, CardImg, CardBody, Row, Button, Col, CardTitle, CardHeader, ListGroupItem, ListGroup, CardFooter
 } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { Link, useHistory } from "react-router-dom";
@@ -45,46 +45,47 @@ const Puzzle = ({ puzzle }) => {
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
             <DeletePuzzle toggleDelete={toggleDelete} deleteModal={deleteModal} puzzle={puzzle} deleteAPuzzle={deleteAPuzzle} />
 
-            <Card style={{ width: "18rem" }}>
+            <Card className="puzzleCard" style={{ maxWidth: "18rem" }}>
+                <CardImg top className="puzzleImage" src={puzzle.imageLocation} alt={puzzle.title} />
                 <CardHeader> <Link to={`/puzzle/details/${puzzle.id}`}><Button>Details</Button></Link></CardHeader>
-                <CardImg className="puzzleImage" src={puzzle.imageLocation} alt={puzzle.title} />
+
 
 
                 <CardTitle text-center> <strong>{puzzle.title}</strong> {puzzle.manufacturer}</CardTitle>
-                <CardBody>
-                    <ListGroup>
-                        <ListGroupItem>
-                            Shared on: {currentDateTime(puzzle.createDateTime)}
-                        </ListGroupItem>
-                        <ListGroupItem>
-                            Shared by: {puzzle.userProfile.displayName}
-                        </ListGroupItem>
-                        <ListGroupItem>
-                            Category: {puzzle.category.name}
-                        </ListGroupItem>
-                        <ListGroupItem>
-                            {puzzle.pieces} pieces
-                        </ListGroupItem>
-                        <ListGroupItem>
-                            {(window.location.pathname === "/puzzle/user" && puzzle.notes !== "") ?
-                                <p>Notes: {puzzle.notes}</p> : null
-                            }
-                        </ListGroupItem>
-                    </ListGroup>
-                </CardBody>
-                {parseInt(activeUser.id) == puzzle.currentOwnerId ?
-                    <>
-                        <Button outline flat onClick={() => history.push(`/puzzle/edit/${puzzle.id}`)}>Edit</Button>
-                        <Button outline flat onClick={toggleDelete}>Delete</Button>
-                    </> : null
-                }
-                {/* this Request button only shows if user is not the current owner of the puzzle */}
-                {parseInt(activeUser.id) !== puzzle.currentOwnerId ?
-                    < Button type="button" onClick={toggle}> Request </Button> : null}
-                {/* this Reactivate button only shows if in progress on the user's puzzle list (ie isAvailable === 0) */}
-                {puzzle.isAvailable === 0 ?
-                    <Button id={puzzle.id} type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
 
+                <ListGroup>
+                    <ListGroupItem>
+                        Shared on: {currentDateTime(puzzle.createDateTime)}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        Shared by: {puzzle.userProfile.displayName}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        Category: {puzzle.category.name}
+                    </ListGroupItem>
+                    <ListGroupItem>
+                        {puzzle.pieces} pieces
+                        </ListGroupItem>
+
+                    {/* {(window.location.pathname === "/puzzle/user" && puzzle.notes !== "") ?
+                        <ListGroupItem> {puzzle.notes} </ListGroupItem> : null
+                    } */}
+
+                </ListGroup>
+                <CardFooter>
+                    {parseInt(activeUser.id) == puzzle.currentOwnerId ?
+                        <>
+                            <Button outline flat onClick={() => history.push(`/puzzle/edit/${puzzle.id}`)}>Edit</Button>
+                            <Button outline flat onClick={toggleDelete}>Delete</Button>
+                        </> : null
+                    }
+                    {/* this Request button only shows if user is not the current owner of the puzzle */}
+                    {parseInt(activeUser.id) !== puzzle.currentOwnerId ?
+                        < Button type="button" onClick={toggle}> Request </Button> : null}
+                    {/* this Reactivate button only shows if in progress on the user's puzzle list (ie isAvailable === 0) */}
+                    {puzzle.isAvailable === 0 ?
+                        <Button id={puzzle.id} type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
+                </CardFooter>
             </Card >
 
         </>

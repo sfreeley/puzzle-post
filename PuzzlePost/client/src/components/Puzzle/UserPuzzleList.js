@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
-import { Button, CardDeck } from "reactstrap";
+import { Button, CardDeck, Container, Row, Col } from "reactstrap";
 import Puzzle from "./Puzzle";
 import { Link, useHistory } from "react-router-dom";
 import InProgressList from "./InProgressList";
@@ -30,25 +30,29 @@ const UserPuzzleList = () => {
     }, []);
 
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <Button onClick={addNewPuzzle}>New Puzzle</Button>
-                <h5>Shared Active Puzzles</h5>
-                <CardDeck>
-                    {userPuzzles.length === 0 ? <h4>No puzzles currently being shared</h4> :
-                        <>
 
-                            {userPuzzles.map((puzzle) => (
-                                <Puzzle key={puzzle.id} puzzle={puzzle} />
-                            ))}
-                        </>
-                    }
+        <div>
+            <Button onClick={addNewPuzzle}>New Puzzle</Button>
 
+            <Container >
+                <Col xs="4">
+
+                    <>
+
+                        {userPuzzles.map((puzzle) => (
+                            <Puzzle key={puzzle.id} puzzle={puzzle} />
+                        ))}
+                    </>
+
+
+                </Col>
+                <Row>
                     <InProgressList />
-                </CardDeck>
+                </Row>
+            </Container>
 
-            </div>
         </div>
+
     );
 };
 

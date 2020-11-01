@@ -67,8 +67,8 @@ const Header = () => {
                             {isLoggedIn &&
                                 <>
                                     <NavItem>
-                                        <a aria-current="page" className="nav-link"
-                                            style={{ cursor: "pointer" }} onClick={logout}>Logout</a>
+                                        <button aria-current="page" className="nav-link"
+                                            style={{ cursor: "pointer" }} onClick={logout}>Logout</button>
                                     </NavItem>
                                 </>
                             }

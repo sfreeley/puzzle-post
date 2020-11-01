@@ -14,7 +14,7 @@ const OutgoingRequestList = () => {
     return (
         <div className="container">
             <div className="row justify-content-center">
-                <h5>Puzzle Request History</h5>
+
                 <div className="cards-column">
                     {outgoingRequests.length == 0 ? <p>You don't have any puzzle request history</p> :
                         outgoingRequests.map((request) => {

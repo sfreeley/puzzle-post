@@ -45,7 +45,6 @@ const AddPuzzle = () => {
         newPuzzle.pieces = parseInt(newPuzzle.pieces);
         setIsLoading(true);
         addPuzzle(newPuzzle);
-        setActivePuzzles(activePuzzles)
         history.push("/puzzle")
     }
 

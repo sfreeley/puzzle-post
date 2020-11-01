@@ -1,0 +1,14 @@
+.puzzleSearch {
+  max-width: 25%;
+  margin: 1rem;
+}
+.puzzleSearchContainer {
+  display: flex;
+  justify-content: center;
+  margin: 1rem;
+}
+
+.searchButtons {
+  display: flex;
+  margin: 1rem;
+}
