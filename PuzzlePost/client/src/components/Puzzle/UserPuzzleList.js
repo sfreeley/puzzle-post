@@ -38,7 +38,7 @@ const UserPuzzleList = () => {
                     </>
 
                 </Row>
-                <h6>In Progress or Currently Being Requested</h6>
+                <h6>In Progress Puzzles</h6>
                 <Row>
                     <InProgressList />
                 </Row>

@@ -27,10 +27,11 @@ namespace PuzzlePost.Models
         public string Notes { get; set; }
         public int IsAvailable { get; set; }
         public int IsDeleted { get; set; }
+        public int InProgress { get; set; }
         public Category Category { get; set; }
         public UserProfile UserProfile { get; set; }
         public List<History> Histories { get; set; }
-        public Request Request { get; set; }
+        //public Request Request { get; set; }
 
     }
 }

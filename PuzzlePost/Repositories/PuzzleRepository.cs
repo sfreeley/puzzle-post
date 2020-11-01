@@ -25,7 +25,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted, p.InProgress,
 
                       c.Id AS CategoryId, c.Name,
     
@@ -36,7 +36,7 @@ namespace PuzzlePost.Repositories
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      WHERE p.IsAvailable = 1 AND p.IsDeleted = 0
+                      WHERE p.IsAvailable = 1 AND p.IsDeleted = 0 AND p.InProgress = 0
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -59,6 +59,7 @@ namespace PuzzlePost.Repositories
                             Notes = DbUtils.GetNullableString(reader, "Notes"),
                             IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
                             IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
+                            InProgress = reader.GetInt32(reader.GetOrdinal("InProgress")),
                             Category = new Category
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -89,7 +90,7 @@ namespace PuzzlePost.Repositories
                 {
                     var sql = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted, p.InProgress,
 
                       c.Id AS CategoryId, c.Name,
     
@@ -100,7 +101,7 @@ namespace PuzzlePost.Repositories
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      WHERE p.IsAvailable = 1 AND p.IsDeleted = 0 
+                      WHERE p.IsAvailable = 1 AND p.IsDeleted = 0 AND p.InProgress = 0
                       AND (p.Title LIKE @Criterion OR p.Pieces LIKE @Criterion OR up.DisplayName LIKE @Criterion OR p.Manufacturer LIKE @Criterion OR c.Name LIKE @Criterion)
                       ORDER BY p.CreateDateTime DESC";
                    
@@ -126,6 +127,7 @@ namespace PuzzlePost.Repositories
                             Notes = DbUtils.GetNullableString(reader, "Notes"),
                             IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
                             IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
+                            InProgress = reader.GetInt32(reader.GetOrdinal("InProgress")),
                             Category = new Category
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -158,11 +160,11 @@ namespace PuzzlePost.Repositories
                     cmd.CommandText = @"
                         INSERT INTO Puzzle (
                             CategoryId, CurrentOwnerId, ImageLocation, Pieces, CreateDateTime, Title,
-                            Manufacturer, Notes, IsAvailable, IsDeleted )
+                            Manufacturer, Notes, IsAvailable, IsDeleted, InProgress )
                         OUTPUT INSERTED.ID
                         VALUES (
                             @CategoryId, @CurrentOwnerId, @ImageLocation, @Pieces, @CreateDateTime, @Title, @Manufacturer, @Notes,
-                            @IsAvailable, @IsDeleted)";
+                            @IsAvailable, @IsDeleted, @InProgress)";
                     cmd.Parameters.AddWithValue("@CategoryId", puzzle.CategoryId);
                     cmd.Parameters.AddWithValue("@CurrentOwnerId", puzzle.CurrentOwnerId);
                     cmd.Parameters.AddWithValue("@ImageLocation", puzzle.ImageLocation);
@@ -173,7 +175,8 @@ namespace PuzzlePost.Repositories
                     cmd.Parameters.AddWithValue("@Notes", DbUtils.ValueOrDBNull(puzzle.Notes));
                     cmd.Parameters.AddWithValue("@IsAvailable", 1);
                     cmd.Parameters.AddWithValue("@IsDeleted", 0);
-  
+                    cmd.Parameters.AddWithValue("@InProgress", 0);
+
                     puzzle.Id = (int)cmd.ExecuteScalar();
                 }
             }
@@ -212,7 +215,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //without history (by current owner id)
+        //without history (by current owner id) currently being shared
         public List<Puzzle> GetAllUserPuzzlesById(int id)
         {
             using (var conn = Connection)
@@ -222,7 +225,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted, p.InProgress,
 
                       c.Id AS CategoryId, c.Name,
 
@@ -233,7 +236,7 @@ namespace PuzzlePost.Repositories
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 1 AND p.IsDeleted = 0
+                      WHERE p.CurrentOwnerId = @id AND p.IsAvailable = 1 AND p.IsDeleted = 0 AND p.InProgress = 0
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -263,6 +266,7 @@ namespace PuzzlePost.Repositories
                                 Notes = DbUtils.GetNullableString(reader, "Notes"),
                                 IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
                                 IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
+                                InProgress = reader.GetInt32(reader.GetOrdinal("InProgress")),
                                 Category = new Category
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -273,7 +277,7 @@ namespace PuzzlePost.Repositories
                                     Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                     DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                                 }
-                                //Histories = new List<History>()
+                                
                             };
 
                             puzzles.Add(existingPuzzle);
@@ -313,30 +317,21 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                    SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted, p.InProgress,
 
                       c.Id AS CategoryId, c.Name,
     
-                      up.DisplayName, up.ImageLocation,
+                      up.DisplayName, up.ImageLocation
 
-                      h.StartDateOwnership, h.EndDateOwnership,
-            
-                      r.Id AS RequestId, r.StatusId
-        
                       FROM Puzzle p
                       LEFT JOIN Category c 
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
-                      ON p.CurrentOwnerId = up.Id
-                      LEFT JOIN Request r
-                      ON r.RequestingPuzzleUserId = p.CurrentOwnerId
-                      LEFT JOIN History h
-                      ON h.UserProfileId = r.RequestingPuzzleUserId
-                      WHERE r.RequestingPuzzleUserId = @id
+                      ON p.CurrentOwnerId = up.Id  
+                      WHERE p.CurrentOwnerId = @id
                       AND p.IsAvailable = 0
                       AND p.IsDeleted = 0
-                      AND h.EndDateOwnership IS NULL
-                      AND r.StatusId = 2
+                      AND p.InProgress = 1  
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -366,6 +361,7 @@ namespace PuzzlePost.Repositories
                                 Notes = DbUtils.GetNullableString(reader, "Notes"),
                                 IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
                                 IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
+                                InProgress = reader.GetInt32(reader.GetOrdinal("InProgress")),
                                 Category = new Category
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -399,7 +395,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted, p.InProgress,
 
                       c.Id AS CategoryId, c.Name
     
@@ -430,6 +426,7 @@ namespace PuzzlePost.Repositories
                             Notes = DbUtils.GetNullableString(reader, "Notes"),
                             IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
                             IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
+                            InProgress = reader.GetInt32(reader.GetOrdinal("InProgress")),
                             Category = new Category
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -460,7 +457,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted, p.InProgress,
 
                       c.Id AS CategoryId, c.Name,
 
@@ -501,6 +498,7 @@ namespace PuzzlePost.Repositories
                                 Notes = DbUtils.GetNullableString(reader, "Notes"),
                                 IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
                                 IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
+                                InProgress = reader.GetInt32(reader.GetOrdinal("InProgress")),
                                 Category = new Category
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -546,7 +544,7 @@ namespace PuzzlePost.Repositories
                 {
                     cmd.CommandText = @"
                       SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
-                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
+                      p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted, p.InProgress,
 
                       c.Id AS CategoryId, c.Name,
 
@@ -581,6 +579,7 @@ namespace PuzzlePost.Repositories
                             Notes = DbUtils.GetNullableString(reader, "Notes"),
                             IsAvailable = reader.GetInt32(reader.GetOrdinal("IsAvailable")),
                             IsDeleted = reader.GetInt32(reader.GetOrdinal("IsDeleted")),
+                            InProgress = reader.GetInt32(reader.GetOrdinal("InProgress")),
                             Category = new Category
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("CategoryId")),
@@ -653,10 +652,12 @@ namespace PuzzlePost.Repositories
                     cmd.CommandText = @"
                             UPDATE Puzzle
                             SET  
-                               IsAvailable = @isAvailable
+                               IsAvailable = @isAvailable,
+                               InProgress = @inProgress
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@isAvailable", 1);
+                    cmd.Parameters.AddWithValue("@inProgress", 0);
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
@@ -698,10 +699,12 @@ namespace PuzzlePost.Repositories
                             UPDATE Puzzle
                             SET  
                                IsAvailable = @isAvailable,
-                               IsDeleted = @isDeleted
+                               IsDeleted = @isDeleted,
+                               InProgress = @inProgress
                             WHERE Id = @id";
                     cmd.Parameters.AddWithValue("@isAvailable", 0);
                     cmd.Parameters.AddWithValue("@isDeleted", 1);
+                    cmd.Parameters.AddWithValue("@inProgress", 0);
                     cmd.Parameters.AddWithValue("@id", id);
 
                     cmd.ExecuteNonQuery();
@@ -723,12 +726,14 @@ namespace PuzzlePost.Repositories
                             SET  
                                 CurrentOwnerId = @currentOwnerId,
                                 CreateDateTime = @createDateTime,
-                                IsAvailable = @isAvailable
+                                IsAvailable = @isAvailable,
+                                InProgress = @inProgress
                             WHERE Id = @id";
 
                     cmd.Parameters.AddWithValue("@currentOwnerId", puzzle.CurrentOwnerId);
                     cmd.Parameters.AddWithValue("@createDateTime", puzzle.CreateDateTime);
                     cmd.Parameters.AddWithValue("@isAvailable", 0);
+                    cmd.Parameters.AddWithValue("@inProgress", 1);
                     cmd.Parameters.AddWithValue("@id", puzzle.Id);
 
                     cmd.ExecuteNonQuery();
