@@ -209,6 +209,14 @@ namespace PuzzlePost.Controllers
             History history = _historyRepository.GetHistoryByIds(userId, id);
             history.EndDateOwnership = DateTime.Now;
             _historyRepository.UpdateHistory(history);
+
+            Request request = _requestRepository.GetRequestByPuzzleId(id);
+
+            //if there is already a pending request for this puzzle, reject it
+            if (request != null)
+            {
+                _requestRepository.UpdateToReject(request);
+            }
             return NoContent();
         }
 

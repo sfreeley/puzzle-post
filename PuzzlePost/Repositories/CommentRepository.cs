@@ -37,6 +37,7 @@ namespace PuzzlePost.Repositories
                       LEFT JOIN UserProfile u
                       ON c.UserProfileId = u.Id
                       WHERE p.Id = @id AND p.IsAvailable = 1 AND p.IsDeleted = 0
+                      ORDER BY CreateDateTime DESC
                        ";
 
                     cmd.Parameters.AddWithValue("@id", id);
@@ -193,7 +194,6 @@ namespace PuzzlePost.Repositories
 
                 }
             }
-
 
         }
     }

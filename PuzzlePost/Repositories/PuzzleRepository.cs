@@ -334,7 +334,7 @@ namespace PuzzlePost.Repositories
                       LEFT JOIN Request r
                       ON r.RequestingPuzzleUserId = p.CurrentOwnerId
                       
-                      WHERE p.CurrentOwnerId = @id  AND p.IsAvailable = 0 AND p.IsDeleted = 0
+                      WHERE r.RequestingPuzzleUserId = @id  AND p.IsAvailable = 0 AND p.IsDeleted = 0
                       ORDER BY CreateDateTime DESC
                        ";
 

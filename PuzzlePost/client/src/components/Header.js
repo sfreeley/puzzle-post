@@ -8,18 +8,27 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink
+    NavLink,
+    Container,
+    Jumbotron
 } from 'reactstrap';
+import "./Header.css";
 
 const Header = () => {
     const { isLoggedIn, logout, activeUser } = useContext(UserProfileContext);
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     return (
+
+
         <>
-            <div>
-                <Navbar color="light" light expand="md">
-                    <NavbarBrand tag={RRNavLink} to="/">Puzzle Post</NavbarBrand>
+
+
+            <Navbar className="nav-bar--banner" color="light" light expand="md" sticky="sticky">
+                <Jumbotron  >
+                    {/* <Container fluid> */}
+                    {/* <img src={'https://cdn.pixabay.com/photo/2020/05/19/10/52/banner-5190182_1280.jpg'} alt="puzzle-banner" /> */}
+
                     <NavbarToggler onClick={toggle} />
                     <Collapse isOpen={isOpen} navbar>
                         <Nav className="mr-auto" navbar>
@@ -32,12 +41,12 @@ const Header = () => {
                             {isLoggedIn &&
 
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/puzzle">Shared Puzzle List</NavLink>
+                                    <NavLink tag={RRNavLink} to="/puzzle">Puzzle List</NavLink>
                                 </NavItem>
                             }
                             {isLoggedIn &&
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/puzzle/user">Your Puzzle List</NavLink>
+                                    <NavLink tag={RRNavLink} to="/puzzle/user">My Puzzle List</NavLink>
                                 </NavItem>
                             }
                             {isLoggedIn &&
@@ -50,6 +59,7 @@ const Header = () => {
                                     <NavLink tag={RRNavLink} to="/request/outgoing">Your Puzzle Request History</NavLink>
                                 </NavItem>
                             }
+
 
                         </Nav>
 
@@ -74,8 +84,10 @@ const Header = () => {
                             }
                         </Nav>
                     </Collapse>
-                </Navbar>
-            </div>
+                    {/* </Container> */}
+                </Jumbotron>
+            </Navbar>
+
         </>
     )
 
