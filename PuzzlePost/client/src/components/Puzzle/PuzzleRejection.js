@@ -5,23 +5,7 @@ import { RequestContext } from "../../providers/RequestProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 
 
-const PuzzleRejection = ({ modal, toggle, request }) => {
-    const { activeUser } = useContext(UserProfileContext);
-    const { setPendingRequests, pendingRequests, updateRejection } = useContext(RequestContext);
-    const history = useHistory();
-
-    const [rejection, setRejection] = useState({
-        id: request.id,
-        puzzleId: request.puzzleId,
-        requestingPuzzleUserId: request.requestingPuzzleUserId,
-        content: request.content
-    })
-
-    const rejectRequest = (e) => {
-        updateRejection(rejection);
-        toggle();
-        history.push("/puzzle");
-    }
+const PuzzleRejection = ({ modal, toggle, request, rejectRequest }) => {
 
 
     return (

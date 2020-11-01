@@ -1,49 +1,51 @@
 import React, { useContext, useEffect } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
-import { Button } from "reactstrap"
+import { Button, CardDeck, Container, Row, Col } from "reactstrap";
 import Puzzle from "./Puzzle";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import InProgressList from "./InProgressList";
 
 const UserPuzzleList = () => {
     const { userPuzzles, getAllPuzzlesByUser } = useContext(PuzzleContext);
     const { activeUser } = useContext(UserProfileContext);
+    const history = useHistory();
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
+    const addNewPuzzle = () => {
+        history.push("/puzzle/add")
     }
-
-    // useEffect(() => {
-    //     sleep(300).then(() => {
-
-    //         getAllInactivePuzzlesByUser(parseInt(activeUser.id));
-    //     })
-    // }, []);
 
     useEffect(() => {
         getAllPuzzlesByUser(parseInt(activeUser.id));
     }, []);
 
     return (
-        <div className="container">
-            <div className="row justify-content-center">
-                <Link to={"/puzzle/add"}>New Puzzle</Link>
 
-                <div className="cards-column">
-                    {userPuzzles.length === 0 ? <h4>No puzzles currently being shared</h4> :
-                        <>
-                            <h5>Shared Active Puzzles</h5>
-                            {userPuzzles.map((puzzle) => (
+        <div>
+            <Button onClick={addNewPuzzle}>New Puzzle</Button>
+
+            <Container >
+                <h6>My Active Puzzles</h6>
+                <Row>
+
+                    <>
+
+                        {userPuzzles.length === 0 ? <p>No puzzles currently being shared</p> :
+                            userPuzzles.map((puzzle) => (
                                 <Puzzle key={puzzle.id} puzzle={puzzle} />
-                            ))}
-                        </>
-                    }
-                </div>
-                <InProgressList />
+                            ))
+                        }
+                    </>
 
-            </div>
+                </Row>
+                <h6>In Progress or Currently Being Requested</h6>
+                <Row>
+                    <InProgressList />
+                </Row>
+            </Container>
+
         </div>
+
     );
 };
 

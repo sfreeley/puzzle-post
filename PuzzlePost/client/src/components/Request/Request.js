@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { useHistory } from "react-router-dom";
 import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
 import { currentDateAndTime } from "../helperFunctions";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
@@ -9,7 +10,8 @@ import PuzzleRejection from "../Puzzle/PuzzleRejection";
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { updatePuzzleOwner } = useContext(PuzzleContext);
-    const { deleteRequest, setPendingRequests, setOutgoingRequests, outgoingRequests, pendingRequests } = useContext(RequestContext);
+    const { deleteRequest, updateRejection } = useContext(RequestContext);
+    const history = useHistory();
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -25,24 +27,44 @@ const Request = ({ request }) => {
         notes: request.puzzle.notes
     })
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    const [rejection, setRejection] = useState({
+        id: request.id,
+        puzzleId: request.puzzleId,
+        requestingPuzzleUserId: request.requestingPuzzleUserId,
+        content: request.content
+    })
+
+    const rejectRequest = (e) => {
+        updateRejection(rejection);
+        toggle();
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
+    }
+
 
     const updateOwner = (e) => {
         e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
-        //refresh
-        setConfirmPuzzle(confirmPuzzle);
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
     }
 
     const deleteOutgoingRequest = (e) => {
         e.preventDefault();
         deleteRequest(request.id);
-        //refresh
+        history.push("/puzzle");
 
     }
 
     return (
         <>
-            <PuzzleRejection toggle={toggle} modal={modal} request={request} />
+            <PuzzleRejection toggle={toggle} modal={modal} request={request} rejectRequest={rejectRequest} />
             <Card className="m-4">
                 <Row margin="m-4">
                     <Col sm="4">

@@ -139,7 +139,7 @@ namespace PuzzlePost.Controllers
             //getting request by puzzle id with pending status
             Request request = _requestRepository.GetRequestByPuzzleId(id);
 
-            //if there is already a pending request for this puzzle, reject it if reactivated and push it back to shared puzzle page
+            //if there is already a pending request for this puzzle and it's being reactivated by the current owner, change status to rejected
             if (request != null)
             {
                 _requestRepository.UpdateToReject(request);
@@ -209,6 +209,14 @@ namespace PuzzlePost.Controllers
             History history = _historyRepository.GetHistoryByIds(userId, id);
             history.EndDateOwnership = DateTime.Now;
             _historyRepository.UpdateHistory(history);
+
+            Request request = _requestRepository.GetRequestByPuzzleId(id);
+
+            //if there is already a pending request for this puzzle, reject it
+            if (request != null)
+            {
+                _requestRepository.UpdateToReject(request);
+            }
             return NoContent();
         }
 

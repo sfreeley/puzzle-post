@@ -22,6 +22,9 @@ const AddPuzzle = () => {
         categoriesForPuzzle();
     }, [])
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     //handling input field for posting new puzzle
     const handleFieldChange = (e) => {
@@ -35,7 +38,6 @@ const AddPuzzle = () => {
         const stateToChange = { ...newPuzzle };
         stateToChange[e.target.id] = e.target.value;
         setNewPuzzle(stateToChange);
-
     };
 
     const addNewPuzzle = (e) => {
@@ -45,8 +47,9 @@ const AddPuzzle = () => {
         newPuzzle.pieces = parseInt(newPuzzle.pieces);
         setIsLoading(true);
         addPuzzle(newPuzzle);
-        setActivePuzzles(activePuzzles)
-        history.push("/puzzle")
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
     }
 
     return (

@@ -27,6 +27,10 @@ const PuzzleDetails = () => {
     const toggleAdd = () => setOpenForm(!openForm);
     const [isLoading, setIsLoading] = useState(false)
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     useEffect(() => {
         getPuzzleById(id);
         getPuzzleWithUserProfile(id);
@@ -77,7 +81,10 @@ const PuzzleDetails = () => {
         e.preventDefault();
         deletePuzzle(e.target.id);
         toggleDelete();
-        history.push("/puzzle");
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
+
     }
 
 
@@ -85,14 +92,12 @@ const PuzzleDetails = () => {
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
             <DeletePuzzle deleteModal={deleteModal} toggleDelete={toggleDelete} puzzle={puzzle} deleteAPuzzle={deleteAPuzzle} />
-            {puzzle.isAvailable === 0 ? null :
-                <Button onClick={toggleAdd}>Add Comment</Button>
-            }
 
-            <AddComment cancelAdd={cancelAdd} newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
+
 
             {puzzle &&
-                <Card className="m-4">
+                <Card style={{ width: "30rem" }}>
+                    <CardImg top src={puzzle.imageLocation} alt={puzzle.title} />
                     <Row margin="m-4">
                         <Col sm="4">
                             <p className="text-left px-2">Shared by: {puzzleWithProfile.userProfile.displayName}
@@ -106,7 +111,7 @@ const PuzzleDetails = () => {
                                 <br />
                                 {puzzle.pieces} pieces
                             </p>
-                            {puzzle.notes !== "" ?
+                            {puzzle.notes !== null ?
                                 <p>Notes:{puzzle.notes}</p> : null
                             }
                         </Col>
@@ -115,9 +120,7 @@ const PuzzleDetails = () => {
                             <p>Category: {puzzle.category.name}</p>
                         </Col>
                     </Row>
-                    <CardImg src={puzzle.imageLocation} alt={puzzle.title} />
-                    <CardBody>
-                    </CardBody>
+
                     {puzzle.histories.map((history) => {
                         return (<p key={history.id}>{history.userProfile.displayName}: {currentDateTime(history.startDateOwnership)} to {history.endDateOwnership != null ? currentDateTime(history.endDateOwnership) : "present"}</p>)
                     })}
@@ -132,10 +135,21 @@ const PuzzleDetails = () => {
                 </> : <Button onClick={toggle}>Request</Button>
 
             }
+            <Row>
+                <Col>
 
-            {puzzle.isAvailable === 0 ? null :
-                <div><CommentList /></div>
-            }
+                    {puzzle.isAvailable === 0 ? null :
+                        <Button onClick={toggleAdd}>Add Comment</Button>
+                    }
+                    <AddComment cancelAdd={cancelAdd} newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
+
+
+                    {puzzle.isAvailable === 0 ? null :
+                        <div><CommentList /></div>
+                    }
+
+                </Col>
+            </Row>
 
 
         </>

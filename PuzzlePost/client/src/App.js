@@ -8,6 +8,7 @@ import { RequestProvider } from "./providers/RequestProvider";
 import { CommentProvider } from "./providers/CommentProvider";
 import Header from "./components/Header";
 import ApplicationViews from "./components/ApplicationViews";
+import Home from "./components/Home/Home";
 
 function App() {
   return (

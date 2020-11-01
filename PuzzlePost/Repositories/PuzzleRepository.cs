@@ -303,8 +303,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //getting the puzzles that the user will see in their puzzle list that are not currently 
-        //being requested (not pending)
+        
         public List<Puzzle> GetAllUserPuzzlesInProgressById(int id)
         {
             using (var conn = Connection)
@@ -313,7 +312,7 @@ namespace PuzzlePost.Repositories
                 using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                  SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
+                   SELECT p.Id AS PuzzleId, p.CategoryId, p.CurrentOwnerId AS CurrentOwnerId, p.ImageLocation, p.Pieces, p.CreateDateTime,
                       p.Title, p.Manufacturer, p.Notes, p.IsAvailable, p.IsDeleted,
 
                       c.Id AS CategoryId, c.Name,
@@ -329,12 +328,15 @@ namespace PuzzlePost.Repositories
                       ON p.CategoryId = c.Id
                       LEFT JOIN UserProfile up
                       ON p.CurrentOwnerId = up.Id
-                      LEFT JOIN History h
-                      ON h.UserProfileId = p.CurrentOwnerId
                       LEFT JOIN Request r
                       ON r.RequestingPuzzleUserId = p.CurrentOwnerId
-                      
-                      WHERE p.CurrentOwnerId = @id  AND p.IsAvailable = 0 AND p.IsDeleted = 0
+                      LEFT JOIN History h
+                      ON h.UserProfileId = r.RequestingPuzzleUserId
+                      WHERE r.RequestingPuzzleUserId = @id
+                      AND p.IsAvailable = 0
+                      AND p.IsDeleted = 0
+                      AND h.EndDateOwnership IS NULL
+                      AND r.StatusId = 2
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -373,7 +375,7 @@ namespace PuzzlePost.Repositories
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                     DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-                                },
+                                }
                                  
                             };
 

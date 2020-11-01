@@ -7,7 +7,7 @@ const AddComment = ({ newComment, openForm, handleFieldChange, addNewComment, ca
         <>
             <Col sm="12" md={{ size: 6, offset: 3 }}>
                 <Form hidden={openForm}>
-                    <h3> Add A Comment </h3>
+
                     <FormGroup>
                         <Label htmlFor="title"><strong>Title</strong></Label>
                         <Input className="p-2 bd-highlight justify-content-center"
