@@ -4,12 +4,17 @@ export function currentDateTime(currentDate) {
     //get today's date
     let date = new Date(currentDate).getDate();
     //get current month
-    let month = new Date(currentDate).getMonth() + 1;
+    let month = new Date(currentDate).getMonth()
     //get current year
     let year = new Date(currentDate).getFullYear();
 
+    //list of months
+    const months = [
+        "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"
+    ]
+
     //this will generate string of the current month, date, year
-    generateCurrentDateTime = month + "/" + date + "/" + year
+    generateCurrentDateTime = months[month] + " " + date + "," + " " + year
 
     return generateCurrentDateTime
 }

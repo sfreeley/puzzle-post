@@ -13,6 +13,7 @@ import {
     Jumbotron
 } from 'reactstrap';
 import "./Header.css";
+import Home from "./Home/Home";
 
 const Header = () => {
     const { isLoggedIn, logout, activeUser } = useContext(UserProfileContext);
@@ -22,8 +23,9 @@ const Header = () => {
 
 
         <>
-
-
+            {isLoggedIn &&
+                <Home />
+            }
             <Navbar className="nav-bar--banner" color="light" light expand="md" sticky="sticky">
                 <Jumbotron  >
                     {/* <Container fluid> */}

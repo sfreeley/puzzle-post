@@ -7,9 +7,7 @@ const InProgressList = () => {
     const { inactiveUserPuzzles, getAllInactivePuzzlesByUser } = useContext(PuzzleContext);
     const { activeUser } = useContext(UserProfileContext);
 
-    // function sleep(ms) {
-    //     return new Promise(resolve => setTimeout(resolve, ms));
-    // }
+
     useEffect(() => {
         getAllInactivePuzzlesByUser(parseInt(activeUser.id));
     }, []);
@@ -18,11 +16,12 @@ const InProgressList = () => {
     return (
 
 
-
         <>
-            {inactiveUserPuzzles.map((puzzle) => (
-                <Puzzle key={puzzle.id} puzzle={puzzle} />
-            ))}
+            {inactiveUserPuzzles.length === 0 ? <p>No puzzles being requested or in-progress</p> :
+                inactiveUserPuzzles.map((puzzle) => (
+                    <Puzzle key={puzzle.id} puzzle={puzzle} />
+                ))
+            }
         </>
 
 

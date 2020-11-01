@@ -27,6 +27,10 @@ const PuzzleDetails = () => {
     const toggleAdd = () => setOpenForm(!openForm);
     const [isLoading, setIsLoading] = useState(false)
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     useEffect(() => {
         getPuzzleById(id);
         getPuzzleWithUserProfile(id);
@@ -77,7 +81,10 @@ const PuzzleDetails = () => {
         e.preventDefault();
         deletePuzzle(e.target.id);
         toggleDelete();
-        history.push("/puzzle");
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
+
     }
 
 

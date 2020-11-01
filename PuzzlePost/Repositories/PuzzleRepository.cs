@@ -303,8 +303,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //getting the puzzles that the user will see in their puzzle list that are not currently 
-        //being requested (not pending)
+        
         public List<Puzzle> GetAllUserPuzzlesInProgressById(int id)
         {
             using (var conn = Connection)
@@ -337,6 +336,7 @@ namespace PuzzlePost.Repositories
                       AND p.IsAvailable = 0
                       AND p.IsDeleted = 0
                       AND h.EndDateOwnership IS NULL
+                      AND r.StatusId = 2
                       ORDER BY CreateDateTime DESC
                        ";
 
@@ -375,7 +375,7 @@ namespace PuzzlePost.Repositories
                                 {
                                     Id = reader.GetInt32(reader.GetOrdinal("CurrentOwnerId")),
                                     DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-                                },
+                                }
                                  
                             };
 

@@ -12,7 +12,7 @@ import "./styles/Puzzle.css";
 
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
-    const { deletePuzzle, reactivatePuzzle, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
+    const { deletePuzzle, reactivatePuzzle } = useContext(PuzzleContext);
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
@@ -37,6 +37,9 @@ const Puzzle = ({ puzzle }) => {
         e.preventDefault();
         deletePuzzle(e.target.id);
         toggleDelete();
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
     }
 
     return (
@@ -49,8 +52,6 @@ const Puzzle = ({ puzzle }) => {
                 <CardImg top className="puzzleImage" src={puzzle.imageLocation} alt={puzzle.title} />
                 <CardHeader> <Link to={`/puzzle/details/${puzzle.id}`}><Button>Details</Button></Link></CardHeader>
 
-
-
                 <CardTitle text-center> <strong>{puzzle.title}</strong> {puzzle.manufacturer}</CardTitle>
 
                 <ListGroup>
@@ -58,7 +59,7 @@ const Puzzle = ({ puzzle }) => {
                         Shared on: {currentDateTime(puzzle.createDateTime)}
                     </ListGroupItem>
                     <ListGroupItem>
-                        Shared by: {puzzle.userProfile.displayName}
+                        Current Owner: {puzzle.userProfile.displayName}
                     </ListGroupItem>
                     <ListGroupItem>
                         Category: {puzzle.category.name}

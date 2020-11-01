@@ -27,6 +27,10 @@ const Request = ({ request }) => {
         notes: request.puzzle.notes
     })
 
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     const [rejection, setRejection] = useState({
         id: request.id,
         puzzleId: request.puzzleId,
@@ -37,20 +41,24 @@ const Request = ({ request }) => {
     const rejectRequest = (e) => {
         updateRejection(rejection);
         toggle();
-        history.push("/puzzle");
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
     }
 
 
     const updateOwner = (e) => {
         e.preventDefault();
         updatePuzzleOwner(confirmPuzzle);
-        history.pushState("/puzzle")
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
     }
 
     const deleteOutgoingRequest = (e) => {
         e.preventDefault();
         deleteRequest(request.id);
-        history.pushState("/puzzle");
+        history.push("/puzzle");
 
     }
 

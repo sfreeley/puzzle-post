@@ -11,16 +11,6 @@ const UserPuzzleList = () => {
     const { activeUser } = useContext(UserProfileContext);
     const history = useHistory();
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    // useEffect(() => {
-    //     sleep(300).then(() => {
-
-    //         getAllInactivePuzzlesByUser(parseInt(activeUser.id));
-    //     })
-    // }, []);
     const addNewPuzzle = () => {
         history.push("/puzzle/add")
     }
@@ -35,17 +25,20 @@ const UserPuzzleList = () => {
             <Button onClick={addNewPuzzle}>New Puzzle</Button>
 
             <Container >
-                <Col xs="4">
+                <h6>My Active Puzzles</h6>
+                <Row>
 
                     <>
 
-                        {userPuzzles.map((puzzle) => (
-                            <Puzzle key={puzzle.id} puzzle={puzzle} />
-                        ))}
+                        {userPuzzles.length === 0 ? <p>No puzzles currently being shared</p> :
+                            userPuzzles.map((puzzle) => (
+                                <Puzzle key={puzzle.id} puzzle={puzzle} />
+                            ))
+                        }
                     </>
 
-
-                </Col>
+                </Row>
+                <h6>In Progress or Currently Being Requested</h6>
                 <Row>
                     <InProgressList />
                 </Row>
