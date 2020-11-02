@@ -23,13 +23,16 @@ const Header = () => {
 
 
         <>
+
             {isLoggedIn &&
                 <Home />
             }
             <Navbar className="nav-bar--banner" color="light" light expand="md" sticky="sticky">
-                <Jumbotron  >
+
+                <Jumbotron   >
+                    {/* <img src={'https://cdn.pixabay.com/photo/2013/07/12/18/03/jigsaw-puzzle-152865_1280.png'} alt="puzzle-banner" /> */}
                     {/* <Container fluid> */}
-                    {/* <img src={'https://cdn.pixabay.com/photo/2020/05/19/10/52/banner-5190182_1280.jpg'} alt="puzzle-banner" /> */}
+
 
                     <NavbarToggler onClick={toggle} />
                     <Collapse isOpen={isOpen} navbar>
