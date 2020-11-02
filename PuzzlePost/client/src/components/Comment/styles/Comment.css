@@ -1,0 +1,14 @@
+.commentEdit--button {
+  width: 30%;
+  margin: 0.5rem;
+}
+
+.commentDelete--button {
+  width: 30%;
+  margin: 0.5rem;
+}
+
+.commentButtonContainer {
+  display: flex;
+  justify-content: center;
+}

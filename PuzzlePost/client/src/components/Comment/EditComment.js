@@ -2,80 +2,90 @@ import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { CommentContext } from "../../providers/CommentProvider";
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { PuzzleContext } from "../../providers/PuzzleProvider";
+import { Form, FormGroup, Label, Input, Button, CardImg } from "reactstrap";
+import "./styles/EditComment.css";
 
 const EditComment = () => {
 
     const { id } = useParams();
     const history = useHistory();
-    const { editComment, comment, getCommentById, setComments, comments } = useContext(CommentContext);
-    const [isLoading, setIsLoading] = useState(false);
-    //represents form field state
+    const { deleteComment, editComment, getCommentById, comment } = useContext(CommentContext);
+    const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile, deletePuzzle } = useContext(PuzzleContext);
     const [updatedComment, setUpdatedComment] = useState({})
 
-    //getting the individual comment using params (will run after initial load of page)
-    useEffect(() => {
-        getCommentById(id);
-    }, [])
-
-    //handling the field change in the form to update with what user types 
     const handleEditFieldChange = (e) => {
         const stateToChange = { ...updatedComment }
         stateToChange[e.target.id] = e.target.value;
         setUpdatedComment(stateToChange)
     }
+    const [isLoading, setIsLoading] = useState(false);
 
-    //sets updatedComment state to value of comment; watching for changes to comment..anytime comment changes, it will trigger useEffect to update updatedComment state (ie the subject and content field values)
-    //with what comment is 
+    useEffect(() => {
+        getCommentById(id);
+        getPuzzleById(comment.puzzleId);
+    }, [])
+
     useEffect(() => {
         setUpdatedComment(comment);
     }, [comment])
-
 
     //edit comment function
     const editAComment = (e) => {
         e.preventDefault();
         setIsLoading(true);
         editComment(updatedComment);
-        setComments(comments);
+
         history.push(`/puzzle/details/${comment.puzzleId}`)
     }
 
     return (
         <>
-            {updatedComment &&
-                <Form>
-                    <h3> Edit A Comment </h3>
-                    <FormGroup>
-                        <Label htmlFor="title"><strong>Title</strong></Label>
-                        <Input className="p-2 bd-highlight justify-content-center"
-                            defaultValue={updatedComment.title}
-                            onChange={handleEditFieldChange}
-                            type="text"
-                            name="title"
-                            id="title"
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label htmlFor="content"><strong>Comment</strong></Label>
-                        <Input className="p-2 bd-highlight justify-content-center"
-                            defaultValue={updatedComment.content}
-                            onChange={handleEditFieldChange}
-                            type="textarea"
-                            name="content"
-                            id="content"
-                        />
-                    </FormGroup>
-                </Form >
+            <div className="editCommentContainer">
+                <div className="puzzleImageEdit">
+                    <CardImg style={{ width: "35rem" }} src={puzzle.imageLocation} />
+                </div>
+                <div className="puzzleCommentEdit">
+                    {updatedComment &&
 
-            }
 
-            <Button block className="editComment" type="button" color="success" onClick={editAComment}>
-                {'Save Edited Comment'}
-            </Button>
-            <Button block className="cancelEdit" type="button" color="warning" onClick={() => history.goBack()}>
-                {'Cancel'}
-            </Button>
+                        <Form>
+
+                            <FormGroup>
+                                <Label htmlFor="title"><strong>Title</strong></Label>
+                                <Input className="p-2 bd-highlight justify-content-center"
+                                    defaultValue={updatedComment.title}
+                                    onChange={handleEditFieldChange}
+                                    type="text"
+                                    name="title"
+                                    id="title"
+                                />
+                            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor="content"><strong>Comment</strong></Label>
+                                <Input className="p-2 bd-highlight justify-content-center"
+                                    defaultValue={updatedComment.content}
+                                    onChange={handleEditFieldChange}
+                                    type="textarea"
+                                    name="content"
+                                    id="content"
+                                />
+                            </FormGroup>
+                            <Button block type="button" color="success" id="editComment" onClick={editAComment}>
+                                {'Save'}
+                            </Button>
+                            <Button type="button" color="warning" onClick={() => history.goBack()}>
+                                {'Cancel'}
+                            </Button>
+                        </Form >
+
+
+
+
+
+                    }
+                </div>
+            </div >
 
         </>
     )

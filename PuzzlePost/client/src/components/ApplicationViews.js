@@ -11,6 +11,7 @@ import EditPuzzle from "./Puzzle/EditPuzzle";
 import IncomingRequestList from "./Request/IncomingRequestList";
 import OutgoingRequestList from "./Request/OutgoingRequestList";
 import EditComment from "./Comment/EditComment";
+import AddComment from "./Comment/AddComment";
 import Home from "./Home/Home";
 
 
@@ -20,9 +21,9 @@ export default function ApplicationViews() {
     return (
         <main>
             <Switch>
-                {/* <Route path="/" exact>
-                    {isLoggedIn ? <Home /> : <Redirect to="/login" />}
-                </Route> */}
+                <Route path="/comment/add/:id" exact>
+                    {isLoggedIn ? <AddComment /> : <Redirect to="/login" />}
+                </Route>
                 <Route path="/comment/edit/:id" exact>
                     {isLoggedIn ? <EditComment /> : <Redirect to="/login" />}
                 </Route>
