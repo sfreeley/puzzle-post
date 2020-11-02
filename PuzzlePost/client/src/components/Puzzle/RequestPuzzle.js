@@ -47,6 +47,7 @@ const RequestPuzzle = ({ puzzle, modal, toggle }) => {
             <Modal isOpen={modal} toggle={toggle} className="postRequest">
                 <ModalHeader toggle={toggle}>Enter a Message (if you wish)</ModalHeader>
                 <ModalBody>
+                    Your e-mail address will be shared with the current owner of the puzzle
                     <Form className="postRequestForm">
                         <FormGroup>
                             <Label className="requestContentLabel">Message:</Label>

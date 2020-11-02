@@ -34,9 +34,7 @@ const EditComment = () => {
     const editAComment = (e) => {
         e.preventDefault();
         setIsLoading(true);
-        editComment(updatedComment);
-
-        history.push(`/puzzle/details/${comment.puzzleId}`)
+        editComment(updatedComment).then(history.push(`/puzzle/details/${comment.puzzleId}`))
     }
 
     return (

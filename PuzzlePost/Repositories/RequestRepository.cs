@@ -26,7 +26,7 @@ namespace PuzzlePost.Repositories
     
                        s.Id, s.Name,
                        
-                       up.Id AS UserId, up.DisplayName,
+                       up.Id AS UserId, up.DisplayName, up.Email,
 
                        p.Id AS RequestedPuzzleId, p.Title, p.Manufacturer, p.Pieces, p.ImageLocation
 
@@ -64,6 +64,7 @@ namespace PuzzlePost.Repositories
                             RequestingPuzzleUser = new UserProfile()
                             {
                                 Id = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
+                                Email = reader.GetString(reader.GetOrdinal("Email")),
                                 DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
                             },
                             Puzzle = new Puzzle()

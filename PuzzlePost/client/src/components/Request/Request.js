@@ -71,6 +71,9 @@ const Request = ({ request }) => {
 
                         <p className="text-left px-2">
                             <p>Requested by: {request.requestingPuzzleUser.displayName}</p>
+                            {request.senderOfPuzzleUserId === parseInt(activeUser.id) ?
+                                <p>Requester's Email: {request.requestingPuzzleUser.email}</p> : null
+                            }
                             <br />
                         on {currentDateAndTime(request.createDateTime)}</p>
                         <p>Status: {request.status.name}</p>
