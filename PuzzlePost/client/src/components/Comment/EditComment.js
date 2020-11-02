@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { CommentContext } from "../../providers/CommentProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { Form, FormGroup, Label, Input, Button, CardImg } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button, CardImg, UncontrolledPopover } from "reactstrap";
 import "./styles/EditComment.css";
 
 const EditComment = () => {

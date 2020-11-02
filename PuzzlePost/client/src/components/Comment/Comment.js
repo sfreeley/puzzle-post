@@ -8,11 +8,12 @@ import DeleteComment from "./DeleteComment";
 import EditComment from "../Comment/EditComment";
 import "./styles/Comment.css";
 
-const Comment = ({ comment, }) => {
+const Comment = ({ comment }) => {
 
     const history = useHistory();
     const { activeUser } = useContext(UserProfileContext);
     const { deleteComment, editComment, getCommentById } = useContext(CommentContext);
+
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
@@ -40,7 +41,7 @@ const Comment = ({ comment, }) => {
                 {comment.userProfileId === parseInt(activeUser.id) ?
 
                     <div className="commentButtonContainer">
-                        <Button className="commentEdit--button" id={comment.id} outline onClick={() => history.push(`/comment/edit/${comment.id}`)}>Edit </Button>
+                        <Button className="commentEdit--button" id={() => history.push(`/comment/edit/${comment.id}`)} outline >Edit </Button>
                         <Button className="commentDelete--button" outline flat onClick={toggle}>Delete</Button>
                     </div> : null
                 }

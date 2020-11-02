@@ -93,6 +93,8 @@ const PuzzleDetails = () => {
     }
 
 
+
+
     return (
         <>
             <RequestPuzzle toggle={toggle} modal={modal} puzzle={puzzle} />
