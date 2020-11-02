@@ -82,9 +82,12 @@ const PuzzleDetails = () => {
         e.preventDefault();
         deletePuzzle(e.target.id);
         toggleDelete();
+
         sleep(300).then(() => {
             history.push("/puzzle");
         })
+
+
 
     }
 

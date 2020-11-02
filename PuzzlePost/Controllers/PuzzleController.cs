@@ -206,7 +206,7 @@ namespace PuzzlePost.Controllers
 
             Request request = _requestRepository.GetRequestByPuzzleId(id);
 
-            //if there is already a pending request for this puzzle, reject it
+            //if there is already a pending request for this puzzle, reject the request
             if (request != null)
             {
                 _requestRepository.UpdateToReject(request);

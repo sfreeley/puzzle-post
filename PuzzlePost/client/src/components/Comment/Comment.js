@@ -41,7 +41,7 @@ const Comment = ({ comment }) => {
                 {comment.userProfileId === parseInt(activeUser.id) ?
 
                     <div className="commentButtonContainer">
-                        <Button className="commentEdit--button" id={() => history.push(`/comment/edit/${comment.id}`)} outline >Edit </Button>
+                        <Button className="commentEdit--button" onClick={() => history.push(`/comment/edit/${comment.id}`)} outline >Edit </Button>
                         <Button className="commentDelete--button" outline flat onClick={toggle}>Delete</Button>
                     </div> : null
                 }

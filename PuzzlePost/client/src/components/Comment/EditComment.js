@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import { CommentContext } from "../../providers/CommentProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { Form, FormGroup, Label, Input, Button, CardImg, UncontrolledPopover } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button, CardImg } from "reactstrap";
 import "./styles/EditComment.css";
 
 const EditComment = () => {
@@ -23,7 +23,7 @@ const EditComment = () => {
 
     useEffect(() => {
         getCommentById(id);
-        getPuzzleById(comment.puzzleId);
+        // getPuzzleById(comment.puzzleId);
     }, [])
 
     useEffect(() => {
@@ -42,9 +42,9 @@ const EditComment = () => {
     return (
         <>
             <div className="editCommentContainer">
-                <div className="puzzleImageEdit">
+                {/* <div className="puzzleImageEdit">
                     <CardImg style={{ width: "35rem" }} src={puzzle.imageLocation} />
-                </div>
+                </div> */}
                 <div className="puzzleCommentEdit">
                     {updatedComment &&
 

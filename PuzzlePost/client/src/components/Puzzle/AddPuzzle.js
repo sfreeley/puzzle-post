@@ -42,14 +42,21 @@ const AddPuzzle = () => {
 
     const addNewPuzzle = (e) => {
         // debugger;
+
         e.preventDefault();
         newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
         newPuzzle.pieces = parseInt(newPuzzle.pieces);
-        setIsLoading(true);
-        addPuzzle(newPuzzle);
-        sleep(300).then(() => {
-            history.push("/puzzle");
-        })
+        if (newPuzzle.title === "" || newPuzzle.manufacturer === "" || newPuzzle.imageLocation === "" || newPuzzle.pieces === "") {
+            alert("Sorry, cannot leave these field(s) blank. Try again.");
+        }
+        else {
+            setIsLoading(true);
+            addPuzzle(newPuzzle);
+            sleep(300).then(() => {
+                history.push("/puzzle");
+            })
+        }
+
     }
 
     return (

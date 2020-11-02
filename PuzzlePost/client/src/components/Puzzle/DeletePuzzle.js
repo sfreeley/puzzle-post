@@ -4,6 +4,8 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 
 const DeletePuzzle = ({ toggleDelete, deleteModal, puzzle, deleteAPuzzle }) => {
 
+
+
     return (
         <>
             <div>
