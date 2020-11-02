@@ -1,0 +1,15 @@
+.editCommentContainer {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
+.puzzleImageEdit {
+  justify-content: center;
+  width: 50%;
+  height: 50%;
+}
+
+.puzzleCommentEdit {
+  width: 50%;
+}

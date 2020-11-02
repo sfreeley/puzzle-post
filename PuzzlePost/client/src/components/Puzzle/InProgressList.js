@@ -17,7 +17,7 @@ const InProgressList = () => {
 
 
         <>
-            {inactiveUserPuzzles.length === 0 ? <p>No puzzles being requested or in-progress</p> :
+            {inactiveUserPuzzles.length === 0 ? <p>No puzzles in-progress</p> :
                 inactiveUserPuzzles.map((puzzle) => (
                     <Puzzle key={puzzle.id} puzzle={puzzle} />
                 ))

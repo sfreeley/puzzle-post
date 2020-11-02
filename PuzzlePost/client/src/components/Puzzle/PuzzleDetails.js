@@ -9,10 +9,13 @@ import RequestPuzzle from "./RequestPuzzle";
 import CommentList from "../Comment/CommentList";
 import AddComment from "../Comment/AddComment";
 import DeletePuzzle from "../Puzzle/DeletePuzzle";
+import EditComment from "../Comment/EditComment";
+
 
 const PuzzleDetails = () => {
+
     const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile, deletePuzzle } = useContext(PuzzleContext);
-    const { addComment, getAllCommentsForPuzzle } = useContext(CommentContext);
+    const { addComment, getAllCommentsForPuzzle, comments } = useContext(CommentContext);
     const { activeUser } = useContext(UserProfileContext);
     const { id } = useParams();
     const history = useHistory();
@@ -23,8 +26,6 @@ const PuzzleDetails = () => {
     const [deleteModal, setDeleteModal] = useState(false);
     const toggleDelete = () => setDeleteModal(!deleteModal);
 
-    const [openForm, setOpenForm] = useState(true);
-    const toggleAdd = () => setOpenForm(!openForm);
     const [isLoading, setIsLoading] = useState(false)
 
     function sleep(ms) {
@@ -62,7 +63,7 @@ const PuzzleDetails = () => {
                 title: "",
                 content: ""
             })
-            toggleAdd();
+
             getAllCommentsForPuzzle(id);
 
         }
@@ -74,18 +75,27 @@ const PuzzleDetails = () => {
             title: "",
             content: ""
         })
-        toggleAdd();
+
     }
 
     const deleteAPuzzle = (e) => {
         e.preventDefault();
         deletePuzzle(e.target.id);
         toggleDelete();
+
         sleep(300).then(() => {
             history.push("/puzzle");
         })
 
+
+
     }
+
+    const routeToEdit = () => {
+        history.push(`/puzzle/edit/${puzzle.id}`)
+    }
+
+
 
 
     return (
@@ -94,62 +104,79 @@ const PuzzleDetails = () => {
             <DeletePuzzle deleteModal={deleteModal} toggleDelete={toggleDelete} puzzle={puzzle} deleteAPuzzle={deleteAPuzzle} />
 
 
-
-            {puzzle &&
-                <Card style={{ width: "30rem" }}>
-                    <CardImg top src={puzzle.imageLocation} alt={puzzle.title} />
-                    <Row margin="m-4">
-                        <Col sm="4">
-                            <p className="text-left px-2">Shared by: {puzzleWithProfile.userProfile.displayName}
-                                <br></br>
+            <div className="puzzleCommentsContainer">
+                {puzzle &&
+                    <div className="puzzleDetails">
+                        <Card style={{ width: "30rem" }}>
+                            <CardImg top src={puzzle.imageLocation} alt={puzzle.title} />
+                            <Row margin="m-4">
+                                <Col sm="4">
+                                    <p className="text-left px-2">Shared by: {puzzleWithProfile.userProfile.displayName}
+                                        <br></br>
                         on {currentDateTime(puzzle.createDateTime)}</p>
-                        </Col>
-                        <Col sm="4">
-                            <p><strong>{puzzle.title}</strong>
-                                <br></br>
-                                {puzzle.manufacturer}
-                                <br />
-                                {puzzle.pieces} pieces
+                                </Col>
+                                <Col sm="4">
+                                    <p><strong>{puzzle.title}</strong>
+                                        <br></br>
+                                        {puzzle.manufacturer}
+                                        <br />
+                                        {puzzle.pieces} pieces
                             </p>
-                            {puzzle.notes !== null ?
-                                <p>Notes:{puzzle.notes}</p> : null
+                                    {puzzle.notes !== null ?
+                                        <p>Notes:{puzzle.notes}</p> : null
+                                    }
+                                </Col>
+
+                                <Col sm="4">
+                                    <p>Category: {puzzle.category.name}</p>
+                                </Col>
+                            </Row>
+
+                            {puzzle.histories.map((history) => {
+                                return (<p key={history.id}>{history.userProfile.displayName}: {currentDateTime(history.startDateOwnership)} to {history.endDateOwnership != null ? currentDateTime(history.endDateOwnership) : "present"}</p>)
+                            })}
+                            {parseInt(activeUser.id) === puzzle.currentOwnerId ?
+                                <>
+                                    <Button onClick={routeToEdit}>Edit</Button>
+                                    <br></br>
+                                    <Button id={puzzle.id} onClick={toggleDelete}>Delete</Button>
+
+                                </> : <Button onClick={toggle}>Request</Button>
+
                             }
-                        </Col>
+                        </Card>
 
-                        <Col sm="4">
-                            <p>Category: {puzzle.category.name}</p>
-                        </Col>
-                    </Row>
 
-                    {puzzle.histories.map((history) => {
-                        return (<p key={history.id}>{history.userProfile.displayName}: {currentDateTime(history.startDateOwnership)} to {history.endDateOwnership != null ? currentDateTime(history.endDateOwnership) : "present"}</p>)
-                    })}
-                </Card>
 
-            }
-            {parseInt(activeUser.id) === puzzle.currentOwnerId ?
-                <>
-                    <Link to={`/puzzle/edit/${puzzle.id}`}><Button>Edit</Button></Link>
-                    <Button id={puzzle.id} onClick={toggleDelete}>Delete</Button>
+                    </div>
 
-                </> : <Button onClick={toggle}>Request</Button>
+                }
 
-            }
-            <Row>
-                <Col>
 
-                    {puzzle.isAvailable === 0 ? null :
-                        <Button onClick={toggleAdd}>Add Comment</Button>
-                    }
-                    <AddComment cancelAdd={cancelAdd} newComment={newComment} openForm={openForm} toggleAdd={toggleAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} />
+                <div className="commentSection">
 
 
                     {puzzle.isAvailable === 0 ? null :
-                        <div><CommentList /></div>
+                        <CommentList />
                     }
+                    {puzzle.isAvailable === 0 ? null :
+                        <Button className="addComment--button" id="addComment" >Add Comment</Button>
+                    }
+                    <AddComment cancelAdd={cancelAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} newComment={newComment} />
 
-                </Col>
-            </Row>
+
+
+
+                </div>
+
+
+
+
+            </div>
+
+
+
+
 
 
         </>

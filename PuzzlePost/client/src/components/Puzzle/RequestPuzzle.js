@@ -13,6 +13,11 @@ const RequestPuzzle = ({ puzzle, modal, toggle }) => {
         content: ""
     })
 
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
     const handleFieldChange = (e) => {
         const stateToChange = { ...newRequest };
         stateToChange[e.target.id] = e.target.value;
@@ -23,7 +28,9 @@ const RequestPuzzle = ({ puzzle, modal, toggle }) => {
         e.preventDefault();
         addRequestDeactivatePuzzle(newRequest);
         toggle();
-        history.push("/request/outgoing");
+        sleep(300).then(() => {
+            history.push("/request/outgoing");
+        })
     }
 
     const closeResetModal = () => {

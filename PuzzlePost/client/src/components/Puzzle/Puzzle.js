@@ -37,9 +37,17 @@ const Puzzle = ({ puzzle }) => {
         e.preventDefault();
         deletePuzzle(e.target.id);
         toggleDelete();
-        sleep(300).then(() => {
-            history.push("/puzzle");
-        })
+        if (window.location.pathname === "/puzzle") {
+            sleep(300).then(() => {
+                history.push("/puzzle/user");
+            })
+        }
+        else {
+            sleep(300).then(() => {
+                history.push("/puzzle");
+            })
+        }
+
     }
 
     return (
