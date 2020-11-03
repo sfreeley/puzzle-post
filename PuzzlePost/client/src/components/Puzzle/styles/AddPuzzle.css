@@ -16,3 +16,7 @@
   width: 90%;
   margin: 3rem;
 }
+
+.newPuzzleCategory--option {
+  max-width: 40%;
+}
