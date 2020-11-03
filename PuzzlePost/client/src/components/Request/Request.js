@@ -101,7 +101,7 @@ const Request = ({ request }) => {
                             {request.puzzle.manufacturer}
                             <hr />
 
-                            {request.content != <p>No Message Available</p> ? <div>{request.content}</div> : null}
+                            {request.content == "" ? <p>No Message Available</p> : <div>{request.content}</div>}
                         </div>
                     </Col>
                     <Col sm="3">

@@ -45,7 +45,7 @@ export default function ApplicationViews() {
                 <Route path="/puzzle/user" exact>
                     {isLoggedIn ? <UserPuzzleList /> : <Redirect to="/login" />}
                 </Route>
-                <Route path="/puzzle" >
+                <Route path="/puzzle" exact >
                     {isLoggedIn ? <PuzzleList /> : <Redirect to="/login" />}
                 </Route>
                 <Route path="/puzzle/add" exact>

@@ -5,11 +5,18 @@
 }
 
 .appDescription {
+  display: flex;
   justify-content: center;
-  width: 70%;
-  height: 50%;
+  width: 100%;
+  margin-right: 4rem;
+}
+
+.appDescription--cardBody {
+  text-align: center;
+  font-size: 1.8rem;
 }
 
 .logo--container {
+  display: flex;
   justify-content: center;
 }

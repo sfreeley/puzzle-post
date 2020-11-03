@@ -12,7 +12,7 @@
 }
 
 .background-red {
-  background-color: #df7373c0;
+  background-color: #df737354;
 }
 
 .puzzleImage {
@@ -20,14 +20,6 @@
   margin: 0;
   height: 30%;
 }
-
-/* .activePuzzles--title {
-  align-self: center;
-}
-
-.inProgress--title {
-  align-self: center;
-} */
 
 .activePuzzle--cardDeck {
   margin-bottom: 1rem;

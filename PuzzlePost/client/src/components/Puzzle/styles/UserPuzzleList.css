@@ -1,10 +1,28 @@
-.addPuzzleButton--container {
-  /* display: flex; */
-  align-content: center;
-}
-
 .userWithInProgressCards--container {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  width: 100%;
+}
+
+.addPuzzleButton--container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.activePuzzles--title {
+  text-align: center;
+  border: 2px solid #b5d6d68c;
+  margin-bottom: 2rem;
+}
+
+.inProgress--title {
+  text-align: center;
+  border: 2px solid #df7373c0;
+}
+
+.activePuzzle--cardDeck {
+  margin-bottom: 2rem;
 }

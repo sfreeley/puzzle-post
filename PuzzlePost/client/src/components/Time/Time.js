@@ -17,6 +17,7 @@ const Time = () => {
                     top: "50%",
                     marginTop: "-0.5rem",
                     textAlign: "center",
+                    fontSize: "1.5rem"
                 }}>Hello, Good Morning {activeUser.displayName}
                     <p>{currentDateTime(currentTime)}</p>
 
