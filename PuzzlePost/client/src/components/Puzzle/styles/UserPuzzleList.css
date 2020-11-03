@@ -14,13 +14,13 @@
 
 .activePuzzles--title {
   text-align: center;
-  border: 2px solid #b5d6d68c;
+  border: 4px solid #b5d6d68c;
   margin-bottom: 2rem;
 }
 
 .inProgress--title {
   text-align: center;
-  border: 2px solid #df7373c0;
+  border: 3px solid #df7373c0;
 }
 
 .activePuzzle--cardDeck {
