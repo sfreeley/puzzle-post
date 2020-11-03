@@ -1,19 +1,14 @@
-.commentSection {
-  width: 50%;
-  height: 200%;
-  overflow-y: scroll;
-}
-
 .puzzleDetails {
   width: 50%;
   height: 50%;
+  margin-left: 2rem;
 }
 
 .puzzleCommentsContainer {
   display: flex;
-  height: 15rem;
 }
 
-.addComment--button {
-  width: 30%;
+.addCommentButton--container {
+  display: flex;
+  justify-content: center;
 }

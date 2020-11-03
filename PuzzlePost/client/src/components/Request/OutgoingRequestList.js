@@ -41,9 +41,9 @@ const OutgoingRequestList = () => {
                     {outgoingRequests.length === 0 ? <p>You don't have any puzzle request history</p> :
                         <div>
                             You have {outgoingRequests.length} puzzle requests in your history
-                            {pending.length} pending request(s)
-                            {accepted.length} accepted request(s)
-                            {rejected.length} rejected request(s)
+                            , {pending.length} pending request(s)
+                            , {accepted.length} accepted request(s)
+                            , and {rejected.length} rejected request(s).
 
                         {outgoingRequests.map((request) => {
                             return <Request key={request.id} request={request} />

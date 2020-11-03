@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
+import { Card, CardImg, CardBody, Row, Button, Col, Toast } from "reactstrap";
 import { currentDateAndTime } from "../helperFunctions";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
@@ -71,12 +71,12 @@ const Request = ({ request }) => {
     return (
         <>
             <PuzzleRejection toggle={toggle} modal={modal} request={request} rejectRequest={rejectRequest} />
-            <Card className="m-4">
+            <Card className="requestHistory">
                 <Row margin="m-4">
                     <Col sm="4">
 
                         <p className="text-left px-2">
-                            <p><strong><em>Requested by:</em></strong> {request.requestingPuzzleUser.displayName}</p>
+                            <p><strong><em>Requester:</em></strong> {request.requestingPuzzleUser.displayName}</p>
                         </p>
                         {request.senderOfPuzzleUserId === parseInt(activeUser.id) ?
                             <p>Requester's Email: {request.requestingPuzzleUser.email}</p> : null
@@ -94,8 +94,8 @@ const Request = ({ request }) => {
                         }
 
                     </Col>
-                    <Col sm="4">
-                        <div>
+                    <Col sm="6">
+                        <div className="request--container">
                             <strong><em>{request.puzzle.title}</em></strong>
                             <br />
                             {request.puzzle.manufacturer}
@@ -104,13 +104,8 @@ const Request = ({ request }) => {
                             {request.content == "" ? <p>No Message Available</p> : <div>{request.content}</div>}
                         </div>
                     </Col>
-                    <Col sm="3">
-                        <div>
-                            {currentDateAndTime(request.createDateTime)}
-                        </div>
-                    </Col>
+
                 </Row>
-                {/* <CardImg src={request.puzzle.imageLocation} alt={request.title} /> */}
                 <CardBody>
                     <Row>
                         <Col sm="4">
@@ -126,6 +121,13 @@ const Request = ({ request }) => {
 
                                 <Button type="button" className="cancelRequest--button" onClick={deleteOutgoingRequest}> Cancel Request </Button> :
                                 <Button outline className="deleteRequest--button" type="button" onClick={deleteOutgoingRequest}> Delete </Button>}
+                        </Col>
+                        <Col sm="4">
+                            <div>
+                                <strong>
+                                    {currentDateAndTime(request.createDateTime)}
+                                </strong>
+                            </div>
                         </Col>
                     </Row>
                 </CardBody>

@@ -61,103 +61,105 @@ const AddPuzzle = () => {
         <div className="postForm--container">
             <div className="postFormSecondary--container">
                 <Form className="postForm">
-                    <FormGroup>
-                        <Label className="puzzleTitleLabel"><strong>Title</strong></Label>
-                        <Input
-                            className="newPuzzle"
-                            onChange={handleFieldChange}
-                            type="text"
-                            id="title"
-                            value={newPuzzle.title}
-                            placeholder="Enter Title"
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label className="ManufacturerLabel"><strong>Manufacturer</strong></Label>
-                        <Input
-                            className="newPuzzle"
-                            onChange={handleFieldChange}
-                            type="text"
-                            id="manufacturer"
-                            value={newPuzzle.manufacturer}
-                            placeholder="Enter Manufacturer"
-                        />
+                    <fieldset>
+                        <FormGroup>
+                            <Label className="puzzleTitleLabel"><strong>Title</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="text"
+                                id="title"
+                                value={newPuzzle.title}
+                                placeholder="Enter Title"
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label className="ManufacturerLabel"><strong>Manufacturer</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="text"
+                                id="manufacturer"
+                                value={newPuzzle.manufacturer}
+                                placeholder="Enter Manufacturer"
+                            />
 
-                    </FormGroup>
-                    <FormGroup>
-                        <Label className="ImageLocationLabel"><strong>Image Url</strong></Label>
-                        <Input
-                            className="newPuzzle"
-                            onChange={handleFieldChange}
-                            type="text"
-                            id="imageLocation"
-                            value={newPuzzle.imageLocation}
-                            placeholder="Image Url"
-                        />
-                    </FormGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label className="ImageLocationLabel"><strong>Image Url</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="text"
+                                id="imageLocation"
+                                value={newPuzzle.imageLocation}
+                                placeholder="Image Url"
+                            />
+                        </FormGroup>
 
-                    <FormGroup>
-                        <Label className="CategoryLabel" for="categoryId">
-                            <strong>Puzzle Categories</strong>
-                        </Label>
+                        <FormGroup>
+                            <Label className="CategoryLabel" for="categoryId">
+                                <strong>Puzzle Categories</strong>
+                            </Label>
+                            {/* <div class="newPuzzleCategory--option"> */}
+                            <Input
+                                type="select"
+                                className="newPuzzle"
+                                onChange={handleCategoryChange}
+                                value={parseInt(newPuzzle.categoryId)}
+                                id="categoryId"
+                                name="categoryId"
+                            >
 
-                        <Input
-                            type="select"
-                            className="newPuzzle"
-                            onChange={handleCategoryChange}
-                            value={parseInt(newPuzzle.categoryId)}
-                            id="categoryId"
-                            name="categoryId"
+                                <option value={1}>Please Choose an Option</option>
+                                {categories.map(category => {
+                                    return category.id === 1 ? null :
+
+                                        <option key={category.id} value={category.id}>{category.name}</option>
+                                }
+
+                                )}
+                            </Input>
+                            {/* </div> */}
+                        </FormGroup>
+                        <FormGroup>
+                            <Label className="PiecesLabel"> <strong>Pieces</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="number"
+                                id="pieces"
+                                value={newPuzzle.pieces}
+                                placeholder="Pieces"
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label className="NotesLabel"><strong>Notes</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="textarea"
+                                id="notes"
+                                value={newPuzzle.notes}
+                                placeholder="Notes"
+                            />
+                        </FormGroup>
+                        <Button
+                            block
+                            outline
+                            className="postPuzzle--button"
+                            onClick={addNewPuzzle}
+                            variant="custom"
+                            type="button"
                         >
-                            <option className="newPuzzleCategory--option" value={1}>Please Choose an Option</option>
-                            {categories.map(category => {
-                                return category.id === 1 ? null :
-
-                                    <option className="newPuzzleCategory--option" key={category.id} value={category.id}>{category.name}</option>
-                            }
-
-                            )}
-
-                        </Input>
-
-                    </FormGroup>
-                    <FormGroup>
-                        <Label className="PiecesLabel"> <strong>Pieces</strong></Label>
-                        <Input
-                            className="newPuzzle"
-                            onChange={handleFieldChange}
-                            type="number"
-                            id="pieces"
-                            value={newPuzzle.pieces}
-                            placeholder="Pieces"
-                        />
-                    </FormGroup>
-                    <FormGroup>
-                        <Label className="NotesLabel"><strong>Notes</strong></Label>
-                        <Input
-                            className="newPuzzle"
-                            onChange={handleFieldChange}
-                            type="textarea"
-                            id="notes"
-                            value={newPuzzle.notes}
-                            placeholder="Notes"
-                        />
-                    </FormGroup>
-                    <Button
-                        block
-                        outline
-                        className="postButton"
-                        onClick={addNewPuzzle}
-                        variant="custom"
-                        type="button"
-                    >
-                        Save
+                            Save
             </Button>
+                    </fieldset>
                 </Form>
 
 
             </div>
-        </div>
+        </div >
 
     )
 

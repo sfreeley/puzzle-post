@@ -1,7 +1,18 @@
 .deleteRequest--button {
-  background-color: #df7373c0;
+  background-color: #df73737c;
+  color: black;
+  font-weight: bold;
 }
 
 .cancelRequest--button {
-  background-color: #df7373c0;
+  background-color: #df73737c;
+  color: black;
+  font-weight: black;
+}
+
+.requestHistory {
+  font-size: 1.1rem;
+  box-shadow: 1px 1px 1px inset;
+  background-color: rgba(128, 128, 128, 0.233);
+  margin: 2rem;
 }

@@ -10,6 +10,7 @@ import CommentList from "../Comment/CommentList";
 import AddComment from "../Comment/AddComment";
 import DeletePuzzle from "../Puzzle/DeletePuzzle";
 import EditComment from "../Comment/EditComment";
+import "./styles/PuzzleDetails.css";
 
 
 const PuzzleDetails = () => {
@@ -138,7 +139,7 @@ const PuzzleDetails = () => {
                             {parseInt(activeUser.id) === puzzle.currentOwnerId ?
                                 <>
                                     <Button onClick={routeToEdit}>Edit</Button>
-                                    <br></br>
+
                                     <Button id={puzzle.id} onClick={toggleDelete}>Delete</Button>
 
                                 </> : <Button onClick={toggle}>Request</Button>
@@ -154,14 +155,15 @@ const PuzzleDetails = () => {
 
 
                 <div className="commentSection">
-
-
+                    <div className="addCommentButton--container">
+                        {puzzle.isAvailable === 0 ? null :
+                            <Button id="addComment" >Add Comment</Button>
+                        }
+                    </div>
                     {puzzle.isAvailable === 0 ? null :
                         <CommentList />
                     }
-                    {puzzle.isAvailable === 0 ? null :
-                        <Button className="addComment--button" id="addComment" >Add Comment</Button>
-                    }
+
                     <AddComment cancelAdd={cancelAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} newComment={newComment} />
 
 

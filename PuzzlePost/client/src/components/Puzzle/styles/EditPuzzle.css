@@ -1,9 +1,9 @@
-.postForm--container {
+.editForm--container {
   display: flex;
   justify-content: center;
 }
 
-.postFormSecondary--container {
+.editFormSecondary--container {
   display: flex;
   align-content: center;
   justify-content: center;
@@ -12,18 +12,12 @@
   margin-top: 5rem;
 }
 
-.postForm {
+.editForm {
   width: 90%;
   margin: 3rem;
 }
 
-.postPuzzle--button {
+.editPuzzleForm--button {
   background-color: #b5d6d68c;
   color: black;
-}
-
-.newPuzzleCategory--option {
-  max-width: 25%;
-  max-height: 25%;
-  font-size: 0.5rem;
 }
