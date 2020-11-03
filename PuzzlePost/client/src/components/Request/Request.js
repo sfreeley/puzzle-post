@@ -122,10 +122,10 @@ const Request = ({ request }) => {
                                 </> :
                                 null}
 
-                            {request.requestingPuzzleUserId === parseInt(activeUser.id) ?
-                                <>
-                                    <Button type="button" onClick={deleteOutgoingRequest}> Delete </Button>
-                                </> : null}
+                            {(request.requestingPuzzleUserId === parseInt(activeUser.id) && request.statusId === 1) ?
+
+                                <Button type="button" className="cancelRequest--button" onClick={deleteOutgoingRequest}> Cancel Request </Button> :
+                                <Button outline className="deleteRequest--button" type="button" onClick={deleteOutgoingRequest}> Delete </Button>}
                         </Col>
                     </Row>
                 </CardBody>
