@@ -25,8 +25,7 @@ const Header = () => {
         <>
 
 
-            <Navbar className="nav-bar--banner" color="faded" light expand="md" >
-                {/* <NavbarBrand href="/"><img src={require("../images/puzzlelogo.png")} alt="puzzleLogo" /></NavbarBrand> */}
+            <Navbar className="nav-bar--banner" color="faded" light expand="md">
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
                     <Nav className="mr-auto" navbar>
