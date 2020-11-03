@@ -5,6 +5,8 @@ import { Button, CardDeck, Container, Row, Col } from "reactstrap";
 import Puzzle from "./Puzzle";
 import { Link, useHistory } from "react-router-dom";
 import InProgressList from "./InProgressList";
+import { FaPuzzlePiece } from 'react-icons/fa';
+import "./styles/UserPuzzleList.css";
 
 const UserPuzzleList = () => {
     const { userPuzzles, getAllPuzzlesByUser } = useContext(PuzzleContext);
@@ -21,12 +23,13 @@ const UserPuzzleList = () => {
 
     return (
 
-        <div>
-            <Button onClick={addNewPuzzle}>New Puzzle</Button>
-
+        <div className="userWithInProgressCards--container">
+            <div className="addPuzzleButton--container">
+                <Button onClick={addNewPuzzle}><FaPuzzlePiece size={40} /> Add New Puzzle</Button>
+            </div>
             <Container >
-                <h6>My Active Puzzles</h6>
-                <Row>
+                <h4>My Active Puzzles</h4>
+                <CardDeck>
 
                     <>
 
@@ -37,14 +40,14 @@ const UserPuzzleList = () => {
                         }
                     </>
 
-                </Row>
+                </CardDeck>
                 <h6>In Progress Puzzles</h6>
                 <Row>
                     <InProgressList />
                 </Row>
             </Container>
 
-        </div>
+        </div >
 
     );
 };

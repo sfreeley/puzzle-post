@@ -160,7 +160,7 @@ namespace PuzzlePost.Repositories
             }
         }
 
-        //getting single Request by puzzle id
+        //getting single Request by PUZZLE id
         public Request GetRequestByPuzzleId(int id)
         {
             using (var conn = Connection)
@@ -208,6 +208,58 @@ namespace PuzzlePost.Repositories
                         return null;
                     }
                     
+                }
+            }
+        }
+
+        //getting single Request by REQUEST id
+        public Request GetRequestById(int id)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                       SELECT r.Id AS RequestId, r.PuzzleId, r.RequestingPuzzleUserId, r.SenderOfPuzzleUserId, r.Content,
+                       r.CreateDateTime, r.StatusId,
+    
+                       s.Id, s.Name
+                       
+                       FROM Request r
+                       LEFT JOIN Status s
+                       ON r.StatusId = s.Id
+                       WHERE r.id= @id AND s.Name = 'Pending' ";
+
+                    cmd.Parameters.AddWithValue("@id", id);
+                    var reader = cmd.ExecuteReader();
+
+                    if (reader.Read())
+                    {
+                        Request request = new Request
+                        {
+                            Id = reader.GetInt32(reader.GetOrdinal("RequestId")),
+                            PuzzleId = reader.GetInt32(reader.GetOrdinal("PuzzleId")),
+                            RequestingPuzzleUserId = reader.GetInt32(reader.GetOrdinal("RequestingPuzzleUserId")),
+                            SenderOfPuzzleUserId = reader.GetInt32(reader.GetOrdinal("SenderOfPuzzleUserId")),
+                            Content = DbUtils.GetNullableString(reader, "Content"),
+                            CreateDateTime = reader.GetDateTime(reader.GetOrdinal("CreateDateTime")),
+                            StatusId = reader.GetInt32(reader.GetOrdinal("StatusId")),
+                            Status = new Status()
+                            {
+                                Id = reader.GetInt32(reader.GetOrdinal("StatusId")),
+                                Name = reader.GetString(reader.GetOrdinal("Name"))
+                            }
+                        };
+                        reader.Close();
+                        return request;
+                    }
+                    else
+                    {
+                        reader.Close();
+                        return null;
+                    }
+
                 }
             }
         }

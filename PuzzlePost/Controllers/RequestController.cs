@@ -125,7 +125,27 @@ namespace PuzzlePost.Controllers
             //{
             //    return Unauthorized();
             //}
-            _requestRepository.DeleteRequest(id);
+            //getting request by id where status is pending
+            Request request = _requestRepository.GetRequestById(id);
+            if (request == null) {
+                //if there is no request by that id that is pending, just delete the request
+                _requestRepository.DeleteRequest(id);
+            }
+            else {
+                
+                //if delete request and it was in pending status, have to reactivate the puzzle so goes back to shared puzzle list for someone else to request
+                _puzzleRepository.ReactivatePuzzle(request.PuzzleId);
+                //will remove from requesting history page and current owner's pending request page
+                _requestRepository.DeleteRequest(id);
+            }
+          
+            
+            ////get the request by puzzleId where status is pending (there will only be the 1..)
+            //Request request = _requestRepository.GetRequestByPuzzleId(request.);
+            //if (request.StatusId == 1) {
+            //    _puzzleRepository.ReactivatePuzzle(id);
+            //}
+            
             //return status 204
             return NoContent();
         }

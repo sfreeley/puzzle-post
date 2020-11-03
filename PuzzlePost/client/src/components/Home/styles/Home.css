@@ -1,0 +1,15 @@
+.home--container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.appDescription {
+  justify-content: center;
+  width: 70%;
+  height: 50%;
+}
+
+.logo--container {
+  justify-content: center;
+}
