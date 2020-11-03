@@ -28,8 +28,8 @@ const UserPuzzleList = () => {
                 <Button onClick={addNewPuzzle}><FaPuzzlePiece size={40} /> Add New Puzzle</Button>
             </div>
             <Container >
-                <h4>My Active Puzzles</h4>
-                <CardDeck>
+                <h4 className="activePuzzles--title">My Active Puzzles</h4>
+                <CardDeck className="activePuzzle--cardDeck">
 
                     <>
 
@@ -40,11 +40,11 @@ const UserPuzzleList = () => {
                         }
                     </>
 
-                </CardDeck>
-                <h6>In Progress Puzzles</h6>
-                <Row>
+                </CardDeck >
+                <h4 className="inProgress--title">In Progress Puzzles</h4>
+                <CardDeck className="inProgress--cardDeck">
                     <InProgressList />
-                </Row>
+                </CardDeck>
             </Container>
 
         </div >

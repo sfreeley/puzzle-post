@@ -7,14 +7,30 @@
   justify-content: center;
 }
 
-.puzzleCard--footer {
+.background-green {
   background-color: #b5d6d68c;
+}
+
+.background-red {
+  background-color: #df7373c0;
 }
 
 .puzzleImage {
   padding: 0;
   margin: 0;
   height: 30%;
+}
+
+/* .activePuzzles--title {
+  align-self: center;
+}
+
+.inProgress--title {
+  align-self: center;
+} */
+
+.activePuzzle--cardDeck {
+  margin-bottom: 1rem;
 }
 
 .button--container {
@@ -28,11 +44,16 @@
 
 .deletePuzzle--button {
   justify-content: center;
+  margin-right: 0.5rem;
   margin-left: 0.5rem;
 }
 
 .requestPuzzle--button {
   justify-content: center;
+}
+
+.reactivatePuzzle--button {
+  margin-left: 0.5rem;
 }
 
 .detailsButton--container {

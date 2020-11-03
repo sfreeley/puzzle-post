@@ -14,6 +14,8 @@ import { BsFillPuzzleFill } from "react-icons/bs";
 const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { deletePuzzle, reactivatePuzzle } = useContext(PuzzleContext);
+    const inProgress = puzzle.inProgress === 0 ? true : false
+
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
@@ -79,7 +81,7 @@ const Puzzle = ({ puzzle }) => {
                         <strong>{puzzle.pieces} </strong> pieces
                     </ListGroupItem>
                 </ListGroup>
-                <CardFooter className="puzzleCard--footer">
+                <CardFooter className={inProgress ? 'background-green' : 'background-red'}>
                     <div className="button--container">
                         {parseInt(activeUser.id) == puzzle.currentOwnerId ?
                             <>
@@ -91,7 +93,7 @@ const Puzzle = ({ puzzle }) => {
                         {parseInt(activeUser.id) !== puzzle.currentOwnerId ?
                             < Button type="button" className="requestPuzzle--button" onClick={toggle}> Request </Button> : null}
                         {/* this Reactivate button only shows if in progress on the user's puzzle list (ie isAvailable === 0) */}
-                        {puzzle.isAvailable === 0 ?
+                        {puzzle.inProgress === 1 ?
                             <Button id={puzzle.id} className="reactivatePuzzle--button" type="button" onClick={reactivateAPuzzle}> Reactivate</Button> : null}
                     </div>
                 </CardFooter>
