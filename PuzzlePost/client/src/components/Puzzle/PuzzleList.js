@@ -5,18 +5,14 @@ import Puzzle from "./Puzzle";
 import { Button, Row, Col, CardDeck, Container } from "reactstrap";
 import { Link } from "react-router-dom";
 import Search from "./Search";
-
+import Time from "../Time/Time";
 import "./styles/PuzzleList.css";
 
 
 const PuzzleList = () => {
-    const { activeUser } = useContext(UserProfileContext);
-    const [currentTime, setCurrentTime] = useState(new Date().toLocaleString())
+
     const { getAllActivePuzzles, activePuzzles } = useContext(PuzzleContext);
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 
     useEffect(() => {
         getAllActivePuzzles();
@@ -29,13 +25,14 @@ const PuzzleList = () => {
 
     return (
         <div className="puzzleList">
+            <Time />
             <Search clearSearchResults={clearSearchResults} />
 
             <div className="addNewPuzzle--link">
                 {/* <Link to={"puzzle/add"}><Button>New Puzzle</Button></Link> */}
             </div>
 
-            <CardDeck>
+            <CardDeck className="puzzleList--container">
 
                 {activePuzzles.map((puzzle) => {
                     return <Puzzle key={puzzle.id} puzzle={puzzle} />

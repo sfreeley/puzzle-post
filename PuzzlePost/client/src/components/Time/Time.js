@@ -1,10 +1,8 @@
 import React, { useContext, useState } from "react";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { currentDateTime } from "../helperFunctions";
-import { Card } from "reactstrap";
 
-
-const Home = () => {
+const Time = () => {
     const { activeUser } = useContext(UserProfileContext);
     const [currentTime, setCurrentTime] = useState(new Date().toLocaleString())
 
@@ -24,17 +22,6 @@ const Home = () => {
 
                 </div>
 
-
-                <Card>
-                    <img src={require("../../images/puzzlepostlogo.png")} alt="puzzleLogo" />
-                    <p>Welcome to PuzzlePost! Peruse the puzzle list and request a puzzle you deem worthy! First come, first serve!
-                    Wait for the current owner of the puzzle to approve or deny your request. Keep track of all your requests in your puzzle request history.
-                    Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun!
-                    </p>
-                </Card>
-
-
-
             </>
 
         );
@@ -53,15 +40,6 @@ const Home = () => {
                     <p>{currentDateTime(currentTime)}</p>
                 </div>
 
-
-                <Card>
-                    <img src={require("../../images/puzzlepostlogo.png")} alt="puzzleLogo" />
-                    <p>Welcome to PuzzlePost! Peruse the puzzle list and request a puzzle you deem worthy! First come, first serve!
-                    Wait for the current owner of the puzzle to approve or deny your request. Keep track of all your requests in your puzzle request history.
-                    Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun!
-                    </p>
-                </Card>
-
             </>
         );
     }
@@ -79,16 +57,9 @@ const Home = () => {
                     <p>{currentDateTime(currentTime)}</p>
                 </div>
 
-                <Card>
-                    <img src={require("../../images/puzzlepostlogo.png")} alt="puzzleLogo" />
-                    <p>Welcome to PuzzlePost! Peruse the puzzle list and request a puzzle you deem worthy! First come, first serve!
-                    Wait for the current owner of the puzzle to approve or deny your request. Keep track of all your requests in your puzzle request history.
-                    Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun!
-                    </p>
-                </Card>
             </>
         );
 
     }
 }
-export default Home;
+export default Time;

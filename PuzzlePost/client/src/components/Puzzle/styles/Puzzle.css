@@ -1,8 +1,47 @@
 .puzzleCard {
   height: 32rem;
 }
+
+.puzzleCard--title {
+  display: flex;
+  justify-content: center;
+}
+
+.puzzleCard--footer {
+  background-color: #b5d6d68c;
+}
+
 .puzzleImage {
   padding: 0;
   margin: 0;
   height: 30%;
+}
+
+.button--container {
+  display: flex;
+  justify-content: center;
+}
+
+.editPuzzle--button {
+  margin-right: 0.5rem;
+}
+
+.deletePuzzle--button {
+  justify-content: center;
+  margin-left: 0.5rem;
+}
+
+.requestPuzzle--button {
+  justify-content: center;
+}
+
+.detailsButton--container {
+  display: flex;
+  justify-content: center;
+  background-color: #b5d6d68c;
+}
+
+.puzzlePieces--listItem {
+  display: flex;
+  justify-content: center;
 }

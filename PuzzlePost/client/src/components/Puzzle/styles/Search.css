@@ -12,3 +12,12 @@
   display: flex;
   margin: 1rem;
 }
+
+.submitSearch {
+  margin-right: 0.5rem;
+}
+
+.clearSearch {
+  margin-left: 0.5rem;
+  background-color: #df7373c0;
+}

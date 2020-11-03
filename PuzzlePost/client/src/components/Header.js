@@ -33,28 +33,28 @@ const Header = () => {
                         { /* When isLoggedIn === true, we will render the Home link */}
                         {isLoggedIn &&
                             <NavItem>
-                                <NavLink tag={RRNavLink} to="/">Home <img src="https://img.icons8.com/clouds/100/000000/heart-puzzle.png" alt="heartPuzzlePiece" /></NavLink>
+                                <NavLink tag={RRNavLink} to="/"><img src="https://img.icons8.com/clouds/100/000000/heart-puzzle.png" alt="heartPuzzlePiece" /> Home </NavLink>
                             </NavItem>
                         }
                         {isLoggedIn &&
 
                             <NavItem>
-                                <NavLink tag={RRNavLink} to="/puzzle">Puzzle List <img src="https://img.icons8.com/clouds/100/000000/todo-list.png" alt="listIcon" /></NavLink>
+                                <NavLink tag={RRNavLink} to="/puzzle"> <img src="https://img.icons8.com/clouds/100/000000/todo-list.png" alt="listIcon" /> Puzzle List</NavLink>
                             </NavItem>
                         }
                         {isLoggedIn &&
                             <NavItem>
-                                <NavLink tag={RRNavLink} to="/puzzle/user">My Puzzle List <img src="https://img.icons8.com/clouds/100/000000/search-in-list.png" alt="listIcon" /> </NavLink>
+                                <NavLink tag={RRNavLink} to="/puzzle/user"><img src="https://img.icons8.com/clouds/100/000000/search-in-list.png" alt="listIcon" /> My Puzzle List  </NavLink>
                             </NavItem>
                         }
                         {isLoggedIn &&
                             <NavItem>
-                                <NavLink tag={RRNavLink} to="/request/incoming">Incoming Requests <img src="https://img.icons8.com/clouds/100/000000/important-mail.png" alt="mailbox" /></NavLink>
+                                <NavLink tag={RRNavLink} to="/request/incoming"><img src="https://img.icons8.com/clouds/100/000000/important-mail.png" alt="mailbox" /> Incoming Requests </NavLink>
                             </NavItem>
                         }
                         {isLoggedIn &&
                             <NavItem>
-                                <NavLink tag={RRNavLink} to="/request/outgoing">My Puzzle Request History <img src="https://img.icons8.com/clouds/100/000000/mailbox-closed-flag-down.png" alt="mail" /></NavLink>
+                                <NavLink tag={RRNavLink} to="/request/outgoing"> <img src="https://img.icons8.com/clouds/100/000000/mailbox-closed-flag-down.png" alt="mail" /> My Puzzle Request History </NavLink>
                             </NavItem>
                         }
 
