@@ -24,74 +24,70 @@ const Header = () => {
 
         <>
 
-            {isLoggedIn &&
-                <Home />
-            }
-            <Navbar className="nav-bar--banner" color="light" light expand="md" sticky="sticky">
 
-                <Jumbotron   >
-                    {/* <img src={'https://cdn.pixabay.com/photo/2013/07/12/18/03/jigsaw-puzzle-152865_1280.png'} alt="puzzle-banner" /> */}
-                    {/* <Container fluid> */}
+            <Navbar className="nav-bar--banner" color="faded" light expand="md" >
+                {/* <NavbarBrand href="/"><img src={require("../images/puzzlelogo.png")} alt="puzzleLogo" /></NavbarBrand> */}
+                <NavbarToggler onClick={toggle} />
+                <Collapse isOpen={isOpen} navbar>
+                    <Nav className="mr-auto" navbar>
+                        { /* When isLoggedIn === true, we will render the Home link */}
+                        {isLoggedIn &&
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/">Home <img src="https://img.icons8.com/clouds/100/000000/heart-puzzle.png" alt="heartPuzzlePiece" /></NavLink>
+                            </NavItem>
+                        }
+                        {isLoggedIn &&
+
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/puzzle">Puzzle List <img src="https://img.icons8.com/clouds/100/000000/todo-list.png" alt="listIcon" /></NavLink>
+                            </NavItem>
+                        }
+                        {isLoggedIn &&
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/puzzle/user">My Puzzle List <img src="https://img.icons8.com/clouds/100/000000/search-in-list.png" alt="listIcon" /> </NavLink>
+                            </NavItem>
+                        }
+                        {isLoggedIn &&
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/request/incoming">Incoming Requests <img src="https://img.icons8.com/clouds/100/000000/important-mail.png" alt="mailbox" /></NavLink>
+                            </NavItem>
+                        }
+                        {isLoggedIn &&
+                            <NavItem>
+                                <NavLink tag={RRNavLink} to="/request/outgoing">My Puzzle Request History <img src="https://img.icons8.com/clouds/100/000000/mailbox-closed-flag-down.png" alt="mail" /></NavLink>
+                            </NavItem>
+                        }
 
 
-                    <NavbarToggler onClick={toggle} />
-                    <Collapse isOpen={isOpen} navbar>
-                        <Nav className="mr-auto" navbar>
-                            { /* When isLoggedIn === true, we will render the Home link */}
-                            {isLoggedIn &&
+                    </Nav>
+
+                    <Nav navbar>
+                        {isLoggedIn &&
+                            <>
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/">Home</NavLink>
+                                    <a aria-current="page" className="nav-link"
+                                        style={{ cursor: "pointer" }} onClick={logout}>Logout</a>
                                 </NavItem>
-                            }
-                            {isLoggedIn &&
-
+                            </>
+                        }
+                        {!isLoggedIn &&
+                            <>
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/puzzle">Puzzle List</NavLink>
+                                    <NavLink tag={RRNavLink} to="/login">Login</NavLink>
                                 </NavItem>
-                            }
-                            {isLoggedIn &&
                                 <NavItem>
-                                    <NavLink tag={RRNavLink} to="/puzzle/user">My Puzzle List</NavLink>
+                                    <NavLink tag={RRNavLink} to="/register">Register</NavLink>
                                 </NavItem>
-                            }
-                            {isLoggedIn &&
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/request/incoming">Incoming Requests</NavLink>
-                                </NavItem>
-                            }
-                            {isLoggedIn &&
-                                <NavItem>
-                                    <NavLink tag={RRNavLink} to="/request/outgoing">Your Puzzle Request History</NavLink>
-                                </NavItem>
-                            }
+                            </>
+                        }
+                    </Nav>
+                </Collapse>
 
-
-                        </Nav>
-
-                        <Nav navbar>
-                            {isLoggedIn &&
-                                <>
-                                    <NavItem>
-                                        <button aria-current="page" className="nav-link"
-                                            style={{ cursor: "pointer" }} onClick={logout}>Logout</button>
-                                    </NavItem>
-                                </>
-                            }
-                            {!isLoggedIn &&
-                                <>
-                                    <NavItem>
-                                        <NavLink tag={RRNavLink} to="/login">Login</NavLink>
-                                    </NavItem>
-                                    <NavItem>
-                                        <NavLink tag={RRNavLink} to="/register">Register</NavLink>
-                                    </NavItem>
-                                </>
-                            }
-                        </Nav>
-                    </Collapse>
-                    {/* </Container> */}
-                </Jumbotron>
             </Navbar>
+            {/* {isLoggedIn &&
+                <Home />} */}
+
+
 
         </>
     )

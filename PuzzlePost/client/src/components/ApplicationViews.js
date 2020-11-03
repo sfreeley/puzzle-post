@@ -21,6 +21,9 @@ export default function ApplicationViews() {
     return (
         <main>
             <Switch>
+                <Route path="/" exact>
+                    {isLoggedIn ? <Home /> : <Redirect to="/login" />}
+                </Route>
                 <Route path="/comment/add/:id" exact>
                     {isLoggedIn ? <AddComment /> : <Redirect to="/login" />}
                 </Route>
@@ -42,7 +45,7 @@ export default function ApplicationViews() {
                 <Route path="/puzzle/user" exact>
                     {isLoggedIn ? <UserPuzzleList /> : <Redirect to="/login" />}
                 </Route>
-                <Route path="/puzzle" exact>
+                <Route path="/puzzle" >
                     {isLoggedIn ? <PuzzleList /> : <Redirect to="/login" />}
                 </Route>
                 <Route path="/puzzle/add" exact>
