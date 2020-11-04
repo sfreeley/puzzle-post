@@ -37,7 +37,7 @@ const OutgoingRequestList = () => {
         <div className="container">
             <div className="row justify-content-center">
 
-                <div className="cards-column">
+                <div className="outgoingRequestsList--container">
                     {outgoingRequests.length === 0 ? <p>You don't have any puzzle request history</p> :
                         <div className="requestStats">
                             You have {outgoingRequests.length} puzzle requests in your history

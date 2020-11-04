@@ -109,18 +109,6 @@ const EditPuzzle = () => {
                     <FormGroup>
                         <Button outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
                     </FormGroup>
-                    {/* <FormGroup>
-                        <Label className="ImageLocationLabel"><strong>Image Url</strong></Label>
-                        <Input
-                            className="editingPuzzle"
-                            onChange={handleFieldChange}
-                            type="text"
-                            id="imageLocation"
-                            value={editingPuzzle.imageLocation}
-                            placeholder="Image Url"
-                        />
-                    </FormGroup> */}
-
                     <FormGroup>
                         <Label className="CategoryLabel" for="categoryId">
                             <strong>Puzzle Categories</strong>

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button, Container } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import "./styles/AddPuzzle.css";
 
@@ -82,7 +82,7 @@ const AddPuzzle = () => {
     return (
         <div className="postForm--container">
             <div className="postFormSecondary--container">
-                <Form className="postForm">
+                <Form className="postForm" responsive>
                     <fieldset>
                         <FormGroup>
                             <Label className="puzzleTitleLabel"><strong>Title</strong></Label>
@@ -110,10 +110,12 @@ const AddPuzzle = () => {
                         <FormGroup>
                             <Button outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
                         </FormGroup>
-                        <FormGroup>
+
+                        <FormGroup >
                             <Label className="CategoryLabel" for="categoryId">
                                 <strong>Puzzle Categories</strong>
                             </Label>
+
                             <Input
                                 type="select"
                                 className="newPuzzle"
@@ -133,6 +135,7 @@ const AddPuzzle = () => {
                                 )}
                             </Input>
                         </FormGroup>
+
                         <FormGroup>
                             <Label className="PiecesLabel"> <strong>Pieces</strong></Label>
                             <Input

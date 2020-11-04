@@ -29,12 +29,6 @@ namespace PuzzlePost.Controllers
             _requestRepository = requestRepository;
         }
 
-        //[HttpGet]
-        //public IActionResult GetAllComments()
-        //{
-        //    return Ok(_commentRepository.GetAllComments());
-        //}
-
         [HttpGet("getallcommentsbypuzzle/{id}")]
         public IActionResult GetAllCommentsByPuzzle(int id)
         {

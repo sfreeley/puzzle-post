@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import {
-    Card, CardImg, CardBody, Row, Button, Col, CardTitle, CardHeader, ListGroupItem, ListGroup, CardFooter
+    Card, CardImg, Button, CardTitle, CardHeader, ListGroupItem, ListGroup, CardFooter
 } from "reactstrap";
 import { currentDateTime } from "../helperFunctions";
 import { Link, useHistory } from "react-router-dom";
@@ -15,7 +15,6 @@ const Puzzle = ({ puzzle }) => {
     const { activeUser } = useContext(UserProfileContext);
     const { deletePuzzle, reactivatePuzzle } = useContext(PuzzleContext);
     const inProgress = puzzle.inProgress === 0 ? true : false
-
 
     const history = useHistory();
     const [modal, setModal] = useState(false);
@@ -34,7 +33,7 @@ const Puzzle = ({ puzzle }) => {
             history.push("/puzzle");
         })
 
-    }
+    };
 
     const deleteAPuzzle = (e) => {
         e.preventDefault();
@@ -51,7 +50,7 @@ const Puzzle = ({ puzzle }) => {
             })
         }
 
-    }
+    };
 
     return (
         <>
@@ -68,7 +67,7 @@ const Puzzle = ({ puzzle }) => {
                     <p><strong>{puzzle.title}</strong> <br /> {puzzle.manufacturer}</p>
                 </CardTitle>
 
-                <ListGroup>
+                <ListGroup className="puzzleDescriptions--listgroup">
                     <ListGroupItem>
                         <strong><em> Shared on: </em></strong> {currentDateTime(puzzle.createDateTime)}
                     </ListGroupItem>

@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
-import { Button, CardDeck, Container, Row, Col } from "reactstrap";
+import { Button, CardDeck, Container } from "reactstrap";
 import Puzzle from "./Puzzle";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import InProgressList from "./InProgressList";
 import { FaPuzzlePiece } from 'react-icons/fa';
 import "./styles/UserPuzzleList.css";
