@@ -8,45 +8,45 @@ import DeleteComment from "./DeleteComment";
 import EditComment from "../Comment/EditComment";
 import "./styles/Comment.css";
 
-const Comment = ({ comment }) => {
+const Comment = ({ aComment }) => {
 
     const history = useHistory();
     const { activeUser } = useContext(UserProfileContext);
     const { deleteComment, editComment, getCommentById } = useContext(CommentContext);
 
-
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
-
-
 
     return (
         <>
 
-            <DeleteComment toggle={toggle} modal={modal} deleteComment={deleteComment} comment={comment} />
-            <Toast >
+
+            <DeleteComment toggle={toggle} modal={modal} deleteComment={deleteComment} aComment={aComment} />
+            {aComment &&
+                <Toast >
 
 
-                <ToastHeader>
-                    Written by: <strong>{comment.userProfile.displayName}</strong>
-                    <p> {currentDateAndTime(comment.createDateTime)}</p>
-                </ToastHeader>
+                    <ToastHeader>
+                        Written by: <strong>{aComment.userProfile.displayName}</strong>
+                        <p> {currentDateAndTime(aComment.createDateTime)}</p>
+                    </ToastHeader>
 
 
-                <ToastBody>
-                    <p><strong>{comment.title}</strong></p>
-                    <p>{comment.content}</p>
-                </ToastBody>
+                    <ToastBody>
+                        <p><strong>{aComment.title}</strong></p>
+                        <p>{aComment.content}</p>
+                    </ToastBody>
 
-                {comment.userProfileId === parseInt(activeUser.id) ?
+                    {aComment.userProfileId === parseInt(activeUser.id) ?
 
-                    <div className="commentButtonContainer">
-                        <Button className="commentEdit--button" onClick={() => history.push(`/comment/edit/${comment.id}`)} outline >Edit </Button>
-                        <Button className="commentDelete--button" outline flat onClick={toggle}>Delete</Button>
-                    </div> : null
-                }
+                        <div className="commentButtonContainer">
+                            <Button className="commentEdit--button" onClick={() => history.push(`/comment/edit/${aComment.id}`)} outline >Edit </Button>
+                            <Button className="commentDelete--button" outline onClick={toggle}>Delete</Button>
+                        </div> : null
+                    }
 
-            </Toast>
+                </Toast>
+            }
 
 
         </>

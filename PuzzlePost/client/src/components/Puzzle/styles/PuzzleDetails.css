@@ -1,14 +1,48 @@
 .puzzleDetails {
-  width: 50%;
-  height: 50%;
+  /* width: 50%;
+  height: 50%; */
   margin-left: 2rem;
+  align-self: center;
 }
 
 .puzzleCommentsContainer {
   display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .addCommentButton--container {
+  display: flex;
+  justify-content: center;
+}
+
+.editPuzzleDetails--button {
+  width: 30%;
+  margin: 0.5rem;
+}
+
+.togglePuzzleDelete--button {
+  width: 30%;
+  margin: 0.5rem;
+}
+
+.puzzleDetailsButtons--container {
+  display: flex;
+  justify-content: center;
+  /* flex-direction: column; */
+}
+
+.puzzleDetails--title {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.requestPuzzleDetails--button {
+  width: 30%;
+  margin: 0.5rem;
+}
+
+.requestPuzzleDetails--container {
   display: flex;
   justify-content: center;
 }

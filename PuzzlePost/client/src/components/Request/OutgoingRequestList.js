@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { RequestContext } from "../../providers/RequestProvider";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import Request from "./Request";
-import "./styles/Request.css";
+import "./styles/OutgoingRequestList.css";
 
 const OutgoingRequestList = () => {
     const { getAllOutgoingRequests, outgoingRequests } = useContext(RequestContext);
@@ -39,11 +39,11 @@ const OutgoingRequestList = () => {
 
                 <div className="cards-column">
                     {outgoingRequests.length === 0 ? <p>You don't have any puzzle request history</p> :
-                        <div>
+                        <div className="requestStats">
                             You have {outgoingRequests.length} puzzle requests in your history
-                            , {pending.length} pending request(s)
-                            , {accepted.length} accepted request(s)
-                            , and {rejected.length} rejected request(s).
+                            , <strong>{pending.length}</strong> pending request(s)
+                            , <strong>{accepted.length}</strong> accepted request(s)
+                            , and <strong>{rejected.length}</strong> rejected request(s).
 
                         {outgoingRequests.map((request) => {
                             return <Request key={request.id} request={request} />

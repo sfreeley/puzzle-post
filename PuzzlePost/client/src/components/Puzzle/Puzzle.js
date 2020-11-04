@@ -61,7 +61,8 @@ const Puzzle = ({ puzzle }) => {
 
             <Card className="puzzleCard" style={{ maxWidth: "18rem" }}>
                 <CardImg top className="puzzleImage" src={puzzle.imageLocation} alt={puzzle.title} />
-                <CardHeader className="detailsButton--container"> <Link role="button" to={`/puzzle/details/${puzzle.id}`}><BsFillPuzzleFill size={30} color="grey" /></Link></CardHeader>
+
+                <CardHeader className="detailsButton--container"> <Link onClick={() => history.push(`/puzzle/details/${puzzle.id}`)}><BsFillPuzzleFill size={30} color="grey" /></Link></CardHeader>
 
                 <CardTitle className="puzzleCard--title">
                     <strong>{puzzle.title}</strong> <p>{puzzle.manufacturer}</p>

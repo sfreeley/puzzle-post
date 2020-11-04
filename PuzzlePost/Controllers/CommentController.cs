@@ -36,7 +36,7 @@ namespace PuzzlePost.Controllers
         //}
 
         [HttpGet("getallcommentsbypuzzle/{id}")]
-        public IActionResult GetAllCommentsByPost(int id)
+        public IActionResult GetAllCommentsByPuzzle(int id)
         {
             return Ok(_commentRepository.GetAllCommentsByPuzzle(id));
         }
