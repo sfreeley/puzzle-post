@@ -108,13 +108,12 @@ const AddPuzzle = () => {
 
                         </FormGroup>
                         <FormGroup>
-                            <Button onClick={renderWidget}>Upload Puzzle Image</Button> <p>{newPuzzle.imageLocation}</p>
+                            <Button outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
                         </FormGroup>
                         <FormGroup>
                             <Label className="CategoryLabel" for="categoryId">
                                 <strong>Puzzle Categories</strong>
                             </Label>
-                            {/* <div class="newPuzzleCategory--option"> */}
                             <Input
                                 type="select"
                                 className="newPuzzle"
@@ -133,7 +132,6 @@ const AddPuzzle = () => {
 
                                 )}
                             </Input>
-                            {/* </div> */}
                         </FormGroup>
                         <FormGroup>
                             <Label className="PiecesLabel"> <strong>Pieces</strong></Label>
@@ -166,7 +164,7 @@ const AddPuzzle = () => {
                             type="button"
                         >
                             Save
-            </Button>
+                        </Button>
                     </fieldset>
                 </Form>
 

@@ -10,6 +10,7 @@ const EditPuzzle = () => {
     const history = useHistory();
     const [editingPuzzle, setEditingPuzzle] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const [imageName, setImageName] = useState(" ");
 
     function sleep(ms) {
         return new Promise(resolve => setTimeout(resolve, ms));
@@ -28,7 +29,6 @@ const EditPuzzle = () => {
         const stateToChange = { ...editingPuzzle };
         stateToChange[e.target.id] = e.target.value;
         setEditingPuzzle(stateToChange);
-
     };
 
     const handleCategoryChange = (e) => {
@@ -55,7 +55,28 @@ const EditPuzzle = () => {
             history.goBack();
         })
 
+    };
+
+    //cloudinary
+
+    const checkUploadResult = (resultEvent) => {
+        if (resultEvent.event === 'success') {
+
+            editingPuzzle.imageLocation = resultEvent.info.secure_url
+            setImageName(resultEvent.info.original_filename + `.${resultEvent.info.original_extension}`)
+
+        }
     }
+    const renderWidget = () => {
+        let widget = window.cloudinary.createUploadWidget({
+            cloudName: "digj43ynr",
+            uploadPreset: "uploadPuzzles"
+        },
+            (error, result) => { checkUploadResult(result) })
+
+        widget.open();
+    }
+
 
     return (
 
@@ -86,6 +107,9 @@ const EditPuzzle = () => {
 
                     </FormGroup>
                     <FormGroup>
+                        <Button outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
+                    </FormGroup>
+                    {/* <FormGroup>
                         <Label className="ImageLocationLabel"><strong>Image Url</strong></Label>
                         <Input
                             className="editingPuzzle"
@@ -95,7 +119,7 @@ const EditPuzzle = () => {
                             value={editingPuzzle.imageLocation}
                             placeholder="Image Url"
                         />
-                    </FormGroup>
+                    </FormGroup> */}
 
                     <FormGroup>
                         <Label className="CategoryLabel" for="categoryId">

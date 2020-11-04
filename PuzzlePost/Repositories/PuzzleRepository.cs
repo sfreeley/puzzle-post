@@ -283,22 +283,6 @@ namespace PuzzlePost.Repositories
                             puzzles.Add(existingPuzzle);
                         }
                        
-                        //if (DbUtils.IsNotDbNull(reader, "HistoryId"))
-                        //{
-                        //    existingPuzzle.Histories.Add(new History()
-                        //    {
-                        //        Id = reader.GetInt32(reader.GetOrdinal("HistoryId")),
-                        //        PuzzleId = puzzleId,
-                        //        UserProfileId = reader.GetInt32(reader.GetOrdinal("HistoricalOwnerId")),
-                        //        StartDateOwnership = reader.GetDateTime(reader.GetOrdinal("StartDateOwnership")),
-                        //        EndDateOwnership = DbUtils.GetNullableDateTime(reader, "EndDateOwnership"),
-                        //        UserProfile = new UserProfile
-                        //        {
-                        //            Id = reader.GetInt32(reader.GetOrdinal("UserId")),
-                        //            DisplayName = reader.GetString(reader.GetOrdinal("DisplayName"))
-                        //        }
-                        //    });
-                        //}
                     }
                     
                     reader.Close();
