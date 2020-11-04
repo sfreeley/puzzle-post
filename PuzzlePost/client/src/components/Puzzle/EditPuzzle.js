@@ -5,11 +5,15 @@ import { useHistory, useParams } from "react-router-dom";
 import "./styles/EditPuzzle.css";
 
 const EditPuzzle = () => {
-    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
+    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById } = useContext(PuzzleContext);
     const { id } = useParams();
     const history = useHistory();
     const [editingPuzzle, setEditingPuzzle] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     useEffect(() => {
         categoriesForPuzzle();
@@ -47,8 +51,10 @@ const EditPuzzle = () => {
         }
 
         editPuzzle(editedPuzzle);
-        setActivePuzzles(activePuzzles);
-        history.goBack();
+        sleep(300).then(() => {
+            history.goBack();
+        })
+
     }
 
     return (

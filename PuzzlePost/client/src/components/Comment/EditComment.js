@@ -1,32 +1,36 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useParams } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { CommentContext } from "../../providers/CommentProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { Form, FormGroup, Label, Input, Button, CardImg } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button, CardHeader } from "reactstrap";
 import "./styles/EditComment.css";
+import { BsSkipBackwardFill } from "react-icons/bs";
 
 const EditComment = () => {
 
     const { id } = useParams();
     const history = useHistory();
-    const { deleteComment, editComment, getCommentById, comment } = useContext(CommentContext);
-    const { puzzle, getPuzzleById, getPuzzleWithUserProfile, puzzleWithProfile, deletePuzzle } = useContext(PuzzleContext);
+    const { editComment, getCommentById, comment } = useContext(CommentContext);
+    const { puzzle, getPuzzleById } = useContext(PuzzleContext);
     const [updatedComment, setUpdatedComment] = useState({})
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleEditFieldChange = (e) => {
         const stateToChange = { ...updatedComment }
         stateToChange[e.target.id] = e.target.value;
         setUpdatedComment(stateToChange)
     }
-    const [isLoading, setIsLoading] = useState(false);
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     useEffect(() => {
         getCommentById(id);
-        // getPuzzleById(comment.puzzleId);
     }, [])
 
     useEffect(() => {
+        getPuzzleById(comment.puzzleId);
         setUpdatedComment(comment);
     }, [comment])
 
@@ -34,19 +38,24 @@ const EditComment = () => {
     const editAComment = (e) => {
         e.preventDefault();
         setIsLoading(true);
-        editComment(updatedComment).then(history.push(`/puzzle/details/${comment.puzzleId}`))
+        editComment(updatedComment);
+        sleep(300).then(() => {
+            (history.push(`/puzzle/details/${comment.puzzleId}`))
+        })
+
     }
 
     return (
         <>
-            <div className="editCommentContainer">
-                {/* <div className="puzzleImageEdit">
-                    <CardImg style={{ width: "35rem" }} src={puzzle.imageLocation} />
-                </div> */}
+            <div className="editComment--container">
+
+                <div className="editCommentImage--container" >
+                    <CardHeader className="editCommentImage--title" style={{ width: "35rem", fontSize: "1.4rem" }}><strong>{puzzle.title}</strong></CardHeader>
+                    <img className="editComment--image" style={{ width: "35rem" }} src={puzzle.imageLocation} alt={puzzle.title} />
+                    <Link className="backToDetails--link" role="button" style={{ fontSize: "1.2rem", color: "grey" }} to={`/puzzle/details/${updatedComment.puzzleId}`}><BsSkipBackwardFill size={40} color="maroon" /> Back to Details</Link>
+                </div>
                 <div className="puzzleCommentEdit">
                     {updatedComment &&
-
-
                         <Form>
 
                             <FormGroup>
@@ -60,7 +69,7 @@ const EditComment = () => {
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label htmlFor="content"><strong>Comment</strong></Label>
+                                <Label htmlFor="content"><strong>What are you thinking?</strong></Label>
                                 <Input className="p-2 bd-highlight justify-content-center"
                                     defaultValue={updatedComment.content}
                                     onChange={handleEditFieldChange}
@@ -69,17 +78,13 @@ const EditComment = () => {
                                     id="content"
                                 />
                             </FormGroup>
-                            <Button block type="button" color="success" id="editComment" onClick={editAComment}>
+                            <Button block className="editCommentSubmit--button" type="button" outline id="editComment" onClick={editAComment}>
                                 {'Save'}
                             </Button>
-                            <Button type="button" color="warning" onClick={() => history.goBack()}>
+                            <Button block className="editCommentCancel--button" type="button" outline onClick={() => history.goBack()}>
                                 {'Cancel'}
                             </Button>
                         </Form >
-
-
-
-
 
                     }
                 </div>
