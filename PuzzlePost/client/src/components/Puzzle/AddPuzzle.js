@@ -8,6 +8,7 @@ const AddPuzzle = () => {
     const history = useHistory();
     const { categories, addPuzzle, categoriesForPuzzle } = useContext(PuzzleContext);
     const [isLoading, setIsLoading] = useState(false);
+    // const [imageLocation, setImageLocation] = useState(" ");
 
     const [newPuzzle, setNewPuzzle] = useState({
         categoryId: 1,
@@ -57,6 +58,28 @@ const AddPuzzle = () => {
 
     }
 
+
+    //cloudinary
+
+    const checkUploadResult = (resultEvent) => {
+        if (resultEvent.event === 'success') {
+
+            // setImageLocation(resultEvent.info.secure_url)
+            newPuzzle.imageLocation = resultEvent.info.secure_url
+
+
+        }
+    }
+    const renderWidget = () => {
+        let widget = window.cloudinary.createUploadWidget({
+            cloudName: "digj43ynr",
+            uploadPreset: "uploadPuzzles"
+        },
+            (error, result) => { checkUploadResult(result) })
+
+        widget.open();
+    }
+
     return (
         <div className="postForm--container">
             <div className="postFormSecondary--container">
@@ -86,17 +109,8 @@ const AddPuzzle = () => {
 
                         </FormGroup>
                         <FormGroup>
-                            <Label className="ImageLocationLabel"><strong>Image Url</strong></Label>
-                            <Input
-                                className="newPuzzle"
-                                onChange={handleFieldChange}
-                                type="text"
-                                id="imageLocation"
-                                value={newPuzzle.imageLocation}
-                                placeholder="Image Url"
-                            />
+                            <Button onClick={renderWidget}>Upload Puzzle Image</Button> <p>{newPuzzle.imageLocation}</p>
                         </FormGroup>
-
                         <FormGroup>
                             <Label className="CategoryLabel" for="categoryId">
                                 <strong>Puzzle Categories</strong>
