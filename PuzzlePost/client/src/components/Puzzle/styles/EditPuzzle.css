@@ -1,6 +1,7 @@
 .editForm--container {
   display: flex;
   justify-content: center;
+  font-size: 2.5rem;
 }
 
 .editFormSecondary--container {
@@ -9,7 +10,7 @@
   justify-content: center;
   border: 4px solid #b5d6d68c;
   width: 90%;
-  margin-top: 5rem;
+  margin-top: 3rem;
 }
 
 .editForm {

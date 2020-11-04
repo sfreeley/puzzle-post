@@ -1,6 +1,7 @@
 .postForm--container {
   display: flex;
   justify-content: center;
+  font-size: 2.5rem;
 }
 
 .postFormSecondary--container {
@@ -9,7 +10,7 @@
   justify-content: center;
   border: 4px solid #b5d6d68c;
   width: 90%;
-  margin-top: 5rem;
+  margin-top: 3rem;
 }
 
 .postForm {
@@ -22,8 +23,12 @@
   color: black;
 }
 
-.newPuzzleCategory--option {
-  max-width: 25%;
-  max-height: 25%;
-  font-size: 0.5rem;
+.newPuzzleCategory option {
+  width: 1rem;
+  font-size: 0.8rem;
+}
+
+.uploadPuzzleImage {
+  background-color: #df73737c;
+  color: black;
 }

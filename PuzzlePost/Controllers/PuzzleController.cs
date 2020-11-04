@@ -44,15 +44,9 @@ namespace PuzzlePost.Controllers
 
         [HttpGet("history/{id}")]
         public IActionResult GetbyIdWithHistory(int id)
-        { 
-        //    UserProfile userProfile = GetCurrentUserProfile();
-        //    var userId = userProfile.Id;
+        {
             Puzzle puzzle = _puzzleRepository.GetPuzzleById(id);
-            //if (puzzle.CurrentOwnerId != userId)
-            //{
-            //    return Unauthorized();
-            //}
-
+          
             if (puzzle == null)
             {
                 return NotFound();
@@ -63,6 +57,7 @@ namespace PuzzlePost.Controllers
         [HttpGet("{id}")]
         public IActionResult GetbyIdWithoutHistory(int id)
         {
+       
             Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
             if (puzzle == null)
             {
@@ -93,6 +88,12 @@ namespace PuzzlePost.Controllers
         [HttpGet("user/{id}")]
         public IActionResult GetbyUser(int id)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+            if (id != userId)
+            {
+                return Unauthorized();
+            }
 
             return Ok(_puzzleRepository.GetAllUserPuzzlesById(id));
         }
@@ -100,6 +101,12 @@ namespace PuzzlePost.Controllers
         [HttpGet("user/inactive/{id}")]
         public IActionResult GetInactivePuzzlesByUser(int id)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+            if (id != userId) 
+            {
+                return Unauthorized();
+            }
             return Ok(_puzzleRepository.GetAllUserPuzzlesInProgressById(id));
         }
 
@@ -123,6 +130,13 @@ namespace PuzzlePost.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Puzzle puzzle)
         {
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+            Puzzle aPuzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
+            if (userId != aPuzzle.CurrentOwnerId) 
+            {
+                return Unauthorized();
+            }
             if (id != puzzle.Id)
             {
                 return BadRequest();
@@ -134,7 +148,14 @@ namespace PuzzlePost.Controllers
         [HttpPut("reactivate/{id}")]
         public IActionResult Reactivate(int id)
         {
-            
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+            Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
+            if (userId != puzzle.CurrentOwnerId)
+            {
+                return Unauthorized();
+            }
+
             _puzzleRepository.ReactivatePuzzle(id);
           
 
@@ -145,7 +166,14 @@ namespace PuzzlePost.Controllers
         [HttpPut("deactivate/{id}")]
         public ActionResult Deactivate(int id)
         {
-            
+            UserProfile userProfile = GetCurrentUserProfile();
+            var userId = userProfile.Id;
+            Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
+            if (userId != puzzle.CurrentOwnerId)
+            {
+                return Unauthorized();
+            }
+
             _puzzleRepository.DeactivatePuzzle(id);
             
   
@@ -199,6 +227,11 @@ namespace PuzzlePost.Controllers
         {
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
+            Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
+            if (userId != puzzle.CurrentOwnerId) 
+            {
+                return Unauthorized();
+            }
             _puzzleRepository.DeletePuzzle(id);
             History history = _historyRepository.GetHistoryByIds(userId, id);
             history.EndDateOwnership = DateTime.Now;

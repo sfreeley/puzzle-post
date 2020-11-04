@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button, Select } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import "./styles/AddPuzzle.css";
 
@@ -46,7 +46,7 @@ const AddPuzzle = () => {
         newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
         newPuzzle.pieces = parseInt(newPuzzle.pieces);
         if (newPuzzle.title === "" || newPuzzle.manufacturer === "" || newPuzzle.imageLocation === "" || newPuzzle.pieces === "") {
-            alert("Sorry, cannot leave these field(s) blank. Try again.");
+            alert("Sorry, cannot leave respective field(s) blank. Try again.");
         }
         else {
             setIsLoading(true);
@@ -109,7 +109,7 @@ const AddPuzzle = () => {
 
                         </FormGroup>
                         <FormGroup>
-                            <Button outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
+                            <Button className="uploadPuzzleImage" outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
                         </FormGroup>
 
                         <FormGroup >
@@ -119,7 +119,7 @@ const AddPuzzle = () => {
 
                             <Input
                                 type="select"
-                                className="newPuzzle"
+                                className="newPuzzleCategory"
                                 onChange={handleCategoryChange}
                                 value={parseInt(newPuzzle.categoryId)}
                                 id="categoryId"
@@ -127,14 +127,21 @@ const AddPuzzle = () => {
                             >
 
                                 <option value={1}>Please Choose an Option</option>
+
                                 {categories.map(category => {
                                     return category.id === 1 ? null :
 
                                         <option key={category.id} value={category.id}>{category.name}</option>
+
                                 }
 
+
+
                                 )}
+
+
                             </Input>
+
                         </FormGroup>
 
                         <FormGroup>

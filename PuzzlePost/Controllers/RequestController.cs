@@ -97,13 +97,10 @@ namespace PuzzlePost.Controllers
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
 
-            
             request.SenderOfPuzzleUserId = userId;
            
             request.CreateDateTime = DateTime.Now;
 
-            //get request by puzzle id where status is pending (request.puzzleId)
-            //Request aRequest = _requestRepository.GetRequestByPuzzleId(request.PuzzleId);
             //edit that request to statusid = 3 as well so can be removed from incoming requests page
             _requestRepository.UpdateToReject(request);
             //new instance of puzzle

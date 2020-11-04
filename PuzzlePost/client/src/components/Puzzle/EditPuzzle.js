@@ -108,7 +108,7 @@ const EditPuzzle = () => {
 
                     </FormGroup>
                     <FormGroup>
-                        <Button outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
+                        <Button className="uploadPuzzleImage" outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
                     </FormGroup>
                     <FormGroup>
                         <Label className="CategoryLabel" for="categoryId">
