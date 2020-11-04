@@ -13,8 +13,6 @@ import OutgoingRequestList from "./Request/OutgoingRequestList";
 import EditComment from "./Comment/EditComment";
 import Home from "./Home/Home";
 
-
-
 export default function ApplicationViews() {
     const { isLoggedIn } = useContext(UserProfileContext);
 

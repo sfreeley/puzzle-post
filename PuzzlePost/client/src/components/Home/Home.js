@@ -1,7 +1,4 @@
-import React, { useContext, useState } from "react";
-import { UserProfileContext } from "../../providers/UserProfileProvider";
-import { currentDateTime } from "../helperFunctions";
-import { Card, CardBody } from "reactstrap";
+import React from "react";
 import Time from "../Time/Time";
 import "./styles/Home.css";
 
@@ -19,7 +16,8 @@ const Home = () => {
                     <div className="appDescription">
                         <p className="appDescription--cardBody" >Welcome to PuzzlePost! Peruse the puzzle list and request a puzzle you deem worthy! First come, first serve!
                         Wait for the current owner of the puzzle to approve or deny your request. Keep track of all your requests in your puzzle request history.
-                        Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun!
+                        Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun! If you are looking for specific puzzles, use
+                        the search function and search by: title, manufacturer, number of pieces, category, or current owner.
                         </p>
                     </div>
                 </div>
@@ -38,7 +36,8 @@ const Home = () => {
                     <div className="appDescription">
                         <div className="appDescription--cardBody">Welcome to PuzzlePost! Peruse the puzzle list and request a puzzle you deem worthy! First come, first serve!
                         Wait for the current owner of the puzzle to approve or deny your request. Keep track of all your requests in your puzzle request history.
-                        Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun!
+                        Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun! If you are looking for specific puzzles, use
+                        the search function and search by: title, manufacturer, number of pieces, category, or current owner.
                         </div>
                     </div>
 
@@ -57,7 +56,8 @@ const Home = () => {
                     <div className="appDescription">
                         <div className="appDescription--cardBody">Welcome to PuzzlePost! Peruse the puzzle list and request a puzzle you deem worthy! First come, first serve!
                         Wait for the current owner of the puzzle to approve or deny your request. Keep track of all your requests in your puzzle request history.
-                        Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun!
+                        Once you're done with the puzzle, be kind, and reactivate so that others can share in the fun! If you are looking for specific puzzles, use
+                        the search function and search by: title, manufacturer, number of pieces, category, or current owner.
                         </div>
                     </div>
                 </div>

@@ -39,6 +39,7 @@ const EditComment = () => {
         e.preventDefault();
         setIsLoading(true);
         editComment(updatedComment);
+        setIsLoading(false);
         sleep(300).then(() => {
             (history.push(`/puzzle/details/${comment.puzzleId}`))
         })
@@ -48,7 +49,6 @@ const EditComment = () => {
     return (
         <>
             <div className="editComment--container">
-
                 <div className="editCommentImage--container" >
                     <CardHeader className="editCommentImage--title" style={{ width: "35rem", fontSize: "1.4rem" }}><strong>{puzzle.title}</strong></CardHeader>
                     <img className="editComment--image" style={{ width: "35rem" }} src={puzzle.imageLocation} alt={puzzle.title} />
@@ -85,7 +85,6 @@ const EditComment = () => {
                                 {'Cancel'}
                             </Button>
                         </Form >
-
                     }
                 </div>
             </div >

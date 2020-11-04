@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { Form, FormGroup, Label, Input, Button, Container } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { useHistory } from "react-router-dom";
 import "./styles/AddPuzzle.css";
 
@@ -51,6 +51,7 @@ const AddPuzzle = () => {
         else {
             setIsLoading(true);
             addPuzzle(newPuzzle);
+            setIsLoading(false);
             sleep(300).then(() => {
                 history.push("/puzzle");
             })

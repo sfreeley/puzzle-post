@@ -11,7 +11,7 @@ using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestController : ControllerBase

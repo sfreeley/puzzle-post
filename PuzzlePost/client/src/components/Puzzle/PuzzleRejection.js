@@ -1,11 +1,8 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup, Label, Input } from "reactstrap";
-import { RequestContext } from "../../providers/RequestProvider";
-import { UserProfileContext } from "../../providers/UserProfileProvider";
+import React from "react";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, FormGroup } from "reactstrap";
 
 
-const PuzzleRejection = ({ modal, toggle, request, rejectRequest }) => {
+const PuzzleRejection = ({ modal, toggle, rejectRequest }) => {
 
 
     return (

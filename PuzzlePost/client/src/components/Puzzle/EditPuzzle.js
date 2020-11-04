@@ -51,6 +51,7 @@ const EditPuzzle = () => {
         }
 
         editPuzzle(editedPuzzle);
+        setIsLoading(false);
         sleep(300).then(() => {
             history.goBack();
         })

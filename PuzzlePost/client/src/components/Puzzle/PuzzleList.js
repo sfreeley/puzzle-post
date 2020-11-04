@@ -1,9 +1,7 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { UserProfileContext } from "../../providers/UserProfileProvider";
 import Puzzle from "./Puzzle";
-import { Button, Row, Col, CardDeck, Container } from "reactstrap";
-import { Link } from "react-router-dom";
+import { CardDeck } from "reactstrap";
 import Search from "./Search";
 import Time from "../Time/Time";
 import "./styles/PuzzleList.css";
@@ -27,10 +25,6 @@ const PuzzleList = () => {
         <div className="puzzleList">
             <Time />
             <Search clearSearchResults={clearSearchResults} />
-
-            <div className="addNewPuzzle--link">
-                {/* <Link to={"puzzle/add"}><Button>New Puzzle</Button></Link> */}
-            </div>
 
             <CardDeck className="puzzleList--container">
 

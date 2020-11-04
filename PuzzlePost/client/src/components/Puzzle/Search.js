@@ -1,9 +1,9 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Input, Button } from "reactstrap";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import "./styles/Search.css";
 const Search = ({ clearSearchResults }) => {
-    const { searchActivePuzzles, activePuzzles } = useContext(PuzzleContext);
+    const { searchActivePuzzles } = useContext(PuzzleContext);
     const [searchTerm, setSearchTerm] = useState("");
 
     const handleSearchField = (e) => {

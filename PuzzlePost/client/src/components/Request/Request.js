@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Card, CardImg, CardBody, Row, Button, Col, Toast } from "reactstrap";
+import { Card, CardBody, Row, Button, Col } from "reactstrap";
 import { currentDateAndTime } from "../helperFunctions";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";

@@ -5,26 +5,19 @@ import {
     Collapse,
     Navbar,
     NavbarToggler,
-    NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
-    Container,
-    Jumbotron
+    NavLink
 } from 'reactstrap';
 import "./Header.css";
-import Home from "./Home/Home";
 
 const Header = () => {
-    const { isLoggedIn, logout, activeUser } = useContext(UserProfileContext);
+    const { isLoggedIn, logout } = useContext(UserProfileContext);
     const [isOpen, setIsOpen] = useState(false);
     const toggle = () => setIsOpen(!isOpen);
     return (
 
-
         <>
-
-
             <Navbar className="nav-bar--banner" color="faded" light expand="md">
                 <NavbarToggler onClick={toggle} />
                 <Collapse isOpen={isOpen} navbar>
@@ -57,7 +50,6 @@ const Header = () => {
                             </NavItem>
                         }
 
-
                     </Nav>
 
                     <Nav navbar>
@@ -83,10 +75,6 @@ const Header = () => {
                 </Collapse>
 
             </Navbar>
-            {/* {isLoggedIn &&
-                <Home />} */}
-
-
 
         </>
     )

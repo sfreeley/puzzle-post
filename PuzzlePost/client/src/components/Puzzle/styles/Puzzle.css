@@ -1,5 +1,7 @@
 .puzzleCard {
   height: 30rem;
+  min-width: 25%;
+  margin: 5rem;
 }
 
 .puzzleCard--title {
