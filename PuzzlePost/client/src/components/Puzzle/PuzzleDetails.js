@@ -19,7 +19,6 @@ const PuzzleDetails = () => {
     const { id } = useParams();
     const history = useHistory();
 
-
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
@@ -183,17 +182,7 @@ const PuzzleDetails = () => {
 
                 </div>
                 <AddComment cancelAdd={cancelAdd} addNewComment={addNewComment} handleFieldChange={handleFieldChange} newComment={newComment} />
-
-
-
-
             </div>
-
-
-
-
-
-
         </>
 
     )

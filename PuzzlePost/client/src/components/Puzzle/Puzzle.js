@@ -65,7 +65,7 @@ const Puzzle = ({ puzzle }) => {
                 <CardHeader className="detailsButton--container"> <Link onClick={() => history.push(`/puzzle/details/${puzzle.id}`)}><BsFillPuzzleFill size={30} color="grey" /></Link></CardHeader>
 
                 <CardTitle className="puzzleCard--title">
-                    <strong>{puzzle.title}</strong> <p>{puzzle.manufacturer}</p>
+                    <p><strong>{puzzle.title}</strong> <br /> {puzzle.manufacturer}</p>
                 </CardTitle>
 
                 <ListGroup>
@@ -79,7 +79,7 @@ const Puzzle = ({ puzzle }) => {
                         <strong><em> Category: </em></strong> {puzzle.category.name}
                     </ListGroupItem>
                     <ListGroupItem className="puzzlePieces--listItem">
-                        <strong>{puzzle.pieces} </strong> pieces
+                        <p><strong>{puzzle.pieces} </strong> pieces</p>
                     </ListGroupItem>
                 </ListGroup>
                 <CardFooter className={inProgress ? 'background-green' : 'background-red'}>

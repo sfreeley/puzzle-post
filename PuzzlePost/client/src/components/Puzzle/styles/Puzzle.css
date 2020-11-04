@@ -5,6 +5,7 @@
 .puzzleCard--title {
   display: flex;
   justify-content: center;
+  text-align: center;
 }
 
 .background-green {

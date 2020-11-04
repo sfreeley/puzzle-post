@@ -52,7 +52,7 @@ const EditComment = () => {
                 <div className="editCommentImage--container" >
                     <CardHeader className="editCommentImage--title" style={{ width: "35rem", fontSize: "1.4rem" }}><strong>{puzzle.title}</strong></CardHeader>
                     <img className="editComment--image" style={{ width: "35rem" }} src={puzzle.imageLocation} alt={puzzle.title} />
-                    <Link className="backToDetails--link" role="button" style={{ fontSize: "1.2rem", color: "grey" }} to={`/puzzle/details/${updatedComment.puzzleId}`}><BsSkipBackwardFill size={40} color="maroon" /> Back to Details</Link>
+                    <Link className="backToDetails--link" role="button" style={{ fontSize: "1.2rem", color: "grey" }} to={`/puzzle/details/${updatedComment.puzzleId}`}><BsSkipBackwardFill size={40} color="teal" /> Back to Details</Link>
                 </div>
                 <div className="puzzleCommentEdit">
                     {updatedComment &&

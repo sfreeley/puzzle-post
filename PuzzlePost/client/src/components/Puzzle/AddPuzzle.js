@@ -8,7 +8,7 @@ const AddPuzzle = () => {
     const history = useHistory();
     const { categories, addPuzzle, categoriesForPuzzle } = useContext(PuzzleContext);
     const [isLoading, setIsLoading] = useState(false);
-    // const [imageLocation, setImageLocation] = useState(" ");
+    const [imageName, setImageName] = useState(" ");
 
     const [newPuzzle, setNewPuzzle] = useState({
         categoryId: 1,
@@ -64,9 +64,8 @@ const AddPuzzle = () => {
     const checkUploadResult = (resultEvent) => {
         if (resultEvent.event === 'success') {
 
-            // setImageLocation(resultEvent.info.secure_url)
             newPuzzle.imageLocation = resultEvent.info.secure_url
-
+            setImageName(resultEvent.info.original_filename + `.${resultEvent.info.original_extension}`)
 
         }
     }
