@@ -27,22 +27,23 @@ const UserPuzzleList = () => {
             <div className="addPuzzleButton--container">
                 <Button onClick={addNewPuzzle}><FaPuzzlePiece size={40} /> Add New Puzzle</Button>
             </div>
-            <Container >
+            <Container className="activePuzzles--container" >
                 <h4 className="activePuzzles--title">My Active Puzzles</h4>
-                <CardDeck className="activePuzzle--cardDeck">
+                <CardDeck className="activePuzzle">
 
-                    <>
 
-                        {userPuzzles.length === 0 ? <p>No puzzles currently being shared</p> :
-                            userPuzzles.map((puzzle) => (
-                                <Puzzle key={puzzle.id} puzzle={puzzle} />
-                            ))
-                        }
-                    </>
 
-                </CardDeck >
+
+                    {userPuzzles.length === 0 ? <p>No puzzles currently being shared</p> :
+                        userPuzzles.map((puzzle) => (
+                            <Puzzle key={puzzle.id} puzzle={puzzle} />
+                        ))
+                    }
+
+
+                </CardDeck>
                 <h4 className="inProgress--title">In Progress Puzzles</h4>
-                <CardDeck className="inProgress--cardDeck">
+                <CardDeck className="inProgress">
                     <InProgressList />
                 </CardDeck>
             </Container>

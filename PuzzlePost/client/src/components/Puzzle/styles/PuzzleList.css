@@ -1,5 +1,9 @@
 .puzzleList--container {
-  margin: 1rem;
+  /* margin-top: 0.5rem; */
   display: flex;
   justify-content: center;
 }
+
+/* .puzzleList {
+  margin-top: 0;
+} */

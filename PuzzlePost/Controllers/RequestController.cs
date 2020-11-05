@@ -137,12 +137,6 @@ namespace PuzzlePost.Controllers
             }
           
             
-            ////get the request by puzzleId where status is pending (there will only be the 1..)
-            //Request request = _requestRepository.GetRequestByPuzzleId(request.);
-            //if (request.StatusId == 1) {
-            //    _puzzleRepository.ReactivatePuzzle(id);
-            //}
-            
             //return status 204
             return NoContent();
         }

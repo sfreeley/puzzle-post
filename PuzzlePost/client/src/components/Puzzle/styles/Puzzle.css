@@ -1,7 +1,7 @@
 .puzzleCard {
-  height: 30rem;
+  height: 32rem;
   min-width: 25%;
-  margin: 5rem;
+  margin: 3rem;
 }
 
 .puzzleCard--title {
@@ -27,10 +27,6 @@
   padding: 0;
   margin: 0;
   height: 30%;
-}
-
-.activePuzzle--cardDeck {
-  margin-bottom: 1rem;
 }
 
 .button--container {

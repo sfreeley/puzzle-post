@@ -19,7 +19,7 @@ export default function Login() {
     };
 
     return (
-        <div login--container>
+        <div className="login--container">
             <div className="puzzleLogoImage--container">
                 <img className="puzzleLogo--image" src="./images/puzzlepostlogo.png" alt="puzzleLogo" />
             </div>

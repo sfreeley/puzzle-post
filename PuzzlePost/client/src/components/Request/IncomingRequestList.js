@@ -26,7 +26,7 @@ const IncomingRequestList = () => {
             <div className="row justify-content-center">
                 <div className="pendingRequestsList--container">
                     <div className="requestStats">
-                        You have <strong>{pending.length}</strong> puzzle requests in your inbox.
+                        You have <strong>{pending.length}</strong> puzzle request(s) in your inbox.
                         {
                             pendingRequests.map((request) => {
                                 return <Request key={request.id} request={request} />
