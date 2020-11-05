@@ -32,27 +32,13 @@ namespace PuzzlePost.Controllers
         [HttpGet("{id}")]
         public IActionResult GetRequestById(int id)
         {
-            //UserProfile userProfile = GetCurrentUserProfile();
-            //var userId = userProfile.Id;
-            //Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
-            //if (userId != puzzle.CurrentOwnerId)
-            //{
-            //    return Unauthorized();
-            //}
-
+          
             return Ok(_requestRepository.GetRequestByPuzzleId(id));
         }
 
         [HttpGet("incoming/{id}")]
         public IActionResult GetIncomingRequests(int id)
         {
-            //UserProfile userProfile = GetCurrentUserProfile();
-            //var userId = userProfile.Id;
-
-            //if (userId != id)
-            //{
-            //    return Unauthorized();
-            //}
 
             return Ok(_requestRepository.GetPendingRequestsForUser(id));
         }
@@ -60,14 +46,7 @@ namespace PuzzlePost.Controllers
         [HttpGet("outgoing/{id}")]
         public IActionResult GetOutgoingRequests(int id)
         {
-            //UserProfile userProfile = GetCurrentUserProfile();
-            //var userId = userProfile.Id;
-
-            //if (userId != id)
-            //{
-            //    return Unauthorized();
-            //}
-
+       
             return Ok(_requestRepository.GetOutgoingRequestsForUser(id));
         }
 
@@ -115,14 +94,7 @@ namespace PuzzlePost.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            //UserProfile userProfile = GetCurrentUserProfile();
-            //var userId = userProfile.Id;
-            //Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
-            //if (userId != puzzle.CurrentOwnerId)
-            //{
-            //    return Unauthorized();
-            //}
-            //getting request by id where status is pending
+           
             Request request = _requestRepository.GetRequestById(id);
             if (request == null) {
                 //if there is no request by that id that is pending, just delete the request

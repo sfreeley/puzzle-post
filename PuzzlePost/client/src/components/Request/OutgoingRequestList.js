@@ -40,7 +40,7 @@ const OutgoingRequestList = () => {
                 <div className="outgoingRequestsList--container">
                     {outgoingRequests.length === 0 ? <p>You don't have any puzzle request history</p> :
                         <div className="requestStats">
-                            You have {outgoingRequests.length} puzzle requests in your history
+                            You have {outgoingRequests.length} puzzle request(s) in your history
                             , <strong>{pending.length}</strong> pending request(s)
                             , <strong>{accepted.length}</strong> accepted request(s)
                             , and <strong>{rejected.length}</strong> rejected request(s).
