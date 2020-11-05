@@ -11,9 +11,7 @@ import EditPuzzle from "./Puzzle/EditPuzzle";
 import IncomingRequestList from "./Request/IncomingRequestList";
 import OutgoingRequestList from "./Request/OutgoingRequestList";
 import EditComment from "./Comment/EditComment";
-import AddComment from "./Comment/AddComment";
 import Home from "./Home/Home";
-
 
 export default function ApplicationViews() {
     const { isLoggedIn } = useContext(UserProfileContext);
@@ -21,8 +19,8 @@ export default function ApplicationViews() {
     return (
         <main>
             <Switch>
-                <Route path="/comment/add/:id" exact>
-                    {isLoggedIn ? <AddComment /> : <Redirect to="/login" />}
+                <Route path="/" exact>
+                    {isLoggedIn ? <Home /> : <Redirect to="/login" />}
                 </Route>
                 <Route path="/comment/edit/:id" exact>
                     {isLoggedIn ? <EditComment /> : <Redirect to="/login" />}
@@ -42,7 +40,7 @@ export default function ApplicationViews() {
                 <Route path="/puzzle/user" exact>
                     {isLoggedIn ? <UserPuzzleList /> : <Redirect to="/login" />}
                 </Route>
-                <Route path="/puzzle" exact>
+                <Route path="/puzzle" exact >
                     {isLoggedIn ? <PuzzleList /> : <Redirect to="/login" />}
                 </Route>
                 <Route path="/puzzle/add" exact>

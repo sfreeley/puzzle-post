@@ -1,19 +1,68 @@
-.commentSection {
+.puzzleDetails--container {
+  margin-left: 2rem;
+  height: 50%;
   width: 50%;
-  height: 200%;
-  overflow-y: scroll;
+  font-size: 1.3rem;
 }
 
 .puzzleDetails {
-  width: 50%;
-  height: 50%;
+  position: sticky;
 }
 
 .puzzleCommentsContainer {
   display: flex;
-  height: 15rem;
+  justify-content: center;
+  overflow-y: scroll;
+}
+
+.addCommentButton--container {
+  display: flex;
+  justify-content: center;
+}
+
+.editPuzzleDetails--button {
+  width: 30%;
+  margin: 0.5rem;
+  background-color: #b5d6d68c;
+  color: black;
+}
+
+.historyList--groupItem {
+  font-size: 1.4rem;
+}
+
+.togglePuzzleDelete--button {
+  width: 30%;
+  margin: 0.5rem;
+  background-color: #df737354;
+  color: black;
+}
+
+.puzzleDetailsButtons--container {
+  display: flex;
+  justify-content: center;
+  /* flex-direction: column; */
 }
 
 .addComment--button {
+  margin-right: 0.5rem;
+}
+
+.viewComments--button {
+  margin-left: 0.5rem;
+}
+
+.puzzleDetails--title {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.requestPuzzleDetails--button {
   width: 30%;
+  margin: 0.5rem;
+}
+
+.requestPuzzleDetails--container {
+  display: flex;
+  justify-content: center;
 }

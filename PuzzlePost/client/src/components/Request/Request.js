@@ -1,11 +1,15 @@
 import React, { useContext, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { Card, CardImg, CardBody, Row, Button, Col } from "reactstrap";
+import { Card, CardBody, Row, Button, Col } from "reactstrap";
 import { currentDateAndTime } from "../helperFunctions";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { RequestContext } from "../../providers/RequestProvider";
 import PuzzleRejection from "../Puzzle/PuzzleRejection";
+import { FaRegThumbsUp } from "react-icons/fa";
+import { SiMinutemailer } from "react-icons/si";
+import { FaRegThumbsDown } from "react-icons/fa";
+import "./styles/Request.css";
 
 const Request = ({ request }) => {
     const { activeUser } = useContext(UserProfileContext);
@@ -58,48 +62,72 @@ const Request = ({ request }) => {
     const deleteOutgoingRequest = (e) => {
         e.preventDefault();
         deleteRequest(request.id);
-        history.push("/puzzle");
+        sleep(300).then(() => {
+            history.push("/puzzle");
+        })
 
     }
 
     return (
         <>
             <PuzzleRejection toggle={toggle} modal={modal} request={request} rejectRequest={rejectRequest} />
-            <Card className="m-4">
+            <Card className="requestHistory">
                 <Row margin="m-4">
                     <Col sm="4">
 
                         <p className="text-left px-2">
-                            <p>Requested by: {request.requestingPuzzleUser.displayName}</p>
-                            <br />
-                        on {currentDateAndTime(request.createDateTime)}</p>
-                        <p>Status: {request.status.name}</p>
+                            <p><strong><em>Requester:</em></strong> {request.requestingPuzzleUser.displayName}</p>
+                        </p>
+                        {request.senderOfPuzzleUserId === parseInt(activeUser.id) ?
+                            <p>Requester's Email: {request.requestingPuzzleUser.email}</p> : null
+                        }
+                        <br />
+
+                        {
+                            request.status.name === "Accepted" && <p className="acceptedStatus"><strong><em>Status:</em></strong> {request.status.name} <FaRegThumbsUp /></p>
+                        }
+                        {
+                            request.status.name === "Pending" && <p className="pendingStatus"><strong><em>Status:</em></strong> {request.status.name} <SiMinutemailer /></p>
+                        }
+                        {
+                            request.status.name === "Rejected" && <p className="rejectedStatus"><strong><em>Status:</em></strong> {request.status.name} <FaRegThumbsDown /></p>
+                        }
+
                     </Col>
-                    <Col sm="4">
-                        <div>
-                            {request.puzzle.title} : {request.puzzle.manufacturer}
+                    <Col sm="6">
+                        <div className="request--container">
+                            <strong><em>{request.puzzle.title}</em></strong>
+                            <br />
+                            {request.puzzle.manufacturer}
                             <hr />
 
-                            {request.content != null ? <div>{request.content}</div> : null}
+                            {request.content == "" ? <p>No Message Available</p> : <div>{request.content}</div>}
                         </div>
                     </Col>
+
                 </Row>
-                {/* <CardImg src={request.puzzle.imageLocation} alt={request.title} /> */}
                 <CardBody>
                     <Row>
                         <Col sm="4">
                             {request.senderOfPuzzleUserId === parseInt(activeUser.id) ?
                                 <>
-                                    <Button type="button" onClick={updateOwner}>Confirm</Button>
+                                    <Button className="confirmTransfer--button" type="button" onClick={updateOwner}>Confirm</Button>
 
-                                    <Button type="button" onClick={toggle}>Deny</Button>
+                                    <Button className="denyTransfer--button" type="button" onClick={toggle}>Deny</Button>
                                 </> :
                                 null}
+                            {window.location.pathname === "/request/outgoing" ?
+                                (request.requestingPuzzleUserId === parseInt(activeUser.id) && request.statusId === 1) ?
 
-                            {request.requestingPuzzleUserId === parseInt(activeUser.id) ?
-                                <>
-                                    <Button type="button" onClick={deleteOutgoingRequest}> Delete </Button>
-                                </> : null}
+                                    <Button type="button" className="cancelRequest--button" onClick={deleteOutgoingRequest}> Cancel Request </Button> :
+                                    <Button outline className="deleteRequest--button" type="button" onClick={deleteOutgoingRequest}> Delete </Button> : null}
+                        </Col>
+                        <Col sm="4">
+                            <div>
+                                <strong>
+                                    {currentDateAndTime(request.createDateTime)}
+                                </strong>
+                            </div>
                         </Col>
                     </Row>
                 </CardBody>

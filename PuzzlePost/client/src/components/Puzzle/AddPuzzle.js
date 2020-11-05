@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
-import { HistoryContext } from "../../providers/HistoryProvider";
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button, Select } from "reactstrap";
 import { useHistory } from "react-router-dom";
+import "./styles/AddPuzzle.css";
 
 const AddPuzzle = () => {
     const history = useHistory();
-    const { categories, addPuzzle, categoriesForPuzzle, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
+    const { categories, addPuzzle, categoriesForPuzzle } = useContext(PuzzleContext);
     const [isLoading, setIsLoading] = useState(false);
+    const [imageName, setImageName] = useState(" ");
 
     const [newPuzzle, setNewPuzzle] = useState({
         categoryId: 1,
@@ -41,17 +42,16 @@ const AddPuzzle = () => {
     };
 
     const addNewPuzzle = (e) => {
-        // debugger;
-
         e.preventDefault();
         newPuzzle.categoryId = parseInt(newPuzzle.categoryId);
         newPuzzle.pieces = parseInt(newPuzzle.pieces);
         if (newPuzzle.title === "" || newPuzzle.manufacturer === "" || newPuzzle.imageLocation === "" || newPuzzle.pieces === "") {
-            alert("Sorry, cannot leave these field(s) blank. Try again.");
+            alert("Sorry, cannot leave respective field(s) blank. Try again.");
         }
         else {
             setIsLoading(true);
             addPuzzle(newPuzzle);
+            setIsLoading(false);
             sleep(300).then(() => {
                 history.push("/puzzle");
             })
@@ -59,102 +59,129 @@ const AddPuzzle = () => {
 
     }
 
+
+    //cloudinary
+
+    const checkUploadResult = (resultEvent) => {
+        if (resultEvent.event === 'success') {
+
+            newPuzzle.imageLocation = resultEvent.info.secure_url
+            setImageName(resultEvent.info.original_filename + `.${resultEvent.info.original_extension}`)
+
+        }
+    }
+    const renderWidget = () => {
+        let widget = window.cloudinary.createUploadWidget({
+            cloudName: "digj43ynr",
+            uploadPreset: "uploadPuzzles"
+        },
+            (error, result) => { checkUploadResult(result) })
+
+        widget.open();
+    }
+
     return (
-        <>
-            <Form className="postForm">
-                <FormGroup>
-                    <Label className="puzzleTitleLabel">Title</Label>
-                    <Input
-                        className="newPuzzle"
-                        onChange={handleFieldChange}
-                        type="text"
-                        id="title"
-                        value={newPuzzle.title}
-                        placeholder="Enter Title"
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label className="ManufacturerLabel">Manufacturer</Label>
-                    <Input
-                        className="newPuzzle"
-                        onChange={handleFieldChange}
-                        type="text"
-                        id="manufacturer"
-                        value={newPuzzle.manufacturer}
-                        placeholder="Enter Manufacturer"
-                    />
+        <div className="postForm--container">
+            <div className="postFormSecondary--container">
+                <Form className="postForm" responsive>
+                    <fieldset>
+                        <FormGroup>
+                            <Label className="puzzleTitleLabel"><strong>Title</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="text"
+                                id="title"
+                                value={newPuzzle.title}
+                                placeholder="Enter Title"
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label className="ManufacturerLabel"><strong>Manufacturer</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="text"
+                                id="manufacturer"
+                                value={newPuzzle.manufacturer}
+                                placeholder="Enter Manufacturer"
+                            />
 
-                </FormGroup>
-                <FormGroup>
-                    <Label className="ImageLocationLabel">Image Url</Label>
-                    <Input
-                        className="newPuzzle"
-                        onChange={handleFieldChange}
-                        type="text"
-                        id="imageLocation"
-                        value={newPuzzle.imageLocation}
-                        placeholder="Image Url"
-                    />
-                </FormGroup>
+                        </FormGroup>
+                        <FormGroup>
+                            <Button className="uploadPuzzleImage" outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
+                        </FormGroup>
 
-                <FormGroup>
-                    <Label className="CategoryLabel" for="categoryId">
-                        Puzzle Categories
-                    </Label>
+                        <FormGroup >
+                            <Label className="CategoryLabel" for="categoryId">
+                                <strong>Puzzle Categories</strong>
+                            </Label>
 
-                    <Input
-                        type="select"
-                        className="newPuzzle"
-                        onChange={handleCategoryChange}
-                        value={parseInt(newPuzzle.categoryId)}
-                        id="categoryId"
-                        name="categoryId"
-                    >
-                        <option value={1}>Please Choose an Option</option>
-                        {categories.map(category => {
-                            return category.id === 1 ? null :
+                            <Input
+                                type="select"
+                                className="newPuzzleCategory"
+                                onChange={handleCategoryChange}
+                                value={parseInt(newPuzzle.categoryId)}
+                                id="categoryId"
+                                name="categoryId"
+                            >
 
-                                <option key={category.id} value={category.id}>{category.name}</option>
-                        }
+                                <option value={1}>Please Choose an Option</option>
 
-                        )}
+                                {categories.map(category => {
+                                    return category.id === 1 ? null :
 
-                    </Input>
+                                        <option key={category.id} value={category.id}>{category.name}</option>
 
-                </FormGroup>
-                <FormGroup>
-                    <Label className="PiecesLabel">Pieces</Label>
-                    <Input
-                        className="newPuzzle"
-                        onChange={handleFieldChange}
-                        type="number"
-                        id="pieces"
-                        value={newPuzzle.pieces}
-                        placeholder="Pieces"
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label className="NotesLabel">Notes</Label>
-                    <Input
-                        className="newPuzzle"
-                        onChange={handleFieldChange}
-                        type="textarea"
-                        id="notes"
-                        value={newPuzzle.notes}
-                        placeholder="Notes"
-                    />
-                </FormGroup>
-            </Form>
+                                }
 
-            <Button
-                className="postButton"
-                onClick={addNewPuzzle}
-                variant="custom"
-                type="button"
-            >
-                Save Puzzle
-            </Button>
-        </>
+
+
+                                )}
+
+
+                            </Input>
+
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Label className="PiecesLabel"> <strong>Pieces</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="number"
+                                id="pieces"
+                                value={newPuzzle.pieces}
+                                placeholder="Pieces"
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label className="NotesLabel"><strong>Notes</strong></Label>
+                            <Input
+                                className="newPuzzle"
+                                onChange={handleFieldChange}
+                                type="textarea"
+                                id="notes"
+                                value={newPuzzle.notes}
+                                placeholder="Notes"
+                            />
+                        </FormGroup>
+                        <Button
+                            block
+                            outline
+                            className="postPuzzle--button"
+                            onClick={addNewPuzzle}
+                            variant="custom"
+                            type="button"
+                        >
+                            Save
+                        </Button>
+                    </fieldset>
+                </Form>
+
+
+            </div>
+        </div >
 
     )
 

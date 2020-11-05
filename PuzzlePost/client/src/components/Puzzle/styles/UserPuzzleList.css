@@ -1,0 +1,35 @@
+.userWithInProgressCards--container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.addPuzzleButton--container {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.activePuzzles--title {
+  text-align: center;
+
+  border: 4px solid #b5d6d68c;
+}
+
+.inProgress--title {
+  text-align: center;
+  margin-top: 0;
+  border: 3px solid #df7373c0;
+  font-size: 1.5rem;
+}
+
+.activePuzzle {
+  margin-bottom: 3rem;
+  /* padding-top: 0;
+  padding-right: 2rem; */
+}
+
+/* .inProgress {
+  margin-top: 1rem;
+} */

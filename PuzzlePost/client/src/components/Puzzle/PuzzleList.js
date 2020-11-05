@@ -1,24 +1,20 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import Puzzle from "./Puzzle";
-import { Button, Row, Col, CardDeck, Container } from "reactstrap";
-import { Link } from "react-router-dom";
+import { CardDeck } from "reactstrap";
 import Search from "./Search";
-import DeletePuzzle from "./DeletePuzzle";
+import Time from "../Time/Time";
 import "./styles/PuzzleList.css";
 
 
 const PuzzleList = () => {
+
     const { getAllActivePuzzles, activePuzzles } = useContext(PuzzleContext);
 
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
 
     useEffect(() => {
         getAllActivePuzzles();
     }, []);
-
 
 
     const clearSearchResults = () => {
@@ -27,26 +23,16 @@ const PuzzleList = () => {
 
     return (
         <div className="puzzleList">
+            <Time />
             <Search clearSearchResults={clearSearchResults} />
-            {/* <div className="container"> */}
-            {/* <div className="row justify-content-center"> */}
-            {/* <Container> */}
-            <div className="addNewPuzzle--link">
-                {/* <Link to={"puzzle/add"}><Button>New Puzzle</Button></Link> */}
-            </div>
 
-            <CardDeck>
+            <CardDeck className="puzzleList--container">
 
                 {activePuzzles.map((puzzle) => {
                     return <Puzzle key={puzzle.id} puzzle={puzzle} />
                 })}
 
             </CardDeck>
-            {/* <DeletePuzzle /> */}
-
-            {/* </Container> */}
-            {/* </div> */}
-
 
         </div>
 

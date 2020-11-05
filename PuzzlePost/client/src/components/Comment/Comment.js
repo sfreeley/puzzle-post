@@ -1,52 +1,54 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, } from "react";
 import { useHistory } from "react-router-dom";
 import { currentDateAndTime } from "../helperFunctions";
-import { Row, Col, Card, CardTitle, CardBody, Button, Toast, ToastBody, ToastHeader } from "reactstrap";
+import { Button, Toast, ToastBody, ToastHeader } from "reactstrap";
 import { UserProfileContext } from "../../providers/UserProfileProvider";
 import { CommentContext } from "../../providers/CommentProvider";
 import DeleteComment from "./DeleteComment";
-import EditComment from "../Comment/EditComment";
 import "./styles/Comment.css";
 
-const Comment = ({ comment }) => {
+const Comment = ({ aComment, getAllComments }) => {
 
     const history = useHistory();
     const { activeUser } = useContext(UserProfileContext);
-    const { deleteComment, editComment, getCommentById } = useContext(CommentContext);
-
+    const { deleteComment } = useContext(CommentContext);
 
     const [modal, setModal] = useState(false);
     const toggle = () => setModal(!modal);
 
+    const deleteAComment = (e) => {
+        e.preventDefault();
+        deleteComment(aComment.id);
+        getAllComments();
 
+    }
 
     return (
         <>
 
-            <DeleteComment toggle={toggle} modal={modal} deleteComment={deleteComment} comment={comment} />
-            <Toast >
+            <DeleteComment toggle={toggle} modal={modal} deleteAComment={deleteAComment} aComment={aComment} />
+            {aComment &&
+                <Toast >
+                    <ToastHeader>
+                        Written by: <strong>{aComment.userProfile.displayName}</strong>
+                        <p> {currentDateAndTime(aComment.createDateTime)}</p>
+                    </ToastHeader>
 
+                    <ToastBody>
+                        <p><strong>{aComment.title}</strong></p>
+                        <p>{aComment.content}</p>
+                    </ToastBody>
 
-                <ToastHeader>
-                    Written by: <strong>{comment.userProfile.displayName}</strong>
-                    <p> {currentDateAndTime(comment.createDateTime)}</p>
-                </ToastHeader>
+                    {aComment.userProfileId === parseInt(activeUser.id) ?
 
+                        <div className="commentButtonContainer">
+                            <Button className="commentEdit--button" onClick={() => history.push(`/comment/edit/${aComment.id}`)} outline >Edit </Button>
+                            <Button className="commentDelete--button" outline onClick={toggle}>Delete</Button>
+                        </div> : null
+                    }
 
-                <ToastBody>
-                    <p><strong>{comment.title}</strong></p>
-                    <p>{comment.content}</p>
-                </ToastBody>
-
-                {comment.userProfileId === parseInt(activeUser.id) ?
-
-                    <div className="commentButtonContainer">
-                        <Button className="commentEdit--button" onClick={() => history.push(`/comment/edit/${comment.id}`)} outline >Edit </Button>
-                        <Button className="commentDelete--button" outline flat onClick={toggle}>Delete</Button>
-                    </div> : null
-                }
-
-            </Toast>
+                </Toast>
+            }
 
 
         </>

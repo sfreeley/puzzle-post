@@ -1,18 +1,7 @@
-import React, { useContext, useEffect } from "react";
+import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-import { CommentContext } from "../../providers/CommentProvider";
 
-const DeleteComment = ({ modal, toggle, comment }) => {
-    const { deleteComment, getAllCommentsForPuzzle } = useContext(CommentContext);
-
-    useEffect(() => {
-        getAllCommentsForPuzzle(comment.puzzleId);
-    }, [])
-
-    const deleteAComment = (e) => {
-        deleteComment(e.target.id);
-        getAllCommentsForPuzzle(comment.puzzleId);
-    }
+const DeleteComment = ({ deleteAComment, modal, toggle, aComment }) => {
 
     return (
         <>
@@ -23,7 +12,7 @@ const DeleteComment = ({ modal, toggle, comment }) => {
                         Are you sure you want to delete this comment?
                     </ModalBody>
                     <ModalFooter>
-                        <Button id={comment.id} color="primary" onClick={deleteAComment}>Delete</Button>{' '}
+                        <Button id={aComment.id} color="primary" onClick={deleteAComment}>Delete</Button>{' '}
                         <Button color="secondary" onClick={toggle}>Cancel</Button>
                     </ModalFooter>
                 </Modal>

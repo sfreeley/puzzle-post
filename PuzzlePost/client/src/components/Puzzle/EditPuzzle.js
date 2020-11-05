@@ -2,13 +2,19 @@ import React, { useContext, useEffect, useState } from "react";
 import { PuzzleContext } from "../../providers/PuzzleProvider";
 import { Form, FormGroup, Label, Input, Button } from "reactstrap";
 import { useHistory, useParams } from "react-router-dom";
+import "./styles/EditPuzzle.css";
 
 const EditPuzzle = () => {
-    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById, setActivePuzzles, activePuzzles } = useContext(PuzzleContext);
+    const { categories, categoriesForPuzzle, editPuzzle, aPuzzle, getPuzzleWithoutHistoryById } = useContext(PuzzleContext);
     const { id } = useParams();
     const history = useHistory();
     const [editingPuzzle, setEditingPuzzle] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    const [imageName, setImageName] = useState(" ");
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
 
     useEffect(() => {
         categoriesForPuzzle();
@@ -23,7 +29,6 @@ const EditPuzzle = () => {
         const stateToChange = { ...editingPuzzle };
         stateToChange[e.target.id] = e.target.value;
         setEditingPuzzle(stateToChange);
-
     };
 
     const handleCategoryChange = (e) => {
@@ -46,107 +51,126 @@ const EditPuzzle = () => {
         }
 
         editPuzzle(editedPuzzle);
-        setActivePuzzles(activePuzzles);
-        history.goBack();
+        setIsLoading(false);
+        sleep(300).then(() => {
+            history.goBack();
+        })
+
+    };
+
+    //cloudinary
+
+    const checkUploadResult = (resultEvent) => {
+        if (resultEvent.event === 'success') {
+
+            editingPuzzle.imageLocation = resultEvent.info.secure_url
+            setImageName(resultEvent.info.original_filename + `.${resultEvent.info.original_extension}`)
+
+        }
     }
+    const renderWidget = () => {
+        let widget = window.cloudinary.createUploadWidget({
+            cloudName: "digj43ynr",
+            uploadPreset: "uploadPuzzles"
+        },
+            (error, result) => { checkUploadResult(result) })
+
+        widget.open();
+    }
+
 
     return (
 
-        <>
-            <Form className="editForm">
-                <FormGroup>
-                    <Label className="puzzleTitleLabel">Title</Label>
-                    <Input
-                        className="editingPuzzle"
-                        onChange={handleFieldChange}
-                        type="text"
-                        id="title"
-                        value={editingPuzzle.title}
-                        placeholder="Enter Title"
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label className="ManufacturerLabel">Manufacturer</Label>
-                    <Input
-                        className="editingPuzzle"
-                        onChange={handleFieldChange}
-                        type="text"
-                        id="manufacturer"
-                        value={editingPuzzle.manufacturer}
-                        placeholder="Enter Manufacturer"
-                    />
+        <div className="editForm--container">
+            <div className="editFormSecondary--container">
+                <Form className="editForm">
+                    <FormGroup>
+                        <Label className="puzzleTitleLabel"><strong>Title</strong></Label>
+                        <Input
+                            className="editingPuzzle"
+                            onChange={handleFieldChange}
+                            type="text"
+                            id="title"
+                            value={editingPuzzle.title}
+                            placeholder="Enter Title"
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label className="ManufacturerLabel"><strong>Manufacturer</strong></Label>
+                        <Input
+                            className="editingPuzzle"
+                            onChange={handleFieldChange}
+                            type="text"
+                            id="manufacturer"
+                            value={editingPuzzle.manufacturer}
+                            placeholder="Enter Manufacturer"
+                        />
 
-                </FormGroup>
-                <FormGroup>
-                    <Label className="ImageLocationLabel">Image Url</Label>
-                    <Input
-                        className="editingPuzzle"
-                        onChange={handleFieldChange}
-                        type="text"
-                        id="imageLocation"
-                        value={editingPuzzle.imageLocation}
-                        placeholder="Image Url"
-                    />
-                </FormGroup>
+                    </FormGroup>
+                    <FormGroup>
+                        <Button className="uploadPuzzleImage" outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label className="CategoryLabel" for="categoryId">
+                            <strong>Puzzle Categories</strong>
+                        </Label>
 
-                <FormGroup>
-                    <Label className="CategoryLabel" for="categoryId">
-                        Puzzle Categories
-                </Label>
+                        <Input
+                            type="select"
+                            className="editingPuzzle"
+                            onChange={handleCategoryChange}
+                            value={parseInt(editingPuzzle.categoryId)}
+                            id="categoryId"
+                            name="categoryId"
+                        >
+                            <option value={1}>Please Choose an Option</option>
+                            {categories.map(category => {
+                                return category.id === 1 ? null :
 
-                    <Input
-                        type="select"
-                        className="editingPuzzle"
-                        onChange={handleCategoryChange}
-                        value={parseInt(editingPuzzle.categoryId)}
-                        id="categoryId"
-                        name="categoryId"
+                                    <option key={category.id} value={category.id}>{category.name}</option>
+                            }
+
+                            )}
+
+                        </Input>
+
+                    </FormGroup>
+                    <FormGroup>
+                        <Label className="PiecesLabel"><strong>Pieces</strong></Label>
+                        <Input
+                            className="editingPuzzle"
+                            onChange={handleFieldChange}
+                            type="number"
+                            id="pieces"
+                            value={editingPuzzle.pieces}
+                            placeholder="Pieces"
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label className="NotesLabel" htmlFor="notes"><strong>Notes</strong></Label>
+                        <Input
+                            className="editingPuzzle"
+                            onChange={handleFieldChange}
+                            type="textarea"
+                            id="notes"
+                            value={editingPuzzle.notes}
+                            placeholder="Notes"
+                        />
+                    </FormGroup>
+                    <Button
+                        className="editPuzzleForm--button"
+                        block
+                        onClick={editAPuzzle}
+                        variant="custom"
+                        type="button"
                     >
-                        <option value={1}>Please Choose an Option</option>
-                        {categories.map(category => {
-                            return category.id === 1 ? null :
+                        Save
+                    </Button>
+                </Form>
 
-                                <option key={category.id} value={category.id}>{category.name}</option>
-                        }
 
-                        )}
-
-                    </Input>
-
-                </FormGroup>
-                <FormGroup>
-                    <Label className="PiecesLabel">Pieces</Label>
-                    <Input
-                        className="editingPuzzle"
-                        onChange={handleFieldChange}
-                        type="number"
-                        id="pieces"
-                        value={editingPuzzle.pieces}
-                        placeholder="Pieces"
-                    />
-                </FormGroup>
-                <FormGroup>
-                    <Label className="NotesLabel" htmlFor="notes">Notes</Label>
-                    <Input
-                        className="editingPuzzle"
-                        onChange={handleFieldChange}
-                        type="textarea"
-                        id="notes"
-                        value={editingPuzzle.notes}
-                        placeholder="Notes"
-                    />
-                </FormGroup>
-            </Form>
-
-            <Button
-                className="editButton"
-                onClick={editAPuzzle}
-                variant="custom"
-                type="button"
-            >
-                Save Your Edit
-        </Button>
-        </>
+            </div>
+        </div>
 
     )
 

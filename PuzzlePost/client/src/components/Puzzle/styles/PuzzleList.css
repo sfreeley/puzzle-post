@@ -1,3 +1,9 @@
-.puzzleList {
-  /* background-color: #ceb5b7; */
+.puzzleList--container {
+  /* margin-top: 0.5rem; */
+  display: flex;
+  justify-content: center;
 }
+
+/* .puzzleList {
+  margin-top: 0;
+} */

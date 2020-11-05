@@ -11,7 +11,7 @@ using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class CommentController : ControllerBase
@@ -29,14 +29,8 @@ namespace PuzzlePost.Controllers
             _requestRepository = requestRepository;
         }
 
-        //[HttpGet]
-        //public IActionResult GetAllComments()
-        //{
-        //    return Ok(_commentRepository.GetAllComments());
-        //}
-
         [HttpGet("getallcommentsbypuzzle/{id}")]
-        public IActionResult GetAllCommentsByPost(int id)
+        public IActionResult GetAllCommentsByPuzzle(int id)
         {
             return Ok(_commentRepository.GetAllCommentsByPuzzle(id));
         }

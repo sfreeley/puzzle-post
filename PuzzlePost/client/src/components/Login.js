@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { useHistory, Link } from "react-router-dom";
 import { UserProfileContext } from "../providers/UserProfileProvider";
+import "./Login.css";
 
 export default function Login() {
     const history = useHistory();
@@ -18,23 +19,28 @@ export default function Login() {
     };
 
     return (
-        <Form onSubmit={loginSubmit}>
-            <fieldset>
-                <FormGroup>
-                    <Label for="email">Email</Label>
-                    <Input id="email" type="text" onChange={e => setEmail(e.target.value)} />
-                </FormGroup>
-                <FormGroup>
-                    <Label for="password">Password</Label>
-                    <Input id="password" type="password" onChange={e => setPassword(e.target.value)} />
-                </FormGroup>
-                <FormGroup>
-                    <Button>Login</Button>
-                </FormGroup>
-                <em>
-                    Not registered? <Link to="register">Register</Link>
-                </em>
-            </fieldset>
-        </Form>
+        <div className="login--container">
+            <div className="puzzleLogoImage--container">
+                <img className="puzzleLogo--image" src="./images/puzzlepostlogo.png" alt="puzzleLogo" />
+            </div>
+            <Form className="loginForm--container" onSubmit={loginSubmit}>
+                <fieldset>
+                    <FormGroup>
+                        <Label for="email">Email</Label>
+                        <Input id="email" type="text" onChange={e => setEmail(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="password">Password</Label>
+                        <Input id="password" type="password" onChange={e => setPassword(e.target.value)} />
+                    </FormGroup>
+                    <FormGroup className="loginSubmitButton--formGroup">
+                        <Button outline className="loginSubmit--button">Login</Button>
+                    </FormGroup>
+                    <em>
+                        <p className="register--link"> Not registered? <Link to="register">Register</Link></p>
+                    </em>
+                </fieldset>
+            </Form>
+        </div>
     );
 }

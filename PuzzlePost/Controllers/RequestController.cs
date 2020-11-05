@@ -11,7 +11,7 @@ using PuzzlePost.Repositories;
 
 namespace PuzzlePost.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestController : ControllerBase
@@ -32,27 +32,13 @@ namespace PuzzlePost.Controllers
         [HttpGet("{id}")]
         public IActionResult GetRequestById(int id)
         {
-            //UserProfile userProfile = GetCurrentUserProfile();
-            //var userId = userProfile.Id;
-            //Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
-            //if (userId != puzzle.CurrentOwnerId)
-            //{
-            //    return Unauthorized();
-            //}
-
+          
             return Ok(_requestRepository.GetRequestByPuzzleId(id));
         }
 
         [HttpGet("incoming/{id}")]
         public IActionResult GetIncomingRequests(int id)
         {
-            //UserProfile userProfile = GetCurrentUserProfile();
-            //var userId = userProfile.Id;
-
-            //if (userId != id)
-            //{
-            //    return Unauthorized();
-            //}
 
             return Ok(_requestRepository.GetPendingRequestsForUser(id));
         }
@@ -60,14 +46,7 @@ namespace PuzzlePost.Controllers
         [HttpGet("outgoing/{id}")]
         public IActionResult GetOutgoingRequests(int id)
         {
-            //UserProfile userProfile = GetCurrentUserProfile();
-            //var userId = userProfile.Id;
-
-            //if (userId != id)
-            //{
-            //    return Unauthorized();
-            //}
-
+       
             return Ok(_requestRepository.GetOutgoingRequestsForUser(id));
         }
 
@@ -97,13 +76,10 @@ namespace PuzzlePost.Controllers
             UserProfile userProfile = GetCurrentUserProfile();
             var userId = userProfile.Id;
 
-            
             request.SenderOfPuzzleUserId = userId;
            
             request.CreateDateTime = DateTime.Now;
 
-            //get request by puzzle id where status is pending (request.puzzleId)
-            //Request aRequest = _requestRepository.GetRequestByPuzzleId(request.PuzzleId);
             //edit that request to statusid = 3 as well so can be removed from incoming requests page
             _requestRepository.UpdateToReject(request);
             //new instance of puzzle
@@ -118,14 +94,21 @@ namespace PuzzlePost.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            //UserProfile userProfile = GetCurrentUserProfile();
-            //var userId = userProfile.Id;
-            //Puzzle puzzle = _puzzleRepository.GetPuzzleWithoutHistoryById(id);
-            //if (userId != puzzle.CurrentOwnerId)
-            //{
-            //    return Unauthorized();
-            //}
-            _requestRepository.DeleteRequest(id);
+           
+            Request request = _requestRepository.GetRequestById(id);
+            if (request == null) {
+                //if there is no request by that id that is pending, just delete the request
+                _requestRepository.DeleteRequest(id);
+            }
+            else {
+                
+                //if delete request and it was in pending status, have to reactivate the puzzle so goes back to shared puzzle list for someone else to request
+                _puzzleRepository.ReactivatePuzzle(request.PuzzleId);
+                //will remove from requesting history page and current owner's pending request page
+                _requestRepository.DeleteRequest(id);
+            }
+          
+            
             //return status 204
             return NoContent();
         }
