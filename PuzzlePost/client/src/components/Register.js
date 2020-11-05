@@ -27,14 +27,14 @@ export default function Register() {
     };
 
     return (
-        <div register--container>
+        <div className="register--container">
             <div className="puzzleLogoImage--container">
                 <img className="puzzleLogo--image" src="./images/puzzlepostlogo.png" alt="puzzleLogo" />
             </div>
             <Form className="registerForm--container" onSubmit={registerClick}>
                 <fieldset>
                     <FormGroup>
-                        <Label htmlFor="displayName">Username</Label>
+                        <Label for="displayName">Username</Label>
                         <Input id="displayName" type="text" onChange={e => setDisplayName(e.target.value)} />
                     </FormGroup>
                     <FormGroup>
