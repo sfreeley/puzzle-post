@@ -17,9 +17,9 @@ Inspired by exchanging puzzles with family members, this fullstack application a
 3. Open SQL Server Object Explorer
 4. Go to Solution Explorer
 5. Click Folder icon and change it to 'Folder View'
-5. From the SQL Folder click 01_Db_Create.sql
+5. From the SQL Folder click ```01_Db_Create.sql```
 6. Click Run
-7. Click 02_Seed_Data.sql to populate the database with pre-populated data (please note your users will have their own information and firebaseUserIds that will need to be changed in the database)
+7. Click ```02_Seed_Data.sql``` to populate the database with pre-populated data (please note your users will have their own information and firebaseUserIds that will need to be changed in the database)
 8. Click Run
 9. Click Run PuzzlePost
 10. Click the 'Register' button
