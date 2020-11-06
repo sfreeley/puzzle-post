@@ -6,7 +6,7 @@ Inspired by exchanging puzzles with family members, this fullstack application a
 
 - What are the features of the application?
 
-  - Users can request puzzles from other users. If the current owner accepts the request then that puzzle will belong to the requester of the puzzle. Once that user is finished with the puzzle they have the ability to reactivate it and allow other users to request the puzzle.
+  - Users can request puzzles from other users. If the current owner accepts the request, that puzzle will belong to the requester of that particular puzzle. Once that user is finished with the puzzle they have the ability to reactivate it and allow other users to request it.
 
   - Users can see a list of active puzzles currently being shared, a list of their own shared and in-progress puzzles, incoming requests for their puzzles and a puzzle request history specific to that user.
 
