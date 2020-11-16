@@ -1,6 +1,6 @@
 # puzzle-post
 
-Inspired by exchanging puzzles with family members, this fullstack application allows multiple users to post puzzles they have completed and share them with others.
+Inspired by exchanging puzzles with family members, this fullstack application allows multiple users to post puzzles they have completed and share them with others. Users are able to request puzzles and the current owners of the puzzles are able to approve or deny these requests.
 
 ## Application Overview
 
@@ -38,6 +38,7 @@ The following link is a walkthrough regarding the main functionality of this app
 - React library
 - Cloudinary
 - Reactstrap
+- HTML5
 - CSS3
 
 ## Planning Links
