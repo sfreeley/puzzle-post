@@ -19,9 +19,11 @@
 }
 
 .denyTransfer--button {
-  margin-top: 0.5rem;
   background-color: #df73737c;
   color: black;
   font-weight: bold;
-  width: 65%;
+}
+
+.confirmDeny--container {
+  display: flex;
 }

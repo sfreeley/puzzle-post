@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 import "./styles/AddPuzzle.css";
 
 const AddPuzzle = () => {
+
     const history = useHistory();
     const { categories, addPuzzle, categoriesForPuzzle } = useContext(PuzzleContext);
     const [isLoading, setIsLoading] = useState(false);
@@ -109,7 +110,7 @@ const AddPuzzle = () => {
 
                         </FormGroup>
                         <FormGroup>
-                            <Button className="uploadPuzzleImage" outline onClick={renderWidget}>Upload Puzzle Image</Button> <p>{imageName}</p>
+                            <Button className="uploadPuzzleImage" outline onClick={renderWidget}>Upload Puzzle Image</Button> <p className="imageNameSizing">{imageName}</p>
                         </FormGroup>
 
                         <FormGroup >
