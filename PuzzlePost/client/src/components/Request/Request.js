@@ -110,17 +110,18 @@ const Request = ({ request }) => {
                     <Row>
                         <Col sm="4">
                             {request.senderOfPuzzleUserId === parseInt(activeUser.id) ?
-                                <>
+                                <div className="confirmDeny--container">
                                     <Button className="confirmTransfer--button" type="button" onClick={updateOwner}>Confirm</Button>
 
                                     <Button className="denyTransfer--button" type="button" onClick={toggle}>Deny</Button>
-                                </> :
+                                </div> :
                                 null}
                             {window.location.pathname === "/request/outgoing" ?
                                 (request.requestingPuzzleUserId === parseInt(activeUser.id) && request.statusId === 1) ?
 
                                     <Button type="button" className="cancelRequest--button" onClick={deleteOutgoingRequest}> Cancel Request </Button> :
                                     <Button outline className="deleteRequest--button" type="button" onClick={deleteOutgoingRequest}> Delete </Button> : null}
+
                         </Col>
                         <Col sm="4">
                             <div>
